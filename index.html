@@ -702,6 +702,12 @@ h1,h2,h3{margin:0;text-wrap:balance}
     $('.top .title').textContent='Producer Home';
   }
   function isPrep(t){return /prep|meridian|next meeting/i.test(t)}
+  // Direct links: …/#prep opens the meeting-prep screen, …/#home the home screen
+  window.addEventListener('hashchange',function(){ if(location.hash==='#prep') _sp(); else if(location.hash==='#home'||!location.hash) _sh(); });
+  var _sp=showPrep, _sh=showHome;
+  showPrep=function(t){_sp(t); if(location.hash!=='#prep') try{history.replaceState(null,'','#prep')}catch(e){}};
+  showHome=function(){_sh(); if(location.hash) try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}};
+  if(location.hash==='#prep') _sp();
   $('#backHome').addEventListener('click',showHome);
   $$('.nav a').forEach(function(a){a.addEventListener('click',function(e){
     var h=a.getAttribute('href'); if(h==='#home'){e.preventDefault();showHome()} else if(h==='#r1'){e.preventDefault();showPrep()}

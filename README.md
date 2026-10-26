@@ -3,6 +3,7 @@
 Clickable mid-fidelity wireframe of the home screen for an insurance producer's AI workbench: one assistant in front of the CRM, the agency management system, email and the brokerage's existing AI workflows. A concept demo; all names, clients and figures are fictional.
 
 **Live demo:** https://julijakvetna.github.io/epic-producer-assistant-demo/
+**Meeting prep (direct link):** https://julijakvetna.github.io/epic-producer-assistant-demo/#prep
 
 **Run locally:** clone and open `index.html` in a browser. No build step, no dependencies beyond Google Fonts.
 
