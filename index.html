@@ -231,6 +231,8 @@ h1,h2,h3{margin:0;text-wrap:balance}
 .sources .l{font-weight:600;color:var(--faint);font-size:11px;letter-spacing:.1em;text-transform:uppercase}
 .sources .s{display:inline-flex;align-items:center;gap:6px}
 .sources .s::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--ok)}
+.sources .src-link{margin-left:auto;color:var(--navy);font-weight:600;text-decoration:none;font-size:12.5px}
+.sources .src-link:hover{text-decoration:underline}
 
 /* ---------- Prep view (assistant thread) ---------- */
 .thread{max-width:920px;margin:0 auto;padding-block:20px 120px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:18px}
@@ -314,6 +316,68 @@ h1,h2,h3{margin:0;text-wrap:balance}
 .dock{position:sticky;bottom:0;padding:12px 0 calc(8px + env(safe-area-inset-bottom,0px));background:linear-gradient(to top,var(--bg) 70%,transparent)}
 .dock .prompt{width:100%}
 @media (max-width:760px){.facts{grid-template-columns:1fr 1fr}.facts>div:nth-child(3){border-left:0}.facts>div:nth-child(n+3){border-top:1px solid var(--line)}.two{grid-template-columns:1fr}.two>.bsec+.bsec{border-left:0}.loss{grid-template-columns:1fr}.msg-user{max-width:90%}.bh .when{margin-left:0;text-align:left}}
+
+/* ---------- Sources view (slide) ---------- */
+:root{--s-sf:#0b7bd1;--s-ms:#7a3fd1;--s-ams:#d1660b;--s-wf:#0b9e8f;--s-reg:#2f8f3a;--s-sme:#b8860b;--s-in:#1e2e9a;--s-wf-bg:#e2f5f2}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--s-sf:#5cb3f0;--s-ms:#b48cf5;--s-ams:#f2a05c;--s-wf:#5cd6c8;--s-reg:#7fd48a;--s-sme:#e6c15c;--s-in:#8fa0ff}}
+:root[data-theme="dark"]{--s-sf:#5cb3f0;--s-ms:#b48cf5;--s-ams:#f2a05c;--s-wf:#5cd6c8;--s-reg:#7fd48a;--s-sme:#e6c15c;--s-in:#8fa0ff}
+.slide{max-width:1400px;margin:0 auto;padding-block:20px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:14px}
+.slide .crumb{justify-content:flex-start}
+.slide-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.slide-head h1{font-size:22px;font-weight:600;letter-spacing:-.01em}
+.slide-head p{margin:0;color:var(--muted);font-size:13.5px;max-width:70ch}
+.slide-body{display:grid;grid-template-columns:5fr 6fr;gap:18px;align-items:start}
+.mini{background:var(--panel);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);display:grid;grid-template-columns:140px 1fr;position:relative}
+.mini .mside{border-radius:14px 0 0 14px}
+.mini .mside{border-right:1px solid var(--line);padding:12px 10px;display:flex;flex-direction:column;gap:6px;font-size:11px;color:var(--muted);position:relative}
+.mini .mside .mb{display:flex;align-items:center;gap:6px;font-weight:600;color:var(--fg);margin-bottom:6px}
+.mini .mside .mb .mark{width:26px;height:16px;font-size:8px;line-height:16px}
+.mini .mside div.n{padding:4px 6px;border-radius:5px}
+.mini .mside div.n.on{background:var(--panel-2);color:var(--fg);font-weight:600}
+.mini .mmain{padding:12px 14px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.mblk{position:relative;border:1px dashed var(--line);border-radius:9px;padding:10px 12px;background:var(--bg)}
+.mblk .ml{font-size:11.5px;font-weight:600;color:var(--fg)}
+.mblk .ms{font-size:10.5px;color:var(--muted);margin-top:2px;line-height:1.4}
+.mrow{display:grid;gap:8px}
+.mrow.c3{grid-template-columns:repeat(3,1fr)} .mrow.c4{grid-template-columns:repeat(4,1fr)} .mrow.c2{grid-template-columns:7fr 5fr}
+.mini .mgoal{display:grid;grid-template-columns:5fr 6fr 4fr;gap:10px}
+.mini .mgoal .bullet{margin-top:8px;height:6px}
+.mini .mbars{display:flex;gap:3px;align-items:flex-end;height:30px;margin-top:8px}
+.mini .mbars i{flex:1;background:var(--navy);border-radius:2px 2px 0 0;opacity:.85}
+.mini .mbars i.e{opacity:.3}
+.mini .mprompt{border:1px solid var(--line);background:var(--panel);border-radius:10px;padding:8px 10px;font-size:11px;color:var(--faint);display:flex;align-items:center;gap:8px}
+.mini .mprompt .send{width:18px;height:18px;margin-left:auto;border-radius:5px;background:var(--navy)}
+.mini .mchips{display:flex;gap:5px;flex-wrap:wrap;justify-content:center}
+.mini .mchips span{border:1px solid var(--line);border-radius:10px;padding:2px 7px;font-size:9.5px;color:var(--muted);background:var(--panel)}
+.mini .mlist{display:flex;flex-direction:column;gap:4px;margin-top:6px}
+.mini .mlist span{height:7px;border-radius:3px;background:var(--panel-2)}
+.mini .mlist span:nth-child(2){width:85%} .mini .mlist span:nth-child(3){width:70%} .mini .mlist span.d{opacity:.5;width:60%}
+.mini .mtabs{display:flex;gap:6px;font-size:9.5px;color:var(--muted);margin-top:4px}
+.mini .mtabs b{color:var(--fg);border-bottom:2px solid var(--navy)}
+.mini .msrc{display:flex;gap:8px;flex-wrap:wrap;font-size:9.5px;color:var(--muted);border:1px dashed var(--line);border-radius:8px;padding:6px 10px}
+.pin{position:absolute;top:-9px;left:-9px;width:22px;height:22px;border-radius:50%;background:var(--gold);color:var(--gold-ink);font:700 11.5px/22px var(--sans);text-align:center;box-shadow:0 0 0 2px var(--panel);z-index:2}
+.pin.r{left:auto;right:-9px}
+.legend-list{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-content:start}
+.lg{display:grid;grid-template-columns:22px 1fr;gap:10px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:9px 12px;align-items:start}
+.lg .pin{position:static;box-shadow:none;margin-top:1px}
+.lg b{font-size:12px;font-weight:600;display:block}
+.lg .d{font-size:11px;color:var(--muted);margin:2px 0 5px;line-height:1.4}
+.srcs{display:flex;flex-wrap:wrap;gap:4px}
+.sc{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:600;padding:2px 7px 2px 6px;border-radius:9px;background:var(--panel-2);color:var(--fg);white-space:nowrap}
+.sc::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--c,var(--muted));flex:none}
+.sc.sf{--c:var(--s-sf)} .sc.ms{--c:var(--s-ms)} .sc.ams{--c:var(--s-ams)} .sc.wf{--c:var(--s-wf)} .sc.reg{--c:var(--s-reg)} .sc.sme{--c:var(--s-sme)} .sc.in{--c:var(--s-in)}
+.sc.w{border:1px dashed var(--line);background:transparent}
+.key{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:11.5px;color:var(--muted);padding:10px 14px;border:1px solid var(--line);border-radius:10px;background:var(--panel);align-items:center}
+.key .t{font-weight:600;color:var(--faint);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;margin-right:4px}
+.key .sc{background:transparent;padding-left:0;font-weight:500}
+.key .note{margin-left:auto;font-size:11px}
+@media (max-width:1000px){.slide-body{grid-template-columns:1fr}.mini{grid-template-columns:1fr}.mini .mside{display:none}}
+@media (max-width:1200px){.legend-list{grid-template-columns:1fr}}
+/* export mode: ?export hides the app chrome so the slide view can be captured as a 16:9 image */
+.export .side,.export .top,.export .crumb{display:none}
+.export .app{grid-template-columns:1fr}
+.export .slide{max-width:1560px;padding-block:28px}
+@media (max-width:760px){.mrow.c3,.mrow.c4,.mrow.c2,.mini .mgoal{grid-template-columns:1fr}.key .note{margin-left:0}}
 
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(10px);background:var(--fg);color:var(--bg);padding:9px 14px;border-radius:8px;font-size:13px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:20}
 .toast.show{opacity:1;transform:translateX(-50%)}
@@ -544,7 +608,7 @@ h1,h2,h3{margin:0;text-wrap:balance}
         <!-- Connected sources -->
         <section class="sources" aria-label="Connected sources">
           <span class="l">Connected</span>
-          <span class="s">Salesforce</span><span class="s">Outlook</span><span class="s">Broker AI workflows</span><span class="s">Agency management</span><span class="s">SharePoint</span><span class="s">Reports</span><span class="s">SME directory</span>
+          <span class="s">Salesforce</span><span class="s">Outlook</span><span class="s">Broker AI workflows</span><span class="s">Agency management</span><span class="s">SharePoint</span><span class="s">Reports</span><span class="s">SME directory</span><a href="#sources" class="src-link">Where each block gets its data →</a>
         </section>
       </main>
 
@@ -670,6 +734,68 @@ h1,h2,h3{margin:0;text-wrap:balance}
           </form>
         </div>
       </section>
+
+      <!-- ================= Sources view (slide) ================= -->
+      <section class="slide" id="sourcesView" hidden aria-label="Where the data comes from">
+        <div class="crumb"><button type="button" id="backHome2"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>Home</button><span>›</span><span>Where the data comes from</span></div>
+        <div class="slide-head">
+          <h1>Producer home: where every block gets its data</h1>
+          <p>One screen, one assistant. Behind it, the harness reads from the systems the brokerage already runs. Nothing on this screen is typed in by the producer except the prompt and the dictation.</p>
+        </div>
+
+        <div class="slide-body">
+          <!-- schematic home -->
+          <div class="mini" aria-label="Schematic of the home screen">
+            <div class="mside">
+              <span class="pin" style="top:auto;bottom:10px;left:10px">9</span>
+              <div class="mb"><span class="mark">PA</span>Producer Assistant</div>
+              <div class="n on">New chat</div><div class="n">My Briefs</div><div class="n">AI Workflows</div><div class="n">Memory</div><div class="n">Dashboards</div><div class="n">Scheduled</div><div class="n">Proposals</div>
+              <div class="n" style="margin-top:8px;font-size:9.5px;letter-spacing:.1em">RECENTS</div>
+              <div class="n">Prep: Meridian…</div><div class="n">Harbor Point…</div>
+            </div>
+            <div class="mmain">
+              <div class="mblk mgoal"><span class="pin">1</span>
+                <div><div class="ml">$1.08M of $1.30M goal</div><div class="bullet"><span class="fill" style="width:83%"></span><span class="pace" style="left:82%"></span></div><div class="ms">pace · ahead $12K · +18% YoY</div></div>
+                <div><div class="ml">Booked by month</div><div class="mbars"><i style="height:40%"></i><i style="height:55%"></i><i style="height:90%"></i><i style="height:65%"></i><i style="height:78%"></i><i style="height:100%"></i><i style="height:50%"></i><i style="height:70%"></i><i style="height:88%"></i><i style="height:92%"></i><i class="e" style="height:65%"></i><i class="e" style="height:84%"></i></div></div>
+                <div><div class="ml">What closes the gap</div><div class="ms">Brightline $38K · Meridian $95K · Orion $140K → 104%</div></div>
+              </div>
+              <div class="mblk"><span class="pin">2</span><div class="mprompt"><span>＋</span><span>Ask anything — / workflows, @ briefs, # clients</span><span>🎙</span><span class="send"></span></div></div>
+              <div class="mblk"><span class="pin">3</span><div class="mchips"><span>Prep my next meeting</span><span>Brief me on a prospect</span><span>Compare quotes</span><span>Coverage gap analysis</span><span>Find an SME</span><span>Update Salesforce</span></div></div>
+              <div class="mrow c3">
+                <div class="mblk"><span class="pin">4</span><div class="ml">Today 2:00 · Meridian Logistics</div><div class="ms">Prospect brief ready · 2 gaps</div></div>
+                <div class="mblk"><div class="ml">Thu 10:30 · Harbor Point Health</div><div class="ms">Client summary ready</div></div>
+                <div class="mblk"><div class="ml">Overnight · 2 new leads</div><div class="ms">scored 82 and 71</div></div>
+              </div>
+              <div class="mrow c4">
+                <div class="mblk"><span class="pin">5</span><div class="ml">Suspects 14</div></div>
+                <div class="mblk"><div class="ml">Prospects 9</div></div>
+                <div class="mblk"><div class="ml">Opportunities 7 · $2.4M</div></div>
+                <div class="mblk"><div class="ml">Clients 28 · 3 at risk</div></div>
+              </div>
+              <div class="mrow c2">
+                <div class="mblk"><span class="pin">6</span><div class="ml">Today's brief</div><div class="ms">Decide · Review · Call back · Renewal</div><div class="mlist"><span></span><span></span><span></span><span class="d"></span></div></div>
+                <div class="mblk"><span class="pin">7</span><div class="ml">Needs attention</div><div class="mtabs"><b>At risk 3</b><span>Renewals 6</span><span>Overdue 4</span><span>Stalled 2</span></div><div class="mlist"><span></span><span></span><span></span></div></div>
+              </div>
+              <div class="mblk" style="padding:0;border:0;background:transparent"><span class="pin" style="top:-6px">8</span><div class="msrc"><b style="color:var(--faint);letter-spacing:.1em;font-size:9px">CONNECTED</b><span>Salesforce</span><span>Outlook</span><span>Broker AI workflows</span><span>Agency management</span><span>SharePoint</span><span>Reports</span><span>SME directory</span></div></div>
+            </div>
+          </div>
+
+          <!-- legend -->
+          <div class="legend-list">
+            <div class="lg"><span class="pin">1</span><div><b>Goal panel: booked vs goal, by month, what closes the gap</b><div class="d">Booked production and the annual goal come from the production source of truth; the expected Nov–Dec and the three gap-closing deals come from open opportunities.</div><div class="srcs"><span class="sc ams">Agency management system → Databricks (production, premium)</span><span class="sc sf">Opportunity (amount, stage, close date)</span><span class="sc sf">Producer goal (User / Territory)</span></div></div></div>
+            <div class="lg"><span class="pin">2</span><div><b>Prompt and dictation</b><div class="d">The only producer input on the screen. Dictation goes through the client's Microsoft tools; the harness links it to the meeting that just ended and writes the result back.</div><div class="srcs"><span class="sc in">Producer (typed or spoken)</span><span class="sc ms">Teams / Outlook transcript (Graph)</span><span class="sc sf w">writes Task · Event · Opportunity next step</span></div></div></div>
+            <div class="lg"><span class="pin">3</span><div><b>Chips: what the assistant can do</b><div class="d">Each chip is an existing capability behind the harness, not a new build.</div><div class="srcs"><span class="sc wf">Broker AI workflows (Coverage Gap, Compare Quotes, Policy Review)</span><span class="sc sme">SME directory</span><span class="sc sf">Salesforce actions (allow-listed writes)</span><span class="sc ms">Calendar (next meeting)</span></div></div></div>
+            <div class="lg"><span class="pin">4</span><div><b>Prepared for you: briefs and leads ready now</b><div class="d">Keyed to the calendar. The brief joins CRM facts, the email thread, documents the prospect shared, the gap analysis and public registries. Leads are scored from Lead history plus registry signals.</div><div class="srcs"><span class="sc ms">Outlook calendar + email (Graph)</span><span class="sc sf">Account · Contact · Opportunity · Lead</span><span class="sc wf">Coverage Gap Analyzer</span><span class="sc reg">FMCSA · OSHA · Form 5500 · USASpending</span><span class="sc ms">Prospect portal documents (SharePoint)</span><span class="sc sme">SME directory</span></div></div></div>
+            <div class="lg"><span class="pin">5</span><div><b>Pipeline tiles</b><div class="d">Counts straight from the CRM funnel; the client count and at-risk flags come from the book of business.</div><div class="srcs"><span class="sc sf">Lead (suspects) · Account (prospects) · Opportunity</span><span class="sc ams">Agency management system (clients, policies)</span><span class="sc wf">Workbench at-risk flag</span></div></div></div>
+            <div class="lg"><span class="pin">6</span><div><b>Today's brief: what needs the producer</b><div class="d">Assembled overnight and during the day by the agents; each line names its source. Checked items are written back as completed Tasks.</div><div class="srcs"><span class="sc sf">Task (promises, due dates) · Opportunity</span><span class="sc ms">Calendar (meeting ended → capture)</span><span class="sc ams">Policy expiry dates (AMS sync)</span><span class="sc sf">Lead + score</span><span class="sc reg">Registry signals (new DOT authority, awards)</span><span class="sc sf w">writes Task status</span></div></div></div>
+            <div class="lg"><span class="pin">7</span><div><b>Needs attention: at risk · renewals · overdue · stalled</b><div class="d">Risk flags and renewals need the policy data sync; overdue and stalled come from CRM activity and stage history.</div><div class="srcs"><span class="sc wf">Workbench client-at-risk flag</span><span class="sc ams">InsurancePolicy ← agency management / Databricks (renewals)</span><span class="sc sf">Task (overdue) · OpportunityHistory (stalled)</span><span class="sc ms">Email (last contact)</span></div></div></div>
+            <div class="lg"><span class="pin">8</span><div><b>Connected: the integration layer</b><div class="d">On behalf of the signed-in producer, under their Salesforce permissions; every call logged and metered.</div><div class="srcs"><span class="sc sf">Salesforce (FSC objects, Named Credentials)</span><span class="sc ms">Microsoft Graph (Outlook, Teams, SharePoint) · Entra SSO</span><span class="sc wf">Broker workflow APIs</span><span class="sc ams">Databricks</span><span class="sc reg">Public registries (11 live)</span></div></div></div>
+            <div class="lg"><span class="pin">9</span><div><b>Sidebar: the harness itself</b><div class="d">What the producer keeps: briefs produced, workflows available, memory of preferences, scheduled agent runs, dashboards.</div><div class="srcs"><span class="sc sf">Prospect Briefing records (My Briefs)</span><span class="sc wf">Broker workflow catalogue (AI Workflows)</span><span class="sc in">Harness memory per producer</span><span class="sc in">Scheduled runs · audit log</span><span class="sc ams">Dashboards (Tableau / CRM Analytics)</span></div></div></div>
+          </div>
+        </div>
+
+        <div class="key"><span class="t">Source key</span><span class="sc sf">Salesforce (FSC)</span><span class="sc ms">Microsoft 365 (Outlook, Teams, SharePoint)</span><span class="sc ams">Agency management · Databricks</span><span class="sc wf">Broker AI workflows</span><span class="sc reg">Public registries</span><span class="sc sme">SME directory</span><span class="sc in">Producer input · harness</span><span class="note">Dashed chip = what the screen writes back</span></div>
+      </section>
     </div>
   </div>
 </div>
@@ -690,20 +816,30 @@ h1,h2,h3{margin:0;text-wrap:balance}
   // Views: home ↔ prep thread
   var home=$('.content'), prep=$('#prepView'), scroll=$('.scroll');
   var input=$('#promptInput'), input2=$('#promptInput2');
+  var sources=$('#sourcesView');
+  function showSources(){
+    home.hidden=true; prep.hidden=true; sources.hidden=false; scroll.scrollTop=0;
+    $('.top .title').textContent='Where the data comes from';
+    if(location.hash!=='#sources') try{history.replaceState(null,'','#sources')}catch(e){}
+  }
+  $('#backHome2').addEventListener('click',function(){showHome()});
   function showPrep(text){
     if(text) $('#prepUserMsg').firstChild.nodeValue=text;
+    sources.hidden=true;
     home.hidden=true; prep.hidden=false; scroll.scrollTop=0;
     $$('.nav a').forEach(function(a){a.classList.toggle('active',a.getAttribute('href')==='#r1')});
     $('.top .title').textContent='Prep: Meridian Logistics';
   }
   function showHome(){
-    prep.hidden=true; home.hidden=false; scroll.scrollTop=0; input.value='';
+    prep.hidden=true; sources.hidden=true; home.hidden=false; scroll.scrollTop=0; input.value='';
     $$('.nav a').forEach(function(a){a.classList.toggle('active',a.getAttribute('href')==='#home')});
     $('.top .title').textContent='Producer Home';
   }
   function isPrep(t){return /prep|meridian|next meeting/i.test(t)}
   // Direct links: …/#prep opens the meeting-prep screen, …/#home the home screen
-  window.addEventListener('hashchange',function(){ if(location.hash==='#prep') _sp(); else if(location.hash==='#home'||!location.hash) _sh(); });
+  window.addEventListener('hashchange',function(){ if(location.hash==='#prep') _sp(); else if(location.hash==='#sources') showSources(); else if(location.hash==='#home'||!location.hash) _sh(); });
+  if(location.hash==='#sources') showSources();
+  if(/[?&]export/.test(location.search)) document.body.classList.add('export');
   var _sp=showPrep, _sh=showHome;
   showPrep=function(t){_sp(t); if(location.hash!=='#prep') try{history.replaceState(null,'','#prep')}catch(e){}};
   showHome=function(){_sh(); if(location.hash) try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}};
