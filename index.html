@@ -1,0 +1,535 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Producer Assistant</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+img{max-width:100%}[hidden]{display:none!important}
+</style>
+<style>
+/* Layout: fixed app shell — agent-harness sidebar on the left, scrolling producer home in the center.
+   Hero prompt → agent cards → pipeline tiles → brief + attention → connected sources. */
+:root{
+  --bg:#f3f4f9;          /* cool page ground */
+  --panel:#ffffff;
+  --panel-2:#eef0f8;
+  --line:#dcdfeb;
+  --fg:#15193a;
+  --muted:#5b6080;
+  --faint:#8a8fb0;
+  --navy:#1e2e9a;        /* brand navy */
+  --navy-ink:#ffffff;
+  --gold:#f2c230;        /* brand accent */
+  --gold-ink:#2a2000;
+  --ok:#1e8a5a; --ok-bg:#e3f5ec;
+  --warn:#b7791f; --warn-bg:#fbf1dc;
+  --crit:#c0392b; --crit-bg:#fbe5e2;
+  --info:#2a56c6; --info-bg:#e6ecfb;
+  --shadow:0 1px 2px rgba(21,25,58,.06),0 6px 20px -12px rgba(21,25,58,.18);
+  --sans:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f1226;--panel:#171b36;--panel-2:#1f2444;--line:#2b3157;--fg:#eceef8;--muted:#a3a8c8;--faint:#6f75a0;
+  --navy:#3d4fd0;--gold:#f2c230;--ok:#4fcf8f;--ok-bg:#15372a;--warn:#e6b352;--warn-bg:#3a2e12;--crit:#f07a6c;--crit-bg:#40201c;--info:#8ea6f5;--info-bg:#1f2a52;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.6);color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1226;--panel:#171b36;--panel-2:#1f2444;--line:#2b3157;--fg:#eceef8;--muted:#a3a8c8;--faint:#6f75a0;
+  --navy:#3d4fd0;--gold:#f2c230;--ok:#4fcf8f;--ok-bg:#15372a;--warn:#e6b352;--warn-bg:#3a2e12;--crit:#f07a6c;--crit-bg:#40201c;--info:#8ea6f5;--info-bg:#1f2a52;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.6);color-scheme:dark}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.45 var(--sans);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+h1,h2,h3{margin:0;text-wrap:balance}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+.app{display:grid;grid-template-columns:248px 1fr;height:100%}
+/* ---------- Sidebar (harness structure, producer labels) ---------- */
+.side{background:var(--panel);border-right:1px solid var(--line);display:flex;flex-direction:column;min-width:0;padding-left:max(0px,env(safe-area-inset-left,0px))}
+.brand{display:flex;align-items:center;gap:10px;padding:16px 18px 10px}
+.brand .mark{width:30px;height:22px;background:var(--navy);color:#fff;font:700 11px/22px var(--sans);letter-spacing:.08em;text-align:center;border-radius:3px}
+.brand .name{font-weight:600;font-size:15px}
+.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--ok);margin-left:2px}
+.ws{margin:4px 12px 10px;display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;font-size:13px}
+.ws .av{width:22px;height:22px;border-radius:50%;background:var(--gold);color:var(--gold-ink);font-size:10px;font-weight:700;display:grid;place-items:center}
+.ws .chev{margin-left:auto;color:var(--faint)}
+.nav{display:flex;flex-direction:column;gap:2px;padding:0 10px}
+.nav a{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:7px;color:var(--fg);text-decoration:none;font-size:13.5px}
+.nav a:hover{background:var(--panel-2)}
+.nav a.active{background:var(--panel-2);font-weight:600}
+.nav svg{width:16px;height:16px;flex:none;color:var(--muted)}
+.nav .badge{margin-left:auto;background:var(--navy);color:#fff;font-size:10.5px;font-weight:600;padding:1px 7px;border-radius:10px}
+.nav .sub{margin-left:auto;color:var(--faint);font-size:12px}
+.sect{margin:14px 20px 4px;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);font-weight:600}
+.recents a{color:var(--muted);font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
+.side .spacer{flex:1}
+.side .foot{padding:12px 18px;border-top:1px solid var(--line);font-size:11.5px;color:var(--faint)}
+
+/* ---------- Main ---------- */
+.main{min-width:0;display:flex;flex-direction:column;overflow:hidden}
+.top{display:flex;align-items:center;gap:14px;padding:10px 24px;padding-right:max(24px,env(safe-area-inset-right,0px));border-bottom:1px solid var(--line);background:var(--panel)}
+.top .title{font-weight:600;font-size:15px}
+.top .role{color:var(--muted);font-size:12.5px;margin-left:4px}
+.search{margin-left:auto;display:flex;align-items:center;gap:8px;width:min(380px,40vw);padding:7px 12px;border:1px solid var(--line);border-radius:8px;color:var(--faint);font-size:13px;background:var(--bg)}
+.search kbd{margin-left:auto;font:11px var(--mono);border:1px solid var(--line);border-radius:4px;padding:0 5px;color:var(--faint)}
+.icon-btn{width:32px;height:32px;border-radius:8px;display:grid;place-items:center;color:var(--muted);position:relative}
+.icon-btn:hover{background:var(--panel-2)}
+.icon-btn .pip{position:absolute;top:7px;right:7px;width:7px;height:7px;border-radius:50%;background:var(--crit);border:2px solid var(--panel)}
+.user{display:flex;align-items:center;gap:8px;font-size:13px}
+.user .av{width:28px;height:28px;border-radius:50%;background:var(--navy);color:#fff;font-size:11px;font-weight:700;display:grid;place-items:center}
+
+.scroll{overflow:auto;flex:1}
+.content{max-width:1120px;margin:0 auto;padding-block:28px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:22px}
+
+/* Goal panel — single series (navy) + pace marker + status ink; no categorical palette needed */
+.goal{background:var(--panel);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);display:grid;grid-template-columns:5fr 6fr 4fr;gap:0;overflow:hidden}
+.goal>div{padding:16px 20px;min-width:0}
+.goal>div+div{border-left:1px solid var(--line)}
+.goal .eyebrow{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);font-weight:600;display:flex;gap:8px;align-items:center}
+.goal .eyebrow .src{margin-left:auto;text-transform:none;letter-spacing:0;font-weight:500}
+.goal .big{display:flex;align-items:baseline;gap:8px;margin-top:6px;flex-wrap:wrap}
+.goal .big .v{font-size:34px;font-weight:600;letter-spacing:-.03em;line-height:1}
+.goal .big .of{font-size:14px;color:var(--muted)}
+.goal .pct{font-size:13px;color:var(--muted);margin-top:4px}
+.bullet{position:relative;height:10px;border-radius:5px;background:var(--panel-2);margin-top:14px}
+.bullet .fill{position:absolute;inset:0 auto 0 0;border-radius:5px;background:var(--navy)}
+.bullet .pace{position:absolute;top:-5px;bottom:-5px;width:2px;background:var(--fg);border-radius:1px}
+.bullet .pace::after{content:attr(data-label);position:absolute;top:-18px;left:50%;transform:translateX(-50%);font-size:10.5px;color:var(--muted);white-space:nowrap}
+.goal .status{display:inline-flex;align-items:center;gap:6px;margin-top:14px;font-size:12.5px;font-weight:600;padding:3px 9px;border-radius:10px}
+.status.ahead{background:var(--ok-bg);color:var(--ok)} .status.behind{background:var(--warn-bg);color:var(--warn)}
+.goal .fine{font-size:12px;color:var(--muted);margin-top:8px}
+
+.months{display:grid;grid-template-columns:repeat(12,1fr);gap:4px;align-items:end;height:92px;margin-top:12px;position:relative}
+.months .m{position:relative;display:flex;flex-direction:column;justify-content:flex-end;height:100%;min-width:0}
+.months .b{width:100%;border-radius:4px 4px 0 0;background:var(--navy);min-height:2px}
+.months .m.exp .b{background:color-mix(in srgb,var(--navy) 35%,var(--panel));background-image:repeating-linear-gradient(135deg,transparent 0 3px,color-mix(in srgb,var(--navy) 30%,transparent) 3px 4px)}
+.months .m.cur .b{outline:2px solid var(--gold);outline-offset:-2px}
+.months .m:hover .b{filter:brightness(.9)}
+.months .lab{text-align:center;font-size:10px;color:var(--faint);margin-top:4px;font-family:var(--mono)}
+.months .tip{position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:var(--fg);color:var(--bg);font-size:11.5px;padding:4px 8px;border-radius:6px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .12s;z-index:5}
+.months .m:hover .tip{opacity:1}
+.goal .legend{display:flex;gap:14px;font-size:11.5px;color:var(--muted);margin-top:6px}
+.legend .k{display:inline-flex;align-items:center;gap:5px}
+.legend .k::before{content:"";width:10px;height:10px;border-radius:2px;background:var(--navy)}
+.legend .k.exp::before{background:color-mix(in srgb,var(--navy) 35%,var(--panel))}
+.legend .k.cur::before{background:transparent;outline:2px solid var(--gold);outline-offset:-2px}
+
+.gap{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-direction:column;gap:7px}
+.gap li{display:flex;justify-content:space-between;gap:10px;font-size:13px;align-items:baseline}
+.gap li .n{color:var(--fg)} .gap li small{color:var(--muted);font-size:11.5px;display:block}
+.gap li .amt{font-family:var(--mono);font-variant-numeric:tabular-nums;color:var(--fg);white-space:nowrap}
+.gap .sum{border-top:1px solid var(--line);padding-top:7px;font-weight:600}
+.gap .sum .amt{color:var(--ok)}
+
+/* Chips + prepared */
+.chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;width:min(820px,100%)}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border:1px solid var(--line);border-radius:20px;background:var(--panel);font-size:12.5px;color:var(--fg)}
+.chip:hover{border-color:var(--navy);color:var(--navy)}
+.chip svg{width:13px;height:13px;color:var(--muted)}
+.prepared{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.prep{text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;min-width:0}
+.prep:hover{border-color:var(--navy)}
+.prep .when{font-family:var(--mono);font-size:12px;color:var(--muted);text-align:center;line-height:1.2;min-width:44px}
+.prep .when b{display:block;font-size:14px;color:var(--fg);font-weight:500}
+.prep .who{font-weight:600;font-size:13.5px}
+.prep .what{font-size:12px;color:var(--muted);margin-top:2px}
+.prep .go{font-size:12.5px;font-weight:600;color:var(--navy);white-space:nowrap}
+.prep .ready{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--ok);margin-right:5px;vertical-align:middle}
+.prep .ready.run{background:var(--warn)}
+
+/* Hero */
+.hero{display:flex;flex-direction:column;align-items:center;gap:14px;padding-top:8px}
+.hero h1{font-size:26px;font-weight:600;letter-spacing:-.01em}
+.hero .date{color:var(--muted);font-size:13px;margin-top:-8px}
+.prompt{width:min(760px,100%);background:var(--panel);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:10px 12px;display:flex;align-items:center;gap:8px}
+.prompt:focus-within{border-color:var(--navy);box-shadow:0 0 0 3px color-mix(in srgb,var(--navy) 18%,transparent)}
+.prompt input{flex:1;min-width:0;border:0;outline:0;background:transparent;color:var(--fg);font:15px var(--sans);padding:8px 4px}
+.prompt input::placeholder{color:var(--faint)}
+.prompt .mic{width:34px;height:34px;border-radius:8px;display:grid;place-items:center;color:var(--muted)}
+.prompt .mic:hover{background:var(--panel-2);color:var(--navy)}
+.prompt .send{width:34px;height:34px;border-radius:8px;background:var(--navy);color:#fff;display:grid;place-items:center}
+.hint{font-size:12px;color:var(--faint)}
+
+/* Agent cards */
+.cards{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;width:min(980px,100%);margin:0 auto}
+.card{text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 14px 12px;display:flex;flex-direction:column;gap:8px;min-width:0;transition:transform .12s,border-color .12s}
+.card:hover{border-color:var(--navy);transform:translateY(-1px)}
+.card .ic{width:28px;height:28px;border-radius:7px;background:var(--info-bg);color:var(--info);display:grid;place-items:center}
+.card .ic svg{width:15px;height:15px}
+.card .t{font-weight:600;font-size:13.5px}
+.card .s{font-size:12.5px;color:var(--muted);line-height:1.35}
+.card .st{margin-top:auto;display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;padding:2px 8px;border-radius:10px;width:fit-content}
+.st.ok{background:var(--ok-bg);color:var(--ok)} .st.warn{background:var(--warn-bg);color:var(--warn)} .st.info{background:var(--info-bg);color:var(--info)}
+
+/* Tiles */
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.tile{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.tile .l{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px}
+.tile .v{font-size:26px;font-weight:600;letter-spacing:-.02em;display:flex;align-items:baseline;gap:8px}
+.tile .v small{font-size:13px;font-weight:500;color:var(--muted)}
+.tile .d{font-size:12px;color:var(--muted)}
+.tile .d b{font-weight:600}
+.d .up{color:var(--ok)} .d .risk{color:var(--crit)}
+.src{margin-left:auto;font-size:10.5px;color:var(--faint);letter-spacing:.04em;text-transform:uppercase}
+
+/* Two columns */
+.cols{display:grid;grid-template-columns:7fr 5fr;gap:16px;align-items:start}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;min-width:0}
+.ph{display:flex;align-items:baseline;gap:10px;padding:14px 18px 10px;border-bottom:1px solid var(--line)}
+.ph h2{font-size:15px;font-weight:600}
+.ph .sub{color:var(--muted);font-size:12.5px}
+.ph .right{margin-left:auto;font-size:12px;color:var(--muted)}
+
+/* Brief list */
+.brief{list-style:none;margin:0;padding:6px 8px 10px;display:flex;flex-direction:column}
+.item{display:grid;grid-template-columns:22px 1fr auto;gap:12px;align-items:start;padding:10px 10px;border-radius:8px}
+.item:hover{background:var(--panel-2)}
+.item .cb{width:18px;height:18px;margin-top:2px;border:1.5px solid var(--faint);border-radius:5px;display:grid;place-items:center;color:#fff;transition:background .15s,border-color .15s}
+.item .cb svg{width:11px;height:11px;opacity:0}
+.item .cb:hover{border-color:var(--navy)}
+.item .kind{font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-right:8px}
+.kind.decide{color:var(--crit)} .kind.review{color:var(--info)} .kind.call{color:var(--warn)} .kind.renewal{color:var(--ok)} .kind.done{color:var(--faint)}
+.item .txt{font-size:13.5px;line-height:1.4}
+.item .meta{font-size:12px;color:var(--muted);margin-top:3px;display:flex;gap:10px;flex-wrap:wrap}
+.item .meta .via{color:var(--faint)}
+.item .act{font-size:12.5px;font-weight:600;color:var(--navy);white-space:nowrap;padding:4px 8px;border-radius:6px;border:1px solid transparent}
+.item .act:hover{border-color:var(--line);background:var(--panel)}
+.item.done .cb{background:var(--ok);border-color:var(--ok)}
+.item.done .cb svg{opacity:1}
+.item.done .txt{text-decoration:line-through;color:var(--muted)}
+.item.done .act{display:none}
+.item.done .kind{color:var(--faint)}
+.divider{display:flex;align-items:center;gap:10px;margin:6px 10px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+.divider::before,.divider::after{content:"";flex:1;height:1px;background:var(--line)}
+.divider:first-child,.divider:last-child{display:none}
+
+/* Attention */
+.tabs{display:flex;gap:2px;padding:8px 10px 0;border-bottom:1px solid var(--line);overflow-x:auto}
+.tab{padding:8px 10px;font-size:12.5px;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;display:flex;gap:6px;align-items:center}
+.tab .n{font-family:var(--mono);font-size:11px;background:var(--panel-2);padding:0 6px;border-radius:8px}
+.tab.active{color:var(--fg);font-weight:600;border-color:var(--navy)}
+.tab.active .n{background:var(--navy);color:#fff}
+.alist{list-style:none;margin:0;padding:6px 8px 10px;display:flex;flex-direction:column}
+.alist li{display:grid;grid-template-columns:4px 1fr;gap:12px;padding:10px 10px;border-radius:8px}
+.alist li:hover{background:var(--panel-2)}
+.alist .bar{border-radius:2px;background:var(--line)}
+.bar.crit{background:var(--crit)} .bar.warn{background:var(--warn)} .bar.info{background:var(--info)}
+.alist .c{font-weight:600;font-size:13.5px;display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.alist .c small{font-weight:500;color:var(--muted);font-size:12px}
+.alist .r{font-size:12.5px;color:var(--muted);margin-top:2px}
+.alist .a{font-size:12.5px;color:var(--navy);font-weight:600;margin-top:5px}
+.alist .a::before{content:"→ ";color:var(--faint)}
+
+/* Sources */
+.sources{display:flex;align-items:center;gap:8px 14px;flex-wrap:wrap;padding:12px 18px;border:1px dashed var(--line);border-radius:12px;font-size:12.5px;color:var(--muted)}
+.sources .l{font-weight:600;color:var(--faint);font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+.sources .s{display:inline-flex;align-items:center;gap:6px}
+.sources .s::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--ok)}
+
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(10px);background:var(--fg);color:var(--bg);padding:9px 14px;border-radius:8px;font-size:13px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:20}
+.toast.show{opacity:1;transform:translateX(-50%)}
+
+:focus-visible{outline:2px solid var(--navy);outline-offset:2px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+
+/* ---------- Responsive ---------- */
+@media (max-width:1000px){.goal{grid-template-columns:1fr 1fr}.goal>div:last-child{grid-column:1/-1;border-left:0;border-top:1px solid var(--line)}.cols{grid-template-columns:1fr}.tiles{grid-template-columns:repeat(2,1fr)}.prepared{grid-template-columns:1fr}}
+@media (max-width:760px){
+  .app{grid-template-columns:1fr;grid-template-rows:auto 1fr}
+  .side{border-right:0;border-bottom:1px solid var(--line);flex-direction:row;align-items:center;gap:6px;overflow-x:auto;padding:0 8px;padding-left:max(8px,env(safe-area-inset-left,0px))}
+  .side .ws,.side .sect,.side .recents,.side .spacer,.side .foot{display:none}
+  .nav{flex-direction:row;padding:6px 0}
+  .nav a{padding:6px 8px;font-size:12.5px}
+  .nav .badge,.nav .sub{display:none}
+  .top{padding:8px 12px}
+  .top .role,.search{display:none}
+  .top .gap{flex:1}
+  .goal{grid-template-columns:1fr}.goal>div+div{border-left:0;border-top:1px solid var(--line)}
+  .goal .big .v{font-size:28px}
+  .months .lab{font-size:8px}
+  .hero h1{font-size:22px}
+  .item{grid-template-columns:22px 1fr}
+  .item .act{grid-column:2;justify-self:start;padding-left:0}
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <!-- ================= Sidebar ================= -->
+  <aside class="side" aria-label="Workspace navigation">
+    <div class="brand"><span class="mark">PA</span><span class="name">Producer Assistant</span><span class="dot" title="Connected"></span></div>
+    <div class="ws"><span class="av">DW</span><span>Dana Whitfield</span><span class="chev">⌃⌄</span></div>
+    <nav class="nav">
+      <a href="#home" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg>New chat</a>
+      <a href="#briefs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8"/></svg>My Briefs<span class="sub">12</span></a>
+      <a href="#workflows"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l1.8 4.6L18 9l-4.2 1.4L12 15l-1.8-4.6L6 9l4.2-1.4zM5 17l.9 2.1L8 20l-2.1.9L5 23l-.9-2.1L2 20l2.1-.9zM19 15l.7 1.6 1.6.7-1.6.7L19 19.6l-.7-1.6-1.6-.7 1.6-.7z"/></svg>AI Workflows</a>
+      <a href="#memory"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.5 2a3.5 3.5 0 00-3.4 4.3A4 4 0 004 13a4 4 0 002.3 3.6A3.5 3.5 0 109.5 22V2zM14.5 2a3.5 3.5 0 013.4 4.3A4 4 0 0120 13a4 4 0 01-2.3 3.6A3.5 3.5 0 1114.5 22V2z"/></svg>Memory<span class="badge">1</span></a>
+      <a href="#dashboards"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>Dashboards<span class="sub">›</span></a>
+      <a href="#scheduled"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Scheduled<span class="sub">›</span></a>
+      <a href="#proposals"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="13" rx="1"/><path d="M8 21h8M12 17v4"/></svg>Proposals</a>
+    </nav>
+    <div class="sect">Archived ›</div>
+    <div class="sect">Recents ⌄</div>
+    <nav class="nav recents">
+      <a href="#r1">Prep: Meridian Logistics first meeting</a>
+      <a href="#r2">Harbor Point Health — renewal strategy</a>
+      <a href="#r3">Who covers trucking physical damage?</a>
+      <a href="#r4">Draft BOR letter for Cobalt Ridge</a>
+      <a href="#r5">Compare Beazley vs Coalition cyber quotes</a>
+    </nav>
+    <div class="spacer"></div>
+    <div class="foot">Signed in as Dana Whitfield · Salesforce permissions apply</div>
+  </aside>
+
+  <!-- ================= Main ================= -->
+  <div class="main">
+    <header class="top">
+      <span class="title">Producer Home</span><span class="role">Employee Benefits · P&amp;C</span>
+      <span class="gap"></span>
+      <div class="search" role="search"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>Search clients, prospects, policies, people…<kbd>⌘K</kbd></div>
+      <button class="icon-btn" aria-label="Notifications"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 00-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0"/></svg><span class="pip"></span></button>
+      <button class="icon-btn" id="themeBtn" aria-label="Toggle theme"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button>
+      <div class="user"><span class="av">DW</span></div>
+    </header>
+
+    <div class="scroll">
+      <main class="content">
+        <!-- Goal panel: where am I against my number -->
+        <section class="goal" aria-label="New business against goal">
+          <div>
+            <div class="eyebrow">New business · 2026<span class="src">CRM · Agency mgmt</span></div>
+            <div class="big"><span class="v num">$1.08M</span><span class="of">booked of <span class="num">$1.30M</span> goal</span></div>
+            <div class="pct"><span class="num">83%</span> of goal · <span class="num">66</span> days left in the year</div>
+            <div class="bullet" role="img" aria-label="83% of goal booked; pace for October 26 is 82%">
+              <span class="fill" style="width:83%"></span>
+              <span class="pace" style="left:82%" data-label="pace · Oct 26"></span>
+            </div>
+            <span class="status ahead"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 19V5M5 12l7-7 7 7"/></svg>$12K ahead of pace</span>
+            <div class="fine">Same date last year: <span class="num">$0.91M</span> · you are <span class="num">+18%</span> year over year</div>
+          </div>
+          <div>
+            <div class="eyebrow">Booked by month<span class="src">hover for detail</span></div>
+            <div class="months" id="months"></div>
+            <div class="legend"><span class="k">Booked</span><span class="k exp">Expected from pipeline</span><span class="k cur">This month</span></div>
+          </div>
+          <div>
+            <div class="eyebrow">What closes the gap<span class="src num">$220K to goal</span></div>
+            <ul class="gap">
+              <li><span class="n">Brightline Foods<small>Cyber · decision today</small></span><span class="amt">$38K</span></li>
+              <li><span class="n">Meridian Logistics<small>Package · meeting 2:00 PM</small></span><span class="amt">$95K</span></li>
+              <li><span class="n">Orion Cold Storage<small>Qualification · stalled</small></span><span class="amt">$140K</span></li>
+              <li class="sum"><span class="n">All three close in Q4</span><span class="amt">→ 104% of goal</span></li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- Hero prompt -->
+        <section class="hero">
+          <h1>Good morning, Dana.</h1>
+          <div class="date">Monday, October 26 · 2 meetings today · 4 items need you</div>
+          <form class="prompt" id="promptForm">
+            <button type="button" class="mic" aria-label="Attach files" title="Attach policies, loss runs, census files"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button>
+            <input id="promptInput" type="text" placeholder="Ask anything — / for workflows, @ for briefs, # for clients" autocomplete="off">
+            <button type="button" class="mic" aria-label="Dictate" title="Dictate — notes, next steps and tasks are captured to Salesforce"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0014 0M12 17v4M8 21h8"/></svg></button>
+            <button type="submit" class="send" aria-label="Send"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+          </form>
+          <div class="hint">Try: “Prep me for the 2:00 with Meridian” · “Which of my renewals in Q1 have no opportunity yet?” · “Find an SME for cold-storage trucking”</div>
+        </section>
+
+        <!-- Capability chips -->
+        <section class="chips" aria-label="Things you can ask" style="margin:-6px auto 0">
+          <button class="chip" data-prompt="Prep me for my next meeting"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>Prep my next meeting</button>
+          <button class="chip" data-prompt="Give me a brief on a prospect: "><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>Brief me on a prospect</button>
+          <button class="chip" data-prompt="Compare the quotes on "><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 00-2 2v14a2 2 0 002 2h3M16 3h3a2 2 0 012 2v14a2 2 0 01-2 2h-3M12 2v20"/></svg>Compare quotes</button>
+          <button class="chip" data-prompt="Run a coverage gap analysis on the policies I attach"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>Coverage gap analysis</button>
+          <button class="chip" data-prompt="Find an SME for "><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>Find an SME</button>
+          <button class="chip" data-prompt="Update Salesforce: "><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg>Update Salesforce</button>
+        </section>
+
+        <!-- Prepared for you: outputs that exist right now, keyed to the calendar -->
+        <section class="prepared" aria-label="Prepared for you">
+          <button class="prep" data-prompt="Open the prospect brief for Meridian Logistics">
+            <span class="when">Today<b>2:00</b></span>
+            <span><span class="who">Meridian Logistics</span><span class="what"><span class="ready"></span>Prospect brief ready · 2 coverage gaps to raise</span></span>
+            <span class="go">Open →</span>
+          </button>
+          <button class="prep" data-prompt="Open the client summary for Harbor Point Health">
+            <span class="when">Thu<b>10:30</b></span>
+            <span><span class="who">Harbor Point Health</span><span class="what"><span class="ready"></span>Client summary ready · cyber limit increase on the table</span></span>
+            <span class="go">Open →</span>
+          </button>
+          <button class="prep" data-prompt="Show the two new leads scored overnight">
+            <span class="when">Over<b>night</b></span>
+            <span><span class="who">2 new leads</span><span class="what"><span class="ready run"></span>Tallgrass Manufacturing (82), Orion Cold Storage (71) · call angles drafted</span></span>
+            <span class="go">Open →</span>
+          </button>
+        </section>
+
+        <!-- Pipeline tiles -->
+        <section class="tiles" aria-label="Pipeline">
+          <div class="tile"><div class="l">Suspects<span class="src">Salesforce</span></div><div class="v num">14</div><div class="d"><b class="up">+3</b> this week from OSHA &amp; 5500 screens</div></div>
+          <div class="tile"><div class="l">Prospects<span class="src">Salesforce</span></div><div class="v num">9</div><div class="d"><b>2</b> briefs ready · <b>1</b> gap analysis running</div></div>
+          <div class="tile"><div class="l">Opportunities<span class="src">Salesforce</span></div><div class="v num">7 <small>$2.4M</small></div><div class="d"><b>1</b> closing this month · <b>2</b> stalled</div></div>
+          <div class="tile"><div class="l">Clients<span class="src">Agency mgmt</span></div><div class="v num">28</div><div class="d"><b class="risk">3 at risk</b> · 6 renewals in 90 days</div></div>
+        </section>
+
+        <!-- Brief + attention -->
+        <section class="cols">
+          <div class="panel">
+            <div class="ph"><h2>Today’s brief</h2><span class="sub">What needs you, in order</span><span class="right" id="briefCount"></span></div>
+            <ul class="brief" id="brief">
+              <li class="item" data-kind="decide">
+                <button class="cb" aria-label="Mark done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></button>
+                <div><div class="txt"><span class="kind decide">Decide</span>Approve the Beazley cyber quote for Brightline Foods. The $2.1M limit is held until 5:00 PM today.</div>
+                  <div class="meta"><span>Brightline Foods · Opportunity · Proposal</span><span class="via">surfaced by Deal Review</span></div></div>
+                <button class="act">Compare quotes</button>
+              </li>
+              <li class="item" data-kind="review">
+                <button class="cb" aria-label="Mark done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></button>
+                <div><div class="txt"><span class="kind review">Review</span>Prospect brief for Meridian Logistics is ready. Two coverage gaps flagged: cargo contingent and motor truck cargo sublimit.</div>
+                  <div class="meta"><span>Meeting 2:00 PM · Trucking, 140 units</span><span class="via">Prospect Briefing · Coverage Gap Analyzer</span></div></div>
+                <button class="act">Open brief</button>
+              </li>
+              <li class="item" data-kind="call">
+                <button class="cb" aria-label="Mark done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></button>
+                <div><div class="txt"><span class="kind call">Call back</span>Tallgrass Manufacturing referral from Karen Harris, scored 82. They asked for a call this week.</div>
+                  <div class="meta"><span>New lead · Manufacturing · Workers Comp &amp; Package</span><span class="via">BDR Agent</span></div></div>
+                <button class="act">Draft intro</button>
+              </li>
+              <li class="item" data-kind="renewal">
+                <button class="cb" aria-label="Mark done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></button>
+                <div><div class="txt"><span class="kind renewal">Renewal</span>Lakeshore Hospitality Group Package expires in 23 days and has no renewal opportunity yet.</div>
+                  <div class="meta"><span>Client · Policy PK-4471120 · exp 11/18</span><span class="via">Pipeline Agent</span></div></div>
+                <button class="act">Open renewal</button>
+              </li>
+              <li class="item done" data-kind="done" data-done="8:47 AM">
+                <button class="cb" aria-label="Mark not done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></button>
+                <div><div class="txt"><span class="kind done">Follow-up</span>Send Harbor Point Health the recap and the two open items from Friday’s meeting.</div>
+                  <div class="meta"><span>Done 8:47 AM</span><span class="via">dictated in the car · email drafted and sent</span></div></div>
+                <button class="act">Open</button>
+              </li>
+              <li class="item done" data-kind="done" data-done="8:52 AM">
+                <button class="cb" aria-label="Mark not done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></button>
+                <div><div class="txt"><span class="kind done">Capture</span>Log Friday’s meeting notes and create 3 follow-up tasks on the Harbor Point opportunity.</div>
+                  <div class="meta"><span>Done 8:52 AM</span><span class="via">3 Tasks and 1 Event written to Salesforce</span></div></div>
+                <button class="act">Open</button>
+              </li>
+            </ul>
+          </div>
+
+          <div class="panel">
+            <div class="ph"><h2>Needs attention</h2><span class="sub">Across your book</span></div>
+            <div class="tabs" role="tablist">
+              <button class="tab active" role="tab" data-tab="risk">At risk<span class="n">3</span></button>
+              <button class="tab" role="tab" data-tab="renew">Renewals 90d<span class="n">6</span></button>
+              <button class="tab" role="tab" data-tab="tasks">Overdue tasks<span class="n">4</span></button>
+              <button class="tab" role="tab" data-tab="stalled">Stalled deals<span class="n">2</span></button>
+            </div>
+            <ul class="alist" data-pane="risk">
+              <li><span class="bar crit"></span><div><div class="c">Cobalt Ridge Construction<small>P&amp;C · 9 policies</small></div><div class="r">Marked at risk by servicer on Oct 21: billing dispute on the GL audit, two unanswered emails.</div><div class="a">Draft a call plan with the servicer’s notes</div></div></li>
+              <li><span class="bar warn"></span><div><div class="c">Northwind Dental Partners<small>EB · 4 lines</small></div><div class="r">CFO mentioned a competing quote on the Oct 17 call. Renewal 12/01.</div><div class="a">Run plan comparison against the incumbent</div></div></li>
+              <li><span class="bar warn"></span><div><div class="c">Pinecrest Senior Living<small>P&amp;C · Package</small></div><div class="r">Primary contact left the company; no new contact on the account.</div><div class="a">Find the new decision-maker</div></div></li>
+            </ul>
+            <ul class="alist" data-pane="renew" hidden>
+              <li><span class="bar crit"></span><div><div class="c">Lakeshore Hospitality Group<small>Package · exp 11/18</small></div><div class="r">23 days. No renewal opportunity opened.</div><div class="a">Open renewal and start policy review</div></div></li>
+              <li><span class="bar warn"></span><div><div class="c">Northwind Dental Partners<small>Medical, Dental, Vision, Life · exp 12/01</small></div><div class="r">36 days. Competing quote in play.</div><div class="a">Schedule pre-renewal meeting</div></div></li>
+              <li><span class="bar info"></span><div><div class="c">Cobalt Ridge Construction<small>Workers Comp · exp 12/15</small></div><div class="r">50 days. Client at risk.</div><div class="a">Pull loss runs now</div></div></li>
+              <li><span class="bar info"></span><div><div class="c">Pinecrest Senior Living<small>Package · exp 01/01</small></div><div class="r">67 days.</div><div class="a">Confirm new contact first</div></div></li>
+              <li><span class="bar info"></span><div><div class="c">Harbor Point Health<small>Cyber Liability · exp 01/10</small></div><div class="r">76 days. Limit increase discussed Friday.</div><div class="a">Request indications at $5M</div></div></li>
+              <li><span class="bar info"></span><div><div class="c">Brightline Foods<small>Property · exp 01/22</small></div><div class="r">88 days.</div><div class="a">Add to Q1 renewal plan</div></div></li>
+            </ul>
+            <ul class="alist" data-pane="tasks" hidden>
+              <li><span class="bar crit"></span><div><div class="c">Sable &amp; Finch Architects<small>due Oct 17</small></div><div class="r">Send revised professional liability proposal.</div><div class="a">Draft the proposal from the last quote</div></div></li>
+              <li><span class="bar crit"></span><div><div class="c">Cobalt Ridge Construction<small>due Oct 20</small></div><div class="r">Reply on GL audit dispute.</div><div class="a">Draft reply with servicer’s notes</div></div></li>
+              <li><span class="bar warn"></span><div><div class="c">Orion Cold Storage<small>due Oct 22</small></div><div class="r">Confirm discovery call.</div><div class="a">Propose 3 times</div></div></li>
+              <li><span class="bar warn"></span><div><div class="c">Brightline Foods<small>due Oct 23</small></div><div class="r">Share cyber application with CISO.</div><div class="a">Send the ACORD pre-filled</div></div></li>
+            </ul>
+            <ul class="alist" data-pane="stalled" hidden>
+              <li><span class="bar warn"></span><div><div class="c">Sable &amp; Finch Architects<small>Proposal · $86K</small></div><div class="r">No activity for 21 days. Close date passed on Oct 15.</div><div class="a">Ask: move close date or mark lost?</div></div></li>
+              <li><span class="bar warn"></span><div><div class="c">Orion Cold Storage<small>Qualification · $140K</small></div><div class="r">Discovery call rescheduled twice.</div><div class="a">Send a one-page capabilities note</div></div></li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- Connected sources -->
+        <section class="sources" aria-label="Connected sources">
+          <span class="l">Connected</span>
+          <span class="s">Salesforce</span><span class="s">Outlook</span><span class="s">Broker AI workflows</span><span class="s">Agency management</span><span class="s">SharePoint</span><span class="s">Reports</span><span class="s">SME directory</span>
+        </section>
+      </main>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(function(){
+  var $=function(s,r){return (r||document).querySelector(s)}, $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+  var toastEl=$('#toast'), tt;
+  function toast(m){toastEl.textContent=m;toastEl.classList.add('show');clearTimeout(tt);tt=setTimeout(function(){toastEl.classList.remove('show')},2200)}
+
+  // Theme toggle
+  $('#themeBtn').addEventListener('click',function(){
+    var r=document.documentElement, dark=r.getAttribute('data-theme')==='dark'||(!r.getAttribute('data-theme')&&matchMedia('(prefers-color-scheme: dark)').matches);
+    r.setAttribute('data-theme',dark?'light':'dark');
+  });
+
+  // Cards fill the prompt
+  var input=$('#promptInput');
+  $$('[data-prompt]').forEach(function(c){c.addEventListener('click',function(){input.value=c.getAttribute('data-prompt');input.focus()})});
+  $('#promptForm').addEventListener('submit',function(e){e.preventDefault();if(input.value.trim()){toast('Wireframe: the assistant would answer here');}});
+
+  // Booked by month (thousands). Nov–Dec are expected from weighted pipeline.
+  var months=[['Jan',62],['Feb',88],['Mar',131],['Apr',97],['May',115],['Jun',142],['Jul',78],['Aug',104],['Sep',128],['Oct',135,'cur'],['Nov',96,'exp'],['Dec',124,'exp']];
+  var max=Math.max.apply(null,months.map(function(m){return m[1]}));
+  $('#months').innerHTML=months.map(function(m){
+    var h=Math.round(m[1]/max*72)+2, cls='m'+(m[2]?' '+m[2]:'');
+    var tip=(m[2]==='exp'?'Expected ':'Booked ')+'$'+m[1]+'K'+(m[2]==='cur'?' so far':'');
+    return '<div class="'+cls+'"><span class="tip">'+m[0]+' · '+tip+'</span><div class="b" style="height:'+h+'px"></div><div class="lab">'+m[0].charAt(0)+'</div></div>';
+  }).join('');
+
+  // Needs attention tabs
+  $$('.tab').forEach(function(t){t.addEventListener('click',function(){
+    $$('.tab').forEach(function(x){x.classList.toggle('active',x===t)});
+    $$('.alist').forEach(function(p){p.hidden=p.getAttribute('data-pane')!==t.getAttribute('data-tab')});
+  })});
+
+  // Today's brief: open on top, done at bottom
+  var list=$('#brief');
+  function now(){var d=new Date(),h=d.getHours(),m=d.getMinutes();return ((h%12)||12)+':'+(m<10?'0':'')+m+' '+(h<12?'AM':'PM')}
+  function render(){
+    var items=$$('.item',list), open=items.filter(function(i){return !i.classList.contains('done')}), done=items.filter(function(i){return i.classList.contains('done')});
+    $$('.divider',list).forEach(function(d){d.remove()});
+    open.forEach(function(i){list.appendChild(i)});
+    if(done.length){var d=document.createElement('li');d.className='divider';d.textContent='Handled today';list.appendChild(d)}
+    done.forEach(function(i){list.appendChild(i)});
+    $('#briefCount').textContent=done.length+' of '+items.length+' handled';
+    var dateEl=$('.hero .date');dateEl.textContent='Monday, October 26 · 2 meetings today · '+open.length+(open.length===1?' item needs':' items need')+' you';
+  }
+  list.addEventListener('click',function(e){
+    var cb=e.target.closest('.cb'); if(!cb) return;
+    var it=cb.closest('.item'), meta=$('.meta',it);
+    if(it.classList.contains('done')){
+      it.classList.remove('done'); cb.setAttribute('aria-label','Mark done');
+      var saved=it.getAttribute('data-meta'); if(saved) meta.innerHTML=saved;
+    }else{
+      it.classList.add('done'); cb.setAttribute('aria-label','Mark not done');
+      it.setAttribute('data-meta',meta.innerHTML);
+      var via=$('.via',meta); meta.innerHTML='<span>Done '+now()+'</span><span class="via">marked by you'+(via?' · '+via.textContent.replace(/^surfaced by /,''):'')+'</span>';
+      toast('Marked done — stays in today’s brief, moved to the bottom');
+    }
+    render();
+  });
+  render();
+})();
+</script>
+
+</body>
+</html>
