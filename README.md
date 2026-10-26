@@ -25,6 +25,7 @@ Left sidebar follows a general-purpose agent harness (New chat, My Briefs, AI Wo
 
 - Check / uncheck items in Today's brief (re-orders the list)
 - Tabs in Needs attention
+- "Prep my next meeting" (chip, prepared card, or typing it) opens the meeting-prep screen; Home or New chat returns
 - Chips and Prepared-for-you cards fill the prompt
 - Hover on monthly bars
 - Light / dark theme toggle (moon icon)
@@ -44,5 +45,6 @@ README.md
 
 ## Versions
 
+- **v0.3** (2026-10-26) — "Prep my meeting" screen: assistant thread with a full prospect brief, back to home
 - **v0.2** (2026-10-26) — goal panel added; agent cards replaced by chips + "Prepared for you"
 - **v0.1** (2026-10-26) — first clickable home screen

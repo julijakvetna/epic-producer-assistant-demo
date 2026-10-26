@@ -232,6 +232,89 @@ h1,h2,h3{margin:0;text-wrap:balance}
 .sources .s{display:inline-flex;align-items:center;gap:6px}
 .sources .s::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--ok)}
 
+/* ---------- Prep view (assistant thread) ---------- */
+.thread{max-width:920px;margin:0 auto;padding-block:20px 120px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:18px}
+.crumb{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted)}
+.crumb button{color:var(--navy);font-weight:600;display:inline-flex;align-items:center;gap:4px;padding:4px 6px;border-radius:6px}
+.crumb button:hover{background:var(--panel-2)}
+.msg-user{align-self:flex-end;max-width:70%;background:var(--navy);color:#fff;padding:10px 14px;border-radius:14px 14px 4px 14px;font-size:14px}
+.msg-user .at{display:block;font-size:11px;opacity:.7;margin-top:4px;text-align:right}
+.msg-ai{display:grid;grid-template-columns:28px 1fr;gap:12px;min-width:0}
+.msg-ai .av{width:28px;height:28px;border-radius:8px;background:var(--navy);color:#fff;display:grid;place-items:center;font-size:10px;font-weight:700;letter-spacing:.04em}
+.msg-ai .body{min-width:0;display:flex;flex-direction:column;gap:14px}
+.msg-ai .lead{font-size:14.5px;line-height:1.5}
+.msg-ai .lead b{font-weight:600}
+.working{display:flex;flex-wrap:wrap;gap:6px 10px;font-size:11.5px;color:var(--faint)}
+.working span{display:inline-flex;align-items:center;gap:5px}
+.working span::before{content:"✓";color:var(--ok);font-weight:700}
+
+.brief-card{background:var(--panel);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);overflow:hidden}
+.bh{display:flex;align-items:center;gap:14px;padding:16px 20px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.bh .logo{width:44px;height:44px;border-radius:10px;background:var(--panel-2);display:grid;place-items:center;font-weight:700;color:var(--navy);font-size:15px}
+.bh h2{font-size:18px;font-weight:600}
+.bh .tagline{font-size:12.5px;color:var(--muted);margin-top:2px}
+.bh .when{margin-left:auto;text-align:right;font-size:12.5px;color:var(--muted)}
+.bh .when b{display:block;font-size:15px;color:var(--fg);font-weight:600}
+.bh .stage{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;padding:2px 8px;border-radius:10px;background:var(--info-bg);color:var(--info)}
+.facts{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--line)}
+.facts>div{padding:12px 20px;min-width:0}
+.facts>div+div{border-left:1px solid var(--line)}
+.facts .k{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);font-weight:600}
+.facts .v{font-size:14px;font-weight:600;margin-top:3px}
+.facts .v small,.loss .v small{font-weight:500;color:var(--muted);font-size:12px;font-family:var(--sans)}
+.bsec{padding:16px 20px;border-bottom:1px solid var(--line)}
+.bsec:last-child{border-bottom:0}
+.bsec h3{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);font-weight:600;display:flex;align-items:center;gap:8px}
+.bsec h3 .src{margin-left:auto;text-transform:none;letter-spacing:0;font-weight:500;font-size:11px}
+.bsec p{margin:8px 0 0;font-size:13.5px;line-height:1.5;max-width:70ch}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.two>.bsec+.bsec{border-left:1px solid var(--line)}
+.who{display:flex;flex-direction:column;gap:10px;margin-top:10px}
+.who .p{display:grid;grid-template-columns:32px 1fr;gap:10px;align-items:start}
+.who .p .av{width:32px;height:32px;border-radius:50%;background:var(--panel-2);display:grid;place-items:center;font-size:11px;font-weight:700;color:var(--muted)}
+.who .p b{font-size:13.5px;font-weight:600}
+.who .p small{display:block;font-size:12px;color:var(--muted)}
+.who .p .note{font-size:12.5px;margin-top:3px}
+.prog{width:100%;border-collapse:collapse;margin-top:10px;font-size:12.5px}
+.prog th{text-align:left;font-weight:600;color:var(--faint);font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:0 0 6px;border-bottom:1px solid var(--line)}
+.prog td{padding:7px 0;border-bottom:1px solid var(--line);vertical-align:top}
+.prog td:last-child,.prog th:last-child{text-align:right}
+.prog tr.gap td{color:var(--crit)}
+.prog .tag{display:inline-block;font-size:10.5px;font-weight:700;padding:1px 6px;border-radius:8px;background:var(--crit-bg);color:var(--crit);margin-left:6px;vertical-align:middle}
+.gaps{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-direction:column;gap:10px}
+.gaps li{display:grid;grid-template-columns:4px 1fr;gap:12px}
+.gaps .bar{border-radius:2px;background:var(--crit)}
+.gaps .bar.warn{background:var(--warn)}
+.gaps b{font-size:13.5px;font-weight:600}
+.gaps p{margin:3px 0 0;font-size:13px}
+.gaps .so{font-size:12.5px;color:var(--muted);margin-top:3px}
+.gaps .so b{font-weight:600;color:var(--fg)}
+.loss{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}
+.loss>div{background:var(--panel-2);border-radius:8px;padding:10px 12px}
+.loss .k{font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.06em;font-weight:600}
+.loss .v{font-size:16px;font-weight:600;margin-top:2px}
+.loss .v small{font-size:11.5px;font-weight:500;color:var(--muted)}
+.ask{list-style:none;margin:10px 0 0;padding:0;counter-reset:q;display:flex;flex-direction:column;gap:8px}
+.ask li{display:grid;grid-template-columns:22px 1fr;gap:10px;font-size:13.5px;line-height:1.45}
+.ask li::before{counter-increment:q;content:counter(q);width:22px;height:22px;border-radius:50%;background:var(--navy);color:#fff;font-size:11.5px;font-weight:700;display:grid;place-items:center;margin-top:1px}
+.ask li small{display:block;color:var(--muted);font-size:12.5px}
+.sme{display:grid;grid-template-columns:36px 1fr auto;gap:12px;align-items:center;margin-top:10px;background:var(--panel-2);border-radius:10px;padding:10px 12px}
+.sme .av{width:36px;height:36px;border-radius:50%;background:var(--gold);color:var(--gold-ink);display:grid;place-items:center;font-weight:700;font-size:12px}
+.sme b{font-size:13.5px;font-weight:600;display:block}
+.sme small{font-size:12px;color:var(--muted)}
+.sme .act{font-size:12.5px;font-weight:600;color:var(--navy);white-space:nowrap}
+.next{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:8px;font-size:13px;font-weight:600;border:1px solid var(--line);background:var(--panel)}
+.btn:hover{border-color:var(--navy);color:var(--navy)}
+.btn.primary{background:var(--navy);color:#fff;border-color:var(--navy)}
+.btn.primary:hover{color:#fff;filter:brightness(1.1)}
+.after{display:flex;gap:10px;align-items:center;padding:12px 20px;background:var(--panel-2);font-size:12.5px;color:var(--muted)}
+.after svg{width:16px;height:16px;color:var(--navy);flex:none}
+.followups{display:flex;gap:8px;flex-wrap:wrap}
+.dock{position:sticky;bottom:0;padding:12px 0 calc(8px + env(safe-area-inset-bottom,0px));background:linear-gradient(to top,var(--bg) 70%,transparent)}
+.dock .prompt{width:100%}
+@media (max-width:760px){.facts{grid-template-columns:1fr 1fr}.facts>div:nth-child(3){border-left:0}.facts>div:nth-child(n+3){border-top:1px solid var(--line)}.two{grid-template-columns:1fr}.two>.bsec+.bsec{border-left:0}.loss{grid-template-columns:1fr}.msg-user{max-width:90%}.bh .when{margin-left:0;text-align:left}}
+
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(10px);background:var(--fg);color:var(--bg);padding:9px 14px;border-radius:8px;font-size:13px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:20}
 .toast.show{opacity:1;transform:translateX(-50%)}
 
@@ -464,6 +547,129 @@ h1,h2,h3{margin:0;text-wrap:balance}
           <span class="s">Salesforce</span><span class="s">Outlook</span><span class="s">Broker AI workflows</span><span class="s">Agency management</span><span class="s">SharePoint</span><span class="s">Reports</span><span class="s">SME directory</span>
         </section>
       </main>
+
+      <!-- ================= Prep view ================= -->
+      <section class="thread" id="prepView" hidden aria-label="Meeting prep">
+        <div class="crumb"><button type="button" id="backHome"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>Home</button><span>›</span><span>Prep: Meridian Logistics first meeting</span></div>
+
+        <div class="msg-user" id="prepUserMsg">Prep me for my next meeting<span class="at">Today · 9:14 AM</span></div>
+
+        <div class="msg-ai">
+          <div class="av">AI</div>
+          <div class="body">
+            <div class="working"><span>Calendar: next meeting is Meridian Logistics, 2:00 PM</span><span>Salesforce opportunity + 6 emails</span><span>3 policies &amp; loss runs from the prospect portal</span><span>Coverage Gap Analyzer</span><span>FMCSA SAFER</span><span>SME directory</span></div>
+            <p class="lead">Your next meeting is <b>Meridian Logistics at 2:00 PM</b>, first in-person after the intro call on Oct 14. They are a <b>referred, engaged prospect</b>: they shared their current program, so this is a gap-analysis meeting, not a discovery meeting. Two coverage gaps are worth leading with, and their current carrier's renewal is <b>58 days out</b>, which sets your timeline.</p>
+
+            <div class="brief-card">
+              <div class="bh">
+                <div class="logo">ML</div>
+                <div><h2>Meridian Logistics, Inc.</h2><div class="tagline">Regional refrigerated freight · Fresno, CA · est. 2004</div></div>
+                <span class="stage">Prospect · engaged</span>
+                <div class="when"><b>Today, 2:00 – 3:00 PM</b>At their yard, 4410 S Cedar Ave · with Karen Harris (SME) joining by phone at 2:30</div>
+              </div>
+              <div class="facts">
+                <div><div class="k">Fleet</div><div class="v">140 power units <small>· 210 reefer trailers</small></div></div>
+                <div><div class="k">Revenue</div><div class="v num">$48M <small>est. · 2025</small></div></div>
+                <div><div class="k">Current program</div><div class="v num">$1.62M <small>premium · 5 lines · renews Dec 23</small></div></div>
+                <div><div class="k">Our opportunity</div><div class="v num">$95K <small>revenue est. · Package + Auto</small></div></div>
+              </div>
+
+              <div class="two">
+                <div class="bsec">
+                  <h3>Who you're meeting<span class="src">Salesforce · LinkedIn</span></h3>
+                  <div class="who">
+                    <div class="p"><span class="av">RO</span><div><b>Rosa Ortega</b><small>CFO · decision maker · joined 2023 from a 3PL</small><div class="note">Asked twice about total cost of risk, not premium. Prefers numbers before narrative.</div></div></div>
+                    <div class="p"><span class="av">DK</span><div><b>Dale Kowalski</b><small>Director of Fleet Operations · 19 years at Meridian</small><div class="note">Owns the safety program. Proud of the CSA scores; sensitive about the 2024 cargo claim.</div></div></div>
+                  </div>
+                </div>
+                <div class="bsec">
+                  <h3>Why now<span class="src">Email thread · Oct 14 call notes</span></h3>
+                  <p>Referred by Karen Harris after Meridian's broker of 11 years was acquired and their service team changed. Rosa's words on Oct 14: "we found out about the reefer breakdown exclusion from the claim denial, not from our broker." Renewal with Great West is Dec 23; they want a decision by Thanksgiving.</p>
+                  <p>Last touch: Dale sent the loss runs Friday 4:52 PM without comment.</p>
+                </div>
+              </div>
+
+              <div class="bsec">
+                <h3>Current program<span class="src">3 policies uploaded · extracted by Policy Review</span></h3>
+                <table class="prog">
+                  <thead><tr><th>Line</th><th>Carrier</th><th>Limit</th><th>Premium</th></tr></thead>
+                  <tbody>
+                    <tr><td>Commercial Auto</td><td>Great West</td><td class="num">$1M CSL</td><td class="num">$1,120,000</td></tr>
+                    <tr class="gap"><td>Motor Truck Cargo<span class="tag">GAP</span></td><td>Great West</td><td class="num">$100K / $250K</td><td class="num">$168,000</td></tr>
+                    <tr><td>General Liability</td><td>Great West</td><td class="num">$1M / $2M</td><td class="num">$84,000</td></tr>
+                    <tr><td>Workers Comp</td><td>State Fund</td><td class="num">Statutory</td><td class="num">$212,000</td></tr>
+                    <tr><td>Umbrella</td><td>Great West</td><td class="num">$5M</td><td class="num">$36,000</td></tr>
+                    <tr class="gap"><td>Contingent Cargo<span class="tag">MISSING</span></td><td>—</td><td>—</td><td>—</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="bsec">
+                <h3>Coverage gaps to raise<span class="src">Coverage Gap Analyzer · run Oct 24</span></h3>
+                <ul class="gaps">
+                  <li><span class="bar"></span><div><b>Reefer breakdown is excluded on the cargo form</b><p>The Great West MTC form excludes spoilage from mechanical breakdown unless endorsed. 100% of their freight is temperature-controlled. The 2024 denied claim ($84K) was exactly this.</p><div class="so">So: <b>quote MTC with reefer breakdown endorsed, $250K per trailer</b>, and show the 2024 claim as paid under our structure.</div></div></li>
+                  <li><span class="bar"></span><div><b>No contingent cargo, but they broker 15–20% of loads</b><p>Dale confirmed on Oct 14 that overflow goes to owner-operators under Meridian's authority. Those loads carry Meridian's name and no cargo cover.</p><div class="so">So: <b>add contingent cargo at $250K</b>; est. $18–24K premium. Ask how many brokered loads per month.</div></div></li>
+                  <li><span class="bar warn"></span><div><b>Cargo per-shipment limit is low for pharma lanes</b><p>Three 2026 lanes to Central Valley pharma distributors. Typical reefer pharma load values exceed $100K.</p><div class="so">So: ask about max load value on those lanes before proposing a limit.</div></div></li>
+                </ul>
+              </div>
+
+              <div class="two">
+                <div class="bsec">
+                  <h3>Loss history<span class="src">5-year loss runs · FMCSA SAFER</span></h3>
+                  <div class="loss">
+                    <div><div class="k">Auto incurred</div><div class="v num">$412K <small>/ 5 yrs · 11 claims</small></div></div>
+                    <div><div class="k">Cargo incurred</div><div class="v num">$96K <small>+ $84K denied</small></div></div>
+                    <div><div class="k">Loss ratio</div><div class="v num">38% <small>auto · below trucking avg</small></div></div>
+                  </div>
+                  <p>FMCSA: Satisfactory rating, Unsafe Driving BASIC 31st percentile, no OOS orders. Dale's safety story holds up. Lead with it.</p>
+                </div>
+                <div class="bsec">
+                  <h3>Ask these<span class="src">Prepared from the gaps and the CFO's priorities</span></h3>
+                  <ol class="ask">
+                    <li>How many loads a month go to owner-operators, and under whose authority?<small>Sizes the contingent cargo exposure.</small></li>
+                    <li>What is the highest load value on the pharma lanes?<small>Sets the cargo limit.</small></li>
+                    <li>What did the $84K denial cost beyond the claim: the customer, the lane?<small>Rosa's total-cost-of-risk frame.</small></li>
+                    <li>Who else needs to see the proposal before Thanksgiving?<small>Confirms the decision path.</small></li>
+                  </ol>
+                </div>
+              </div>
+
+              <div class="bsec">
+                <h3>SME on call<span class="src">SME directory</span></h3>
+                <div class="sme"><span class="av">KH</span><div><b>Karen Harris · Transportation, Regional Specialties (West)</b><small>Made the referral. Placed 3 reefer fleets this year with reefer breakdown endorsed. Joining by phone at 2:30 for the cargo discussion.</small></div><button class="act">Message on Teams</button></div>
+              </div>
+
+              <div class="bsec">
+                <h3>Suggested next step</h3>
+                <p>Leave with agreement to quote a Package + Auto program with MTC reefer breakdown endorsed and contingent cargo added, indications by Nov 14, proposal meeting the week of Nov 17. That keeps you two weeks ahead of their Thanksgiving decision.</p>
+                <div class="next">
+                  <button class="btn primary">Add agenda to the invite</button>
+                  <button class="btn">Draft recap email for after</button>
+                  <button class="btn">Open opportunity in Salesforce</button>
+                  <button class="btn">Share brief with Karen</button>
+                </div>
+              </div>
+              <div class="after"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0014 0M12 17v4M8 21h8"/></svg>After the meeting, dictate what happened on the drive back. Notes, next steps and tasks go to the opportunity; the recap email is drafted for you.</div>
+            </div>
+
+            <div class="followups">
+              <button class="chip" data-prompt="Compare Meridian's program to our last 3 reefer fleet wins">Compare to our last 3 reefer wins</button>
+              <button class="chip" data-prompt="What did Rosa say about budget on the Oct 14 call?">What did Rosa say about budget?</button>
+              <button class="chip" data-prompt="Draft a one-page agenda for the Meridian meeting">One-page agenda</button>
+              <button class="chip" data-prompt="Which carriers endorse reefer breakdown for fleets this size?">Which carriers endorse reefer breakdown?</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="dock">
+          <form class="prompt" id="promptForm2">
+            <button type="button" class="mic" aria-label="Attach files"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button>
+            <input id="promptInput2" type="text" placeholder="Ask a follow-up about Meridian…" autocomplete="off">
+            <button type="button" class="mic" aria-label="Dictate"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0014 0M12 17v4M8 21h8"/></svg></button>
+            <button type="submit" class="send" aria-label="Send"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+          </form>
+        </div>
+      </section>
     </div>
   </div>
 </div>
@@ -481,10 +687,35 @@ h1,h2,h3{margin:0;text-wrap:balance}
     r.setAttribute('data-theme',dark?'light':'dark');
   });
 
-  // Cards fill the prompt
-  var input=$('#promptInput');
-  $$('[data-prompt]').forEach(function(c){c.addEventListener('click',function(){input.value=c.getAttribute('data-prompt');input.focus()})});
-  $('#promptForm').addEventListener('submit',function(e){e.preventDefault();if(input.value.trim()){toast('Wireframe: the assistant would answer here');}});
+  // Views: home ↔ prep thread
+  var home=$('.content'), prep=$('#prepView'), scroll=$('.scroll');
+  var input=$('#promptInput'), input2=$('#promptInput2');
+  function showPrep(text){
+    if(text) $('#prepUserMsg').firstChild.nodeValue=text;
+    home.hidden=true; prep.hidden=false; scroll.scrollTop=0;
+    $$('.nav a').forEach(function(a){a.classList.toggle('active',a.getAttribute('href')==='#r1')});
+    $('.top .title').textContent='Prep: Meridian Logistics';
+  }
+  function showHome(){
+    prep.hidden=true; home.hidden=false; scroll.scrollTop=0; input.value='';
+    $$('.nav a').forEach(function(a){a.classList.toggle('active',a.getAttribute('href')==='#home')});
+    $('.top .title').textContent='Producer Home';
+  }
+  function isPrep(t){return /prep|meridian|next meeting/i.test(t)}
+  $('#backHome').addEventListener('click',showHome);
+  $$('.nav a').forEach(function(a){a.addEventListener('click',function(e){
+    var h=a.getAttribute('href'); if(h==='#home'){e.preventDefault();showHome()} else if(h==='#r1'){e.preventDefault();showPrep()}
+  })});
+
+  // Chips, cards and follow-ups fill the prompt; prep-related ones open the prep view
+  $$('[data-prompt]').forEach(function(c){c.addEventListener('click',function(){
+    var p=c.getAttribute('data-prompt');
+    if(!prep.hidden){input2.value=p;input2.focus();return}
+    if(isPrep(p)){showPrep(p);return}
+    input.value=p;input.focus();
+  })});
+  $('#promptForm').addEventListener('submit',function(e){e.preventDefault();var v=input.value.trim();if(!v)return;if(isPrep(v)){showPrep(v)}else{toast('Wireframe: the assistant would answer here')}});
+  $('#promptForm2').addEventListener('submit',function(e){e.preventDefault();if(input2.value.trim()){toast('Wireframe: the assistant would answer in this thread');input2.value=''}});
 
   // Booked by month (thousands). Nov–Dec are expected from weighted pipeline.
   var months=[['Jan',62],['Feb',88],['Mar',131],['Apr',97],['May',115],['Jun',142],['Jul',78],['Aug',104],['Sep',128],['Oct',135,'cur'],['Nov',96,'exp'],['Dec',124,'exp']];
