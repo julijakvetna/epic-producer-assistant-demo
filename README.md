@@ -15,7 +15,7 @@ Clickable mid-fidelity wireframe of the home screen for an insurance producer's 
 |---|---|
 | **Goal panel** | New business booked vs annual goal with a pace marker for today, booked by month (Nov–Dec expected from pipeline), and "what closes the gap" — the live deals that would reach the number. |
 | **Prompt** | One assistant for everything. Dictation lives in the mic icon; notes, next steps and tasks are captured to the CRM from there. |
-| **Chips** | The agents, one tap away: Prep my next meeting · BDR Agent · Briefing · Deal Review · Client summary · Capture Agent · Pipeline · Update Salesforce. Each fills the prompt. |
+| **Chips** | The agents, one tap away: Prep my next meeting · BDR Agent · Company brief · Deal Review · Capture Agent · Pipeline · Update Salesforce. Each fills the prompt. |
 | **Prepared for you** | Outputs that exist right now, keyed to the calendar: a prospect brief for today's meeting, a client summary for Thursday, leads scored overnight. |
 | **Pipeline tiles** | Suspects / Prospects / Opportunities / Clients from the CRM and agency management system. |
 | **Today's brief** | What needs the producer, in order. Checking an item strikes it, stamps the time, and moves it under "Handled today". Open items always stay on top. |
@@ -50,6 +50,7 @@ README.md
 
 ## Versions
 
+- **v0.6** (2026-10-27) — Briefing and Client summary merged into one "Company brief" chip (internal CRM summary + external research)
 - **v0.5** (2026-10-27) — chips renamed to the agents: Prep my next meeting · BDR Agent · Briefing · Deal Review · Client summary · Capture Agent · Pipeline · Update Salesforce
 - **v0.4** (2026-10-26) — "Where the data comes from" slide view with per-block source callouts; PNG export
 - **v0.3** (2026-10-26) — "Prep my meeting" screen: assistant thread with a full prospect brief, back to home
