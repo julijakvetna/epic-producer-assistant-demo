@@ -15,7 +15,7 @@ Clickable mid-fidelity wireframe of the home screen for an insurance producer's 
 |---|---|
 | **Goal panel** | New business booked vs annual goal with a pace marker for today, booked by month (Nov–Dec expected from pipeline), and "what closes the gap" — the live deals that would reach the number. |
 | **Prompt** | One assistant for everything. Dictation lives in the mic icon; notes, next steps and tasks are captured to the CRM from there. |
-| **Chips** | Discoverability of what the assistant can do, in producer language. |
+| **Chips** | The agents, one tap away: Prep my next meeting · BDR Agent · Briefing · Deal Review · Client summary · Capture Agent · Pipeline · Update Salesforce. Each fills the prompt. |
 | **Prepared for you** | Outputs that exist right now, keyed to the calendar: a prospect brief for today's meeting, a client summary for Thursday, leads scored overnight. |
 | **Pipeline tiles** | Suspects / Prospects / Opportunities / Clients from the CRM and agency management system. |
 | **Today's brief** | What needs the producer, in order. Checking an item strikes it, stamps the time, and moves it under "Handled today". Open items always stay on top. |
@@ -38,7 +38,7 @@ Everything else is static.
 
 ## Design principle
 
-The agents behind the screen (lead scoring, prospect briefing, client summary, voice capture, deal review, pipeline sweep) are deliberately **not** shown as agents. Their output appears as brief items, prepared briefs and attention flags. The producer sees one assistant, and the CRM is updated as a by-product of selling.
+The agents are named once, as chips under the prompt, so producers learn what the assistant can do. Everywhere else their output appears as brief items, prepared briefs and attention flags rather than as separate tools. The producer talks to one assistant, and the CRM is updated as a by-product of selling.
 
 ## Structure
 
