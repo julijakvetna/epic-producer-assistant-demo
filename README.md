@@ -50,6 +50,7 @@ README.md
 
 ## Versions
 
+- **v0.5** (2026-10-27) — chips renamed to the agents: Prep my next meeting · BDR Agent · Briefing · Deal Review · Client summary · Update Salesforce
 - **v0.4** (2026-10-26) — "Where the data comes from" slide view with per-block source callouts; PNG export
 - **v0.3** (2026-10-26) — "Prep my meeting" screen: assistant thread with a full prospect brief, back to home
 - **v0.2** (2026-10-26) — goal panel added; agent cards replaced by chips + "Prepared for you"
