@@ -30,6 +30,7 @@ Left sidebar follows a general-purpose agent harness (New chat, My Briefs, AI Wo
 - Check / uncheck items in Today's brief (re-orders the list)
 - Tabs in Needs attention
 - "Prep my next meeting" (chip, prepared card, or typing it) opens the meeting-prep screen; Home or New chat returns
+- Every agent chip opens its own screen: Pipeline (stage board + reversible fixes), Deal Review (promises + one question at a time), Capture Agent (dictated note → what gets written), Company brief (one-click picker → internal + external brief), BDR Agent (untouched leads + first-touch draft). Direct links: `#pipeline`, `#deal-review`, `#capture`, `#company-brief`, `#bdr`
 - Chips and Prepared-for-you cards fill the prompt
 - Hover on monthly bars
 - Light / dark theme toggle (moon icon)
@@ -50,6 +51,7 @@ README.md
 
 ## Versions
 
+- **v0.7** (2026-10-28) — one screen per agent chip, in their wave-1 form
 - **v0.6** (2026-10-27) — Briefing and Client summary merged into one "Company brief" chip (internal CRM summary + external research)
 - **v0.5** (2026-10-27) — chips renamed to the agents: Prep my next meeting · BDR Agent · Briefing · Deal Review · Client summary · Capture Agent · Pipeline · Update Salesforce
 - **v0.4** (2026-10-26) — "Where the data comes from" slide view with per-block source callouts; PNG export
