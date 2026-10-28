@@ -390,6 +390,48 @@ h1,h2,h3{margin:0;text-wrap:balance}
 .mh{display:grid;grid-template-columns:64px 1fr;padding:7px 12px;border-bottom:1px solid var(--line);font-size:13px}
 .mh span{color:var(--faint);font-size:12px}
 .mb{padding:12px;font-size:13.5px;line-height:1.55}
+.sfl{font-size:11px;font-weight:600;color:var(--navy);text-decoration:none;white-space:nowrap;opacity:.85}
+.sfl:hover{text-decoration:underline;opacity:1}
+.deal .sfl{grid-column:1/-1;justify-self:start;margin-top:2px}
+.bh .sfl{align-self:center}
+.leads .sfl,.promises .sfl{margin-left:6px}
+.flows{display:contents}
+.wops{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.wop{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:grid;grid-template-columns:96px 1fr auto;gap:6px 12px;align-items:start;font-size:13px}
+.wop.done{border-color:var(--ok);background:var(--ok-bg)}
+.wop.skip{opacity:.6}
+.wop.blocked{border-color:var(--crit)}
+.wop .obj{font-family:var(--mono);font-size:11px;color:var(--muted);padding-top:2px}
+.wop .obj b{display:block;font-family:var(--sans);font-size:12.5px;color:var(--fg);font-weight:600}
+.wop .what{font-size:13.5px}
+.wop .what b{font-weight:600}
+.wop .what small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
+.wop .chk{grid-column:2;display:flex;flex-direction:column;gap:3px;font-size:12px;color:var(--muted)}
+.wop .chk span::before{content:"✓ ";color:var(--ok);font-weight:700}
+.wop .chk span.bad::before{content:"✕ ";color:var(--crit)}
+.wop .chk span.q::before{content:"? ";color:var(--warn);font-weight:700}
+.wop .chk span.bad{color:var(--crit)}
+.wop .chk span.q{color:var(--fg)}
+.wop .opts{grid-column:2;display:flex;gap:6px;flex-wrap:wrap}
+.wop .opts button{font-size:12px;font-weight:600;padding:4px 9px;border-radius:7px;border:1px solid var(--line);background:var(--panel)}
+.wop .opts button:hover,.wop .opts button.on{border-color:var(--navy);color:var(--navy)}
+.wop .opts button.on{background:var(--info-bg)}
+.wop .act{grid-column:3;grid-row:1/span 3;display:flex;flex-direction:column;gap:6px;align-items:stretch;min-width:112px}
+.wop .act .btn{justify-content:center;padding:6px 10px;font-size:12.5px}
+.wop .act .btn[disabled]{opacity:.45;cursor:not-allowed}
+.wop .st{grid-column:3;grid-row:1/span 3;align-self:center;font-size:12.5px;font-weight:600;text-align:right;white-space:nowrap}
+.wop.done .st{color:var(--ok)}
+.wop.skip .st{color:var(--muted)}
+.wop.blocked .st{color:var(--crit)}
+.wop .st small{display:block;font-weight:500;color:var(--muted);font-size:11.5px}
+.wop .tag{font-size:10px;font-weight:700;padding:1px 6px;border-radius:7px;background:var(--panel-2);color:var(--muted);border:1px solid var(--line);margin-left:6px;vertical-align:middle;text-transform:uppercase;letter-spacing:.04em}
+.wsum{font-size:13.5px;line-height:1.5}
+.wsum b{font-weight:600}
+.nextq{margin-top:4px}
+.nextq .qq{font-size:15px;font-weight:600;margin:0 0 8px}
+.msg-ai .lead.q{font-weight:500}
+@media (max-width:760px){.wop{grid-template-columns:1fr}.wop .chk,.wop .opts{grid-column:1}.wop .act,.wop .st{grid-column:1;grid-row:auto;flex-direction:row;text-align:left}}
+@media (max-width:760px){.ops li{grid-template-columns:1fr}.ops .ch{justify-self:start}}
 @media (max-width:760px){.board{grid-template-columns:1fr}.pl{width:100%}.leads th:nth-child(2),.leads td:nth-child(2){display:none}.msg-user.voice{max-width:92%}}
 
 /* ---------- Sources view (slide) ---------- */
@@ -822,17 +864,17 @@ h1,h2,h3{margin:0;text-wrap:balance}
           <div class="brief-card">
             <div class="board">
               <div class="col"><div class="ch">Qualification<span>2 · $235K</span></div>
-                <div class="deal"><b>Meridian Logistics</b><span class="amt num">$95K</span><small>Package + Auto · meeting today 2:00</small></div>
-                <div class="deal flagged"><b>Orion Cold Storage</b><span class="amt num">$140K</span><small>Close Dec 12</small><span class="flag">No next step</span><span class="flag">Rescheduled twice</span></div>
+                <div class="deal"><b>Meridian Logistics</b><span class="amt num">$95K</span><small>Package + Auto · meeting today 2:00</small><a class="sfl" href="#" onclick="return false" title="Open in Salesforce (new tab)">Salesforce ↗</a></div>
+                <div class="deal flagged"><b>Orion Cold Storage</b><span class="amt num">$140K</span><small>Close Dec 12</small><span class="flag">No next step</span><span class="flag">Rescheduled twice</span><a class="sfl" href="#" onclick="return false" title="Open in Salesforce (new tab)">Salesforce ↗</a></div>
               </div>
               <div class="col"><div class="ch">Proposal<span>3 · $396K</span></div>
-                <div class="deal hot"><b>Brightline Foods</b><span class="amt num">$310K</span><small>Cyber · close Oct 31 · quote held till 5 PM</small><span class="flag ok">Closing this month</span></div>
-                <div class="deal flagged"><b>Sable &amp; Finch Architects</b><span class="amt num">$86K</span><small>Prof. liability · close Oct 15</small><span class="flag">Close date passed</span><span class="flag">No activity 21 days</span></div>
-                <div class="deal flagged"><b>Harbor Point Health</b><span class="amt num">—</span><small>Cyber limit increase · close Jan 10</small><span class="flag">Amount missing</span></div>
+                <div class="deal hot"><b>Brightline Foods</b><span class="amt num">$310K</span><small>Cyber · close Oct 31 · quote held till 5 PM</small><span class="flag ok">Closing this month</span><a class="sfl" href="#" onclick="return false" title="Open in Salesforce (new tab)">Salesforce ↗</a></div>
+                <div class="deal flagged"><b>Sable &amp; Finch Architects</b><span class="amt num">$86K</span><small>Prof. liability · close Oct 15</small><span class="flag">Close date passed</span><span class="flag">No activity 21 days</span><a class="sfl" href="#" onclick="return false" title="Open in Salesforce (new tab)">Salesforce ↗</a></div>
+                <div class="deal flagged"><b>Harbor Point Health</b><span class="amt num">—</span><small>Cyber limit increase · close Jan 10</small><span class="flag">Amount missing</span><a class="sfl" href="#" onclick="return false" title="Open in Salesforce (new tab)">Salesforce ↗</a></div>
               </div>
               <div class="col"><div class="ch">Negotiation<span>2 · $1.77M</span></div>
-                <div class="deal"><b>Northwind Dental Partners</b><span class="amt num">$680K</span><small>EB renewal · close Dec 1 · moved Fri</small></div>
-                <div class="deal"><b>Cobalt Ridge Construction</b><span class="amt num">$1.09M</span><small>WC renewal · close Dec 15</small></div>
+                <div class="deal"><b>Northwind Dental Partners</b><span class="amt num">$680K</span><small>EB renewal · close Dec 1 · moved Fri</small><a class="sfl" href="#" onclick="return false" title="Open in Salesforce (new tab)">Salesforce ↗</a></div>
+                <div class="deal"><b>Cobalt Ridge Construction</b><span class="amt num">$1.09M</span><small>WC renewal · close Dec 15</small><a class="sfl" href="#" onclick="return false" title="Open in Salesforce (new tab)">Salesforce ↗</a></div>
               </div>
             </div>
             <div class="bsec">
@@ -842,7 +884,8 @@ h1,h2,h3{margin:0;text-wrap:balance}
                 <li><input type="checkbox" checked aria-label="Include"><div><b>Orion Cold Storage</b> · next step → <b>"Send one-page capabilities note"</b><small>+ Task due Oct 30</small></div></li>
                 <li><input type="checkbox" checked aria-label="Include"><div><b>Harbor Point Health</b> · amount → <b>$120K</b><small>From Friday's notes: $5M limit, est. revenue</small></div></li>
               </ul>
-              <div class="next"><button class="btn primary js-apply" data-done="3 changes written to Salesforce">Apply 3 changes</button><button class="btn">One by one</button></div>
+              <div class="next"><button class="btn primary js-flow" data-flow="pipe">Save the 3 fixes to Salesforce</button><button class="btn">One by one</button></div>
+              
             </div>
             <div class="after"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="9"/></svg>Runs every morning at 7:30. The flags also feed Needs attention and the pipeline tiles on Home.</div>
           </div>
@@ -853,6 +896,7 @@ h1,h2,h3{margin:0;text-wrap:balance}
           </div>
           <p class="scope"><b>Wave 1:</b> Opportunity, Task/Event, stage history. Writes limited to close date, next step, amount and Task, each confirmed.</p>
         </div></div>
+        <div class="flows"></div>
         <div class="dock"><form class="prompt tform"><input class="tin" type="text" placeholder="Ask about your pipeline…" autocomplete="off"><button type="submit" class="send" aria-label="Send"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button></form></div>
       </section>
 
@@ -867,29 +911,23 @@ h1,h2,h3{margin:0;text-wrap:balance}
             <div class="bsec">
               <h3>This week's promises<span class="src">Tasks · Events · Opportunities</span></h3>
               <ul class="promises">
-                <li class="due"><span class="st">Decide</span><div><b>Approve the Beazley cyber quote</b> · Brightline Foods<small>Limit held until 5:00 PM today</small></div></li>
-                <li class="due"><span class="st late">Overdue</span><div><b>Send revised professional liability proposal</b> · Sable &amp; Finch<small>Promised Oct 17</small></div></li>
-                <li class="due"><span class="st late">Overdue</span><div><b>Share cyber application with the CISO</b> · Brightline Foods<small>Promised Oct 23</small></div></li>
+                <li class="due"><span class="st">Decide</span><div><b>Approve the Beazley cyber quote</b> · Brightline Foods<a class="sfl" href="#" onclick="return false" title="Open in Salesforce (new tab)">Salesforce ↗</a><small>Limit held until 5:00 PM today</small></div></li>
+                <li class="due"><span class="st late">Overdue</span><div><b>Send revised professional liability proposal</b> · Sable &amp; Finch<a class="sfl" href="#" onclick="return false" title="Open in Salesforce (new tab)">Salesforce ↗</a><small>Promised Oct 17</small></div></li>
+                <li class="due"><span class="st late">Overdue</span><div><b>Share cyber application with the CISO</b> · Brightline Foods<a class="sfl" href="#" onclick="return false" title="Open in Salesforce (new tab)">Salesforce ↗</a><small>Promised Oct 23</small></div></li>
                 <li class="kept"><span class="st ok">Kept</span><div>Recap + 2 open items to Harbor Point Health<small>Sent today 8:47 AM</small></div></li>
                 <li class="kept"><span class="st ok">Kept</span><div>Notes and 3 follow-ups on Harbor Point<small>Logged today 8:52 AM</small></div></li>
                 <li class="kept"><span class="st ok">Kept</span><div>Loss runs request to Cobalt Ridge · Pricing grid to Northwind · Intro to Karen Harris<small>Mon–Tue</small></div></li>
               </ul>
             </div>
-            <div class="bsec qa" id="qa">
-              <h3>One question at a time<span class="src"><span id="qaN">1</span> of 3</span></h3>
-              <div class="q" data-step="1"><p class="qq">Did Brightline approve the Beazley quote?</p>
-                <div class="next"><button class="btn primary" data-a="Stage → Closed Won · Task closed · binder request drafted">Yes, signed</button><button class="btn" data-a="Task moved to tomorrow 9:00 AM · reminder at 4:30 PM today">Not yet</button><button class="btn" data-a="Stage → Closed Lost · reason asked next">Lost it</button></div></div>
-              <div class="q" data-step="2" hidden><p class="qq">Sable &amp; Finch: will the revised proposal go out this week?</p>
-                <div class="next"><button class="btn primary" data-a="Task due Fri · draft started from the last quote">Yes, by Friday</button><button class="btn" data-a="Close date → Nov 14 · Task due Nov 7">Next week</button><button class="btn" data-a="Opportunity → Closed Lost">Drop it</button></div></div>
-              <div class="q" data-step="3" hidden><p class="qq">Brightline CISO application: send the pre-filled ACORD now?</p>
-                <div class="next"><button class="btn primary" data-a="Email drafted in Outlook · Task closed on send">Draft it</button><button class="btn" data-a="Task moved to Friday">Friday</button></div></div>
-              <p class="qdone" hidden>All three answered. Salesforce is up to date; nothing else is due today.</p>
-              <ul class="written" id="written"></ul>
+            <div class="bsec qa"><h3>One question at a time<span class="src">You answer in the chat; every write is confirmed one by one</span></h3>
+              <p class="qq">Did Brightline approve the Beazley quote?</p>
+              <div class="next"><button class="btn primary js-flow" data-flow="dr1y">Yes, signed</button><button class="btn js-flow" data-flow="dr1n">Not yet</button><button class="btn js-flow" data-flow="dr1l">Lost it</button></div>
             </div>
             <div class="after"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>The same list is "Today's brief" on Home. Ticking an item there writes the Task status.</div>
           </div>
-          <p class="scope"><b>Wave 1:</b> runs on existing Tasks and Opportunities, richer once Capture logs every meeting. "Meeting ended" trigger only if the agent exposes calendar events.</p>
+          <p class="scope"><b>Wave 1:</b> runs on existing Tasks and Opportunities, richer once Capture logs every meeting. Every write is confirmed by you, one record at a time. "Meeting ended" trigger only if the agent exposes calendar events.</p>
         </div></div>
+        <div class="flows"></div>
         <div class="dock"><form class="prompt tform"><input class="tin" type="text" placeholder="Answer, or ask about a deal…" autocomplete="off"><button type="submit" class="send" aria-label="Send"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button></form></div>
       </section>
 
@@ -898,31 +936,33 @@ h1,h2,h3{margin:0;text-wrap:balance}
         <div class="crumb"><button type="button" class="back"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>Home</button><span>›</span><span>Capture: Northwind Dental call</span></div>
         <div class="msg-user voice"><span class="vlab"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0014 0M12 17v4M8 21h8"/></svg>Dictated · 0:52</span>"Just off the call with Jordan at Northwind. They got the Guardian quote, about 6% under us on dental. Jordan cares more about the network than price. Anita in HR wants the disruption report. I said we'd have revised numbers by next Wednesday. They also want vision added for the new Plano office."<span class="at">Today · 11:34 AM</span></div>
         <div class="msg-ai"><div class="av">AI</div><div class="body">
-          <div class="working"><span>Calendar: 11:00 call, Northwind Dental Partners</span><span>Opportunity: EB renewal · Negotiation</span><span>Speech-to-text by Microsoft</span></div>
-          <p class="lead">Matched to your <b>11:00 call with Northwind Dental Partners</b> (EB renewal, $680K). Here is what I'll log. Check it, then I write it to Salesforce.</p>
+          <div class="working"><span>Calendar: 11:00 call, Northwind Dental Partners</span><span>Opportunity: EB renewal · Negotiation <a class="sfl" href="#" onclick="return false" title="Open in Salesforce (new tab)">Salesforce ↗</a></span><span>Speech-to-text by Microsoft</span></div>
+          <p class="lead">Matched to your <b>11:00 call with Northwind Dental Partners</b> (EB renewal, $680K). Here is what I'll log. Edit anything, then confirm what goes to Salesforce.</p>
           <div class="brief-card">
             <div class="two">
-              <div class="bsec"><h3>Summary</h3><p>Competing Guardian quote ~6% below ours on dental. Jordan Lee (CFO) weighs network depth over price. HR (Anita Ruiz) needs a network disruption report. Vision to be added for the new Plano office.</p></div>
+              <div class="bsec"><h3>Summary<span class="src ehint" id="eHint" hidden>Editing: click any text</span></h3><p class="ed">Competing Guardian quote ~6% below ours on dental. Jordan Lee (CFO) weighs network depth over price. HR (Anita Ruiz) needs a network disruption report. Vision to be added for the new Plano office.</p></div>
               <div class="bsec"><h3>Next steps</h3>
-                <ul class="steps"><li><b>Revised numbers to Jordan</b><small>You · due Wed Nov 4</small></li><li><b>Network disruption report to Anita</b><small>You · due Mon Nov 2</small></li><li><b>Vision quote for Plano office</b><small>You · due Wed Nov 4</small></li></ul></div>
+                <ul class="steps ed"><li><b>Revised numbers to Jordan</b><small>You · due Wed Nov 4</small></li><li><b>Network disruption report to Anita</b><small>You · due: not said</small></li><li><b>Vision quote for Plano office</b><small>You · due Wed Nov 4</small></li></ul></div>
             </div>
             <div class="bsec">
-              <h3>Will be written to Salesforce<span class="src">Confirm first · as you</span></h3>
+              <h3>Proposed for Salesforce<span class="src">Each write is confirmed one by one in the chat</span></h3>
               <ul class="changes">
                 <li><input type="checkbox" checked aria-label="Include"><div><b>Task (completed)</b> · "Call with Jordan Lee: competing quote, network" on the opportunity</div></li>
                 <li><input type="checkbox" checked aria-label="Include"><div><b>3 follow-up Tasks</b> · the next steps above, with due dates</div></li>
                 <li><input type="checkbox" checked aria-label="Include"><div><b>Opportunity</b> · next step → "Revised numbers Nov 4" · competitor → Guardian</div></li>
                 <li><input type="checkbox" aria-label="Include"><div><b>New contact</b> · Anita Ruiz, HR Director<small>Not in Salesforce yet. Add?</small></div></li>
               </ul>
-              <div class="next"><button class="btn primary js-apply" data-done="5 records written to Salesforce">Write to Salesforce</button><button class="btn">Edit</button><button class="btn">Draft recap to Jordan</button></div>
+              <div class="next"><button class="btn primary js-flow" data-flow="cap">Write to Salesforce</button><button class="btn js-edit">Edit</button><button class="btn js-toast" data-t="Wireframe: exported as Word (.docx)">Export (.docx)</button><button class="btn">Draft recap to Jordan</button></div>
+              
             </div>
           </div>
           <div class="followups">
             <button class="chip" data-prompt="Ask me the three capture questions instead">Interview me instead</button>
             <button class="chip" data-prompt="Draft the recap email to Jordan">Draft recap to Jordan</button>
           </div>
-          <p class="scope"><b>Wave 1:</b> dictation and speech-to-text come from the Microsoft stack (Teams / Azure AI Speech). Task is always written; the rest on confirm.</p>
+          <p class="scope"><b>Wave 1:</b> dictation and speech-to-text come from the Microsoft stack (Teams / Azure AI Speech). Writes in wave 1: Task and Opportunity fields on the allow-list, each confirmed. Creating Contacts is a later increment.</p>
         </div></div>
+        <div class="flows"></div>
         <div class="dock"><form class="prompt tform"><input class="tin" type="text" placeholder="Correct something, or add a detail…" autocomplete="off"><button type="submit" class="send" aria-label="Send"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button></form></div>
       </section>
 
@@ -949,7 +989,7 @@ h1,h2,h3{margin:0;text-wrap:balance}
               <div class="bh">
                 <div class="logo">HP</div>
                 <div><h2>Harbor Point Health</h2><div class="tagline">Community health network · 3 hospitals, 11 urgent-care sites · Tacoma, WA</div></div>
-                <span class="stage cl">Client since 2019</span>
+                <span class="stage cl">Client since 2019</span><a class="sfl" href="#" onclick="return false" title="Open in Salesforce (new tab)">Salesforce ↗</a>
                 <div class="when"><b>Thu 10:30</b>Cyber renewal review · Dr. Amir Patel, Mia Chen</div>
               </div>
               <div class="side-h int"><span>1</span>What we have with you<small>Internal · summarised from CRM</small></div>
@@ -960,7 +1000,7 @@ h1,h2,h3{margin:0;text-wrap:balance}
                     <div class="p"><span class="av">MC</span><div><b>Mia Chen</b><small>IT Director · owns the security questionnaire</small></div></div>
                   </div></div>
                 <div class="bsec"><h3>Open with us</h3>
-                  <p><b>Cyber limit increase</b> · Proposal · $120K est. · close Jan 10</p>
+                  <p><b>Cyber limit increase</b> · Proposal · $120K est. · close Jan 10 <a class="sfl" href="#" onclick="return false" title="Open in Salesforce (new tab)">Salesforce ↗</a></p>
                   <p class="muted">Last 90 days: 14 activities. Friday's meeting logged with 3 follow-ups; recap sent today 8:47 AM.</p></div>
               </div>
               <div class="bsec"><h3>Policies<span class="src">Only lines populated in CRM</span></h3>
@@ -1000,7 +1040,7 @@ h1,h2,h3{margin:0;text-wrap:balance}
             <table class="leads">
               <thead><tr><th>Lead</th><th>Source</th><th>Untouched</th><th>Brief</th><th></th></tr></thead>
               <tbody>
-                <tr class="sel"><td><b>Tallgrass Manufacturing</b><small>WC &amp; Package · 240 employees</small></td><td>Referral · K. Harris</td><td class="num">3 days</td><td><span class="yes">Yes</span></td><td><button class="lk">Draft ↓</button></td></tr>
+                <tr class="sel"><td><b>Tallgrass Manufacturing</b><a class="sfl" href="#" onclick="return false" title="Open in Salesforce (new tab)">Salesforce ↗</a><small>WC &amp; Package · 240 employees</small></td><td>Referral · K. Harris</td><td class="num">3 days</td><td><span class="yes">Yes</span></td><td><button class="lk">Draft ↓</button></td></tr>
                 <tr><td><b>Alder Creek Brewing</b><small>Package · Product liability</small></td><td>Website form</td><td class="num">21 days</td><td><span class="yes">Yes</span></td><td><button class="lk">Draft</button></td></tr>
                 <tr><td><b>Summit Ridge Dental Group</b><small>EB · 6 offices</small></td><td>Event · Oct 2</td><td class="num">19 days</td><td><span class="no">CRM only</span></td><td><button class="lk">Draft</button></td></tr>
                 <tr><td><b>Redwood Valley Farms</b><small>Farm · Auto</small></td><td>List import</td><td class="num">32 days</td><td><span class="no">CRM only</span></td><td><button class="lk">Draft</button></td></tr>
@@ -1014,12 +1054,14 @@ h1,h2,h3{margin:0;text-wrap:balance}
                 <div class="mh"><span>Subject</span>Karen Harris suggested we talk: workers comp at Tallgrass</div>
                 <div class="mb">Hi Greg,<br><br>Karen Harris mentioned you're reviewing workers comp ahead of the new press line in January. We place programs for several Midwest metal fabricators your size, and the ones who did a safety-credit review before adding shifts saved 8–12% at renewal.<br><br>Would 20 minutes this Thursday or Friday work to see if that applies to Tallgrass?<br><br>Best,<br>Sam</div>
               </div>
-              <div class="next"><button class="btn primary js-apply" data-done="Opened in Outlook · on send: Lead → Contacted, Task logged">Open in Outlook</button><button class="btn">Copy</button><button class="btn">Next draft</button></div>
+              <div class="next"><button class="btn primary js-flow" data-flow="bdr">Open in Outlook</button><button class="btn">Copy</button><button class="btn">Next draft</button></div>
+              
             </div>
             <div class="after"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="9"/></svg>Runs every morning at 7:30. When you send, the Lead status and a Task are written for you.</div>
           </div>
           <p class="scope"><b>Wave 1:</b> list + drafts only. Lead scoring, routing and reply tracking are increment 2.</p>
         </div></div>
+        <div class="flows"></div>
         <div class="dock"><form class="prompt tform"><input class="tin" type="text" placeholder="Change the tone, or ask about a lead…" autocomplete="off"><button type="submit" class="send" aria-label="Send"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button></form></div>
       </section>
 
@@ -1070,19 +1112,19 @@ h1,h2,h3{margin:0;text-wrap:balance}
 
           <!-- legend -->
           <div class="legend-list">
-            <div class="lg"><span class="pin">1</span><div><b>Goal panel: booked vs goal, by month, what closes the gap</b><div class="d">Booked production and the annual goal come from the production source of truth; the expected Nov–Dec and the three gap-closing deals come from open opportunities.</div><div class="srcs"><span class="sc ams">Agency management system → Databricks (production, premium)</span><span class="sc sf">Opportunity (amount, stage, close date)</span><span class="sc sf">Producer goal (User / Territory)</span></div></div></div>
+            <div class="lg"><span class="pin">1</span><div><b>Goal panel: booked vs goal, by month, what closes the gap</b><div class="d">Booked production and the annual goal come from the production source of truth; the expected Nov–Dec and the three gap-closing deals come from open opportunities.</div><div class="srcs"><span class="sc ams">Agency management system → data warehouse (production, premium)</span><span class="sc sf">Opportunity (amount, stage, close date)</span><span class="sc sf">Producer goal (User / Territory)</span></div></div></div>
             <div class="lg"><span class="pin">2</span><div><b>Prompt and dictation</b><div class="d">The only producer input on the screen. Speech is turned into text by a speech-to-text service in the client's Azure tenant (Teams transcription or Azure AI Speech); the harness links the transcript to the meeting that just ended, extracts outcome, next steps and promises, and writes them back.</div><div class="srcs"><span class="sc in">Producer (typed or spoken)</span><span class="sc ms">Speech-to-text: Azure AI Speech / Teams transcription</span><span class="sc ms">Calendar (which meeting just ended)</span><span class="sc in">Extraction model (outcome, next steps, promises)</span><span class="sc sf w">writes Task · Event · Opportunity next step</span></div></div></div>
             <div class="lg"><span class="pin">3</span><div><b>Chips: the agents behind the assistant</b><div class="d">BDR Agent, Company brief, Deal Review, Capture Agent, Pipeline, plus meeting prep and the Salesforce write action. Each one runs on data the harness already reads.</div><div class="srcs"><span class="sc sf">Lead · Account · Opportunity · Task</span><span class="sc ms">Calendar (next meeting)</span><span class="sc reg">Public registries (Company brief: external)</span><span class="sc ams">Policies via AMS sync (Company brief: internal)</span><span class="sc ms">Speech-to-text (Capture)</span><span class="sc sf">OpportunityHistory (Pipeline)</span><span class="sc sf w">writes Task · Event · Opportunity (allow-listed)</span></div></div></div>
             <div class="lg"><span class="pin">4</span><div><b>Prepared for you: briefs and leads ready now</b><div class="d">Keyed to the calendar. The brief joins CRM facts, the email thread, documents the prospect shared, the gap analysis and public registries. Leads are scored from Lead history plus registry signals.</div><div class="srcs"><span class="sc ms">Outlook calendar + email (Graph)</span><span class="sc sf">Account · Contact · Opportunity · Lead</span><span class="sc wf">Coverage Gap Analyzer</span><span class="sc reg">FMCSA · OSHA · Form 5500 · USASpending</span><span class="sc ms">Prospect portal documents (SharePoint)</span><span class="sc sme">SME directory</span></div></div></div>
             <div class="lg"><span class="pin">5</span><div><b>Pipeline tiles</b><div class="d">Counts straight from the CRM funnel; the client count and at-risk flags come from the book of business.</div><div class="srcs"><span class="sc sf">Lead (suspects) · Account (prospects) · Opportunity</span><span class="sc ams">Agency management system (clients, policies)</span><span class="sc wf">Workbench at-risk flag</span></div></div></div>
             <div class="lg"><span class="pin">6</span><div><b>Today's brief: what needs the producer</b><div class="d">Assembled overnight and during the day by the agents; each line names its source. Checked items are written back as completed Tasks.</div><div class="srcs"><span class="sc sf">Task (promises, due dates) · Opportunity</span><span class="sc ms">Calendar (meeting ended → capture)</span><span class="sc ams">Policy expiry dates (AMS sync)</span><span class="sc sf">Lead + score</span><span class="sc reg">Registry signals (new DOT authority, awards)</span><span class="sc sf w">writes Task status</span></div></div></div>
-            <div class="lg"><span class="pin">7</span><div><b>Needs attention: at risk · renewals · overdue · stalled</b><div class="d">Risk flags and renewals need the policy data sync; overdue and stalled come from CRM activity and stage history.</div><div class="srcs"><span class="sc wf">Workbench client-at-risk flag</span><span class="sc ams">InsurancePolicy ← agency management / Databricks (renewals)</span><span class="sc sf">Task (overdue) · OpportunityHistory (stalled)</span><span class="sc ms">Email (last contact)</span></div></div></div>
-            <div class="lg"><span class="pin">8</span><div><b>Connected: the integration layer</b><div class="d">On behalf of the signed-in producer, under their Salesforce permissions; every call logged and metered.</div><div class="srcs"><span class="sc sf">Salesforce (FSC objects, Named Credentials)</span><span class="sc ms">Microsoft Graph (Outlook, Teams, SharePoint) · Entra SSO</span><span class="sc wf">Broker workflow APIs</span><span class="sc ams">Databricks</span><span class="sc reg">Public registries (11 live)</span></div></div></div>
-            <div class="lg"><span class="pin">9</span><div><b>Sidebar: the harness itself</b><div class="d">What the producer keeps: briefs produced, workflows available, memory of preferences, scheduled agent runs, dashboards.</div><div class="srcs"><span class="sc sf">Prospect Briefing records (My Briefs)</span><span class="sc wf">Broker workflow catalogue (AI Workflows)</span><span class="sc in">Harness memory per producer</span><span class="sc in">Scheduled runs · audit log</span><span class="sc ams">Dashboards (Tableau / CRM Analytics)</span></div></div></div>
+            <div class="lg"><span class="pin">7</span><div><b>Needs attention: at risk · renewals · overdue · stalled</b><div class="d">Risk flags and renewals need the policy data sync; overdue and stalled come from CRM activity and stage history.</div><div class="srcs"><span class="sc wf">Workbench client-at-risk flag</span><span class="sc ams">InsurancePolicy ← agency management / data warehouse (renewals)</span><span class="sc sf">Task (overdue) · OpportunityHistory (stalled)</span><span class="sc ms">Email (last contact)</span></div></div></div>
+            <div class="lg"><span class="pin">8</span><div><b>Connected: the integration layer</b><div class="d">On behalf of the signed-in producer, under their Salesforce permissions; every call logged and metered. No Data Cloud: warehouse data is read through the Power BI / Unity Catalog layer that already carries the permissions.</div><div class="srcs"><span class="sc sf">Salesforce (FSC objects, Named Credentials)</span><span class="sc ms">Microsoft Graph (Outlook, Teams, SharePoint) · Entra SSO</span><span class="sc wf">Broker workflow APIs</span><span class="sc ams">Data warehouse: Azure DW → Databricks (migrating) · Power BI semantic layer</span><span class="sc reg">Public registries (11 live)</span></div></div></div>
+            <div class="lg"><span class="pin">9</span><div><b>Sidebar: the harness itself</b><div class="d">What the producer keeps: briefs produced, workflows available, memory of preferences, scheduled agent runs, dashboards.</div><div class="srcs"><span class="sc sf">Prospect Briefing records (My Briefs)</span><span class="sc wf">Broker workflow catalogue (AI Workflows)</span><span class="sc in">Harness memory per producer</span><span class="sc in">Scheduled runs · audit log</span><span class="sc ams">Dashboards (Power BI)</span></div></div></div>
           </div>
         </div>
 
-        <div class="key"><span class="t">Source key</span><span class="sc sf">Salesforce (FSC)</span><span class="sc ms">Microsoft 365 (Outlook, Teams, SharePoint)</span><span class="sc ams">Agency management · Databricks</span><span class="sc wf">Broker AI workflows</span><span class="sc reg">Public registries</span><span class="sc sme">SME directory</span><span class="sc in">Producer input · harness</span><span class="note">Dashed chip = what the screen writes back</span></div>
+        <div class="key"><span class="t">Source key</span><span class="sc sf">Salesforce (FSC)</span><span class="sc ms">Microsoft 365 (Outlook, Teams, SharePoint)</span><span class="sc ams">Agency management · data warehouse</span><span class="sc wf">Broker AI workflows</span><span class="sc reg">Public registries</span><span class="sc sme">SME directory</span><span class="sc in">Producer input · harness</span><span class="note">Dashed chip = what the screen writes back</span></div>
       </section>
     </div>
   </div>
@@ -1149,18 +1191,99 @@ h1,h2,h3{margin:0;text-wrap:balance}
   $('#promptForm').addEventListener('submit',function(e){e.preventDefault();var v=input.value.trim();if(!v)return;var r=route(v);if(r){showView(r,v)}else{toast('Wireframe: the assistant would answer here')}});
   $$('#promptForm2,.tform').forEach(function(f){f.addEventListener('submit',function(e){e.preventDefault();var i=$('input',f);if(i.value.trim()){toast('Wireframe: the assistant would answer in this thread');i.value=''}})});
 
-  // Confirm-before-write buttons
-  $$('.js-apply').forEach(function(b){b.addEventListener('click',function(){b.textContent='✓ Done';b.disabled=true;toast(b.getAttribute('data-done'))})});
-
-  // Deal Review: one question at a time
-  (function(){var qa=$('#qa'); if(!qa) return; var w=$('#written');
-    $$('.q .btn',qa).forEach(function(b){b.addEventListener('click',function(){
-      var q=b.closest('.q'), n=+q.getAttribute('data-step'), li=document.createElement('li');
-      li.textContent=$('.qq',q).textContent.replace(/\?$/,'')+' → '+b.textContent+': '+b.getAttribute('data-a'); w.appendChild(li);
-      q.hidden=true; var nx=$('.q[data-step="'+(n+1)+'"]',qa);
-      if(nx){nx.hidden=false;$('#qaN').textContent=n+1}else{$('.qdone',qa).hidden=false;$('#qaN').textContent='3'}
-    })});
-  })();
+  // Writes happen in the chat: the producer's message, then one agent message that lists every operation
+  // with its validation (required fields) and access check; each operation is confirmed on its own.
+  var SF='<a class="sfl" href="#" onclick="return false">Salesforce ↗</a>';
+  var FLOWS={
+    pipe:{user:'Yes, save the three fixes to Salesforce.',intro:'Three writes, each on its own. I checked required fields and your access first; confirm the ones you want.',ops:[
+      {obj:'Opportunity',act:'update',what:'<b>Sable &amp; Finch Architects</b> · Close date Oct 15 → <b>Nov 14</b>',sub:'Stage stays Proposal · $86K',chk:[['ok','Required on this stage: Stage, Close date, Amount, Next step — all present'],['ok','Access: you own this record, Close date is editable']]},
+      {obj:'Opportunity',act:'update + Task',what:'<b>Orion Cold Storage</b> · Next step → <b>"Send one-page capabilities note"</b>',sub:'+ Task "Send capabilities note" · due Oct 30 · assigned to you',chk:[['ok','Opportunity required fields present'],['ok','Task required fields: Subject, Due date, Related to, Assigned — all set'],['ok','Access: you can edit the opportunity and create Tasks']]},
+      {obj:'Opportunity',act:'update',what:'<b>Harbor Point Health</b> · Amount → <b>$120,000</b>',sub:'From Friday\'s notes: $5M limit, est. revenue',chk:[['ok','Required fields present; Probability stays 60%'],['bad','Access: Amount on this record is restricted to Sales Ops — you can\'t change it, and neither can I on your behalf']],blocked:true,ask:'Ask Sales Ops to set $120K'}],
+      after:'<b>2 of 3 written.</b> Sable &amp; Finch and Orion are updated ('+SF+'). The Harbor Point amount is with Sales Ops; I\'ll tell you when it changes. Needs attention on Home is refreshed.'},
+    cap:{user:'Write it to Salesforce.',intro:'Six operations on three objects. Each one is confirmed separately; two need something from you first.',ops:[
+      {obj:'Task',act:'update',what:'"Call with Jordan Lee: competing quote, network" → <b>Completed</b>',sub:'On opportunity Northwind Dental · EB renewal · today 11:00',chk:[['ok','Required: Subject, Status, Related to — set'],['ok','Access: your Task']]},
+      {obj:'Task',act:'create',what:'<b>"Revised numbers to Jordan"</b> · due Nov 4',sub:'Assigned to you · related to the opportunity',chk:[['ok','Required: Subject, Due date, Related to, Assigned — set']]},
+      {obj:'Task',act:'create',what:'<b>"Vision quote for Plano office"</b> · due Nov 4',sub:'Assigned to you · related to the opportunity',chk:[['ok','Required: Subject, Due date, Related to, Assigned — set']]},
+      {obj:'Task',act:'create',what:'<b>"Network disruption report to Anita"</b>',sub:'Assigned to you · related to the opportunity',chk:[['q','Required field missing: <b>Due date</b>. You didn\'t say one — when?']],opts:['Mon Nov 2','Wed Nov 4','Fri Nov 6','Type a date…'],need:true},
+      {obj:'Opportunity',act:'update',what:'Next step → <b>"Revised numbers Nov 4"</b> · Competitor → <b>Guardian</b>',sub:'Stage stays Negotiation · close date Dec 1 unchanged',chk:[['ok','Required on Negotiation: Close date, Amount, Next step — present'],['ok','Competitor picklist has "Guardian"'],['ok','Access: you own this opportunity']]},
+      {obj:'Contact',act:'create',what:'<b>Anita Ruiz</b> · HR Director<span class="tag">later increment</span>',sub:'Not in Salesforce under this name',chk:[['bad','Possible duplicate: <b>"A. Ruiz, Human Resources"</b> exists on this account (no email, no title)'],['ok','Required: Last name, Account — set']],opts:['Use existing record','Create new','Skip for now'],need:true}],
+      after:'<b>All written.</b> Task closed, three follow-ups created, opportunity updated ('+SF+'). Want the recap email to Jordan drafted now?'},
+    bdr:{user:'Open the Tallgrass draft in Outlook.',intro:'Opened in Outlook. When you send it, the email itself is logged on the Lead automatically — that\'s the communication record, it always happens. Two more updates need your OK:',ops:[
+      {obj:'Lead',act:'update',what:'<b>Tallgrass Manufacturing</b> · Status <b>New → Contacted</b>',sub:'Written when the email is sent',chk:[['ok','Required on Contacted: Status, Last activity — set on send'],['ok','Access: you own this Lead']]},
+      {obj:'Task',act:'create',what:'<b>"First touch email to Greg Olsen"</b> · completed, today',sub:'Related to the Lead · email body attached',chk:[['ok','Required: Subject, Due date, Related to — set']]}],
+      after:'<b>Set.</b> On send: email logged, Lead → Contacted, Task created ('+SF+'). Next draft: Alder Creek Brewing?'},
+    dr1y:{user:'Yes, signed.',intro:'Brightline is won. Three things to write, one at a time:',ops:[
+      {obj:'Opportunity',act:'update',what:'<b>Brightline Foods · Cyber</b> · Stage Proposal → <b>Closed Won</b>',sub:'$310K · close date → today',chk:[['ok','Required on Closed Won: Amount, Close date, Bound carrier — Beazley taken from the quote'],['ok','Access: you own this opportunity']]},
+      {obj:'Task',act:'update',what:'"Approve the Beazley cyber quote" → <b>Completed</b>',chk:[['ok','Required fields set']]},
+      {obj:'Outlook',act:'draft',what:'<b>Binder request to Beazley</b> · drafted, you send it',sub:'Not a Salesforce write · logged on send',chk:[['ok','Uses the quote reference and the signed proposal']]}],
+      after:'<b>Brightline is Closed Won.</b> The binder request is in your Outlook drafts.',next:{q:'Sable &amp; Finch: will the revised proposal go out this week?',answers:[['Yes, by Friday','dr2y'],['Next week','dr2n'],['Drop it','dr2l']]}},
+    dr1n:{user:'Not yet.',intro:'I\'ll keep it on your list:',ops:[
+      {obj:'Task',act:'update',what:'"Approve the Beazley cyber quote" · due → <b>tomorrow 9:00 AM</b>',sub:'Reminder today 4:30 PM, before the limit expires',chk:[['ok','Required fields set'],['ok','Access: your Task']]}],
+      after:'Moved. The quote hold still ends at 5:00 PM today.',next:{q:'Sable &amp; Finch: will the revised proposal go out this week?',answers:[['Yes, by Friday','dr2y'],['Next week','dr2n'],['Drop it','dr2l']]}},
+    dr1l:{user:'Lost it.',intro:'Closing it as lost needs one thing from you:',ops:[
+      {obj:'Opportunity',act:'update',what:'<b>Brightline Foods · Cyber</b> · Stage → <b>Closed Lost</b>',chk:[['q','Required on Closed Lost: <b>Loss reason</b> — which one?'],['ok','Access: you own this opportunity']],opts:['Price','Coverage','Timing','Other'],need:true}],
+      after:'Closed Lost. It drops out of the goal panel\'s "what closes the gap".',next:{q:'Sable &amp; Finch: will the revised proposal go out this week?',answers:[['Yes, by Friday','dr2y'],['Next week','dr2n'],['Drop it','dr2l']]}},
+    dr2y:{user:'Yes, by Friday.',intro:'',ops:[
+      {obj:'Task',act:'update',what:'"Send revised professional liability proposal" · due → <b>Fri Oct 30</b>',sub:'Draft started from the last quote',chk:[['ok','Required fields set'],['ok','Access: your Task']]}],
+      after:'Due Friday. The draft is in My Briefs when you want it.',next:{q:'Brightline CISO application: send the pre-filled ACORD now?',answers:[['Draft it','dr3y'],['Friday','dr3n']]}},
+    dr2n:{user:'Next week.',intro:'',ops:[
+      {obj:'Opportunity',act:'update',what:'<b>Sable &amp; Finch</b> · Close date Oct 15 → <b>Nov 14</b>',chk:[['ok','Required on Proposal: present'],['ok','Access: you own this record']]},
+      {obj:'Task',act:'update',what:'"Send revised proposal" · due → <b>Nov 7</b>',chk:[['ok','Required fields set']]}],
+      after:'Moved to next week.',next:{q:'Brightline CISO application: send the pre-filled ACORD now?',answers:[['Draft it','dr3y'],['Friday','dr3n']]}},
+    dr2l:{user:'Drop it.',intro:'',ops:[
+      {obj:'Opportunity',act:'update',what:'<b>Sable &amp; Finch</b> · Stage → <b>Closed Lost</b>',chk:[['q','Required on Closed Lost: <b>Loss reason</b> — which one?']],opts:['No response','Price','Timing','Other'],need:true}],
+      after:'Closed Lost.',next:{q:'Brightline CISO application: send the pre-filled ACORD now?',answers:[['Draft it','dr3y'],['Friday','dr3n']]}},
+    dr3y:{user:'Draft it.',intro:'',ops:[
+      {obj:'Outlook',act:'draft',what:'<b>Email to the Brightline CISO</b> with the pre-filled ACORD attached',sub:'Not a Salesforce write · logged on send',chk:[['ok','ACORD filled from the opportunity and the application']]},
+      {obj:'Task',act:'update',what:'"Share cyber application with the CISO" → <b>Completed on send</b>',chk:[['ok','Required fields set']]}],
+      after:'<b>All three answered.</b> Salesforce is up to date; nothing else is due today.'},
+    dr3n:{user:'Friday.',intro:'',ops:[
+      {obj:'Task',act:'update',what:'"Share cyber application with the CISO" · due → <b>Fri Oct 30</b>',chk:[['ok','Required fields set']]}],
+      after:'<b>All three answered.</b> Nothing else is due today.'}
+  };
+  function stamp(){return now()}
+  function opHtml(o){
+    var chk=o.chk.map(function(c){return '<span class="'+c[0]+'">'+c[1]+'</span>'}).join('');
+    var opts=o.opts?'<div class="opts">'+o.opts.map(function(x){return '<button type="button">'+x+'</button>'}).join('')+'</div>':'';
+    var act=o.blocked?'<div class="act"><button class="btn primary js-ask">'+o.ask+'</button><button class="btn ghost js-skip">Skip</button></div>'
+                     :'<div class="act"><button class="btn primary js-ok"'+(o.need?' disabled':'')+'>Confirm</button><button class="btn ghost js-skip">Skip</button></div>';
+    return '<li class="wop'+(o.blocked?' blocked':'')+'"><span class="obj"><b>'+o.obj+'</b>'+o.act+'</span><div class="what">'+o.what+(o.sub?'<small>'+o.sub+'</small>':'')+'</div>'+act+'<div class="chk">'+chk+'</div>'+opts+'</li>';
+  }
+  function runFlow(key,host){
+    var f=FLOWS[key]; if(!f) return;
+    var wrap=document.createElement('div'); wrap.className='flows';
+    var sum=f.after?'<p class="wsum" hidden>'+f.after+'</p>':'';
+    var nq=f.next?'<div class="nextq" hidden><p class="qq">'+f.next.q+'</p><div class="next">'+f.next.answers.map(function(a,i){return '<button class="btn'+(i?'':' primary')+' js-flow" data-flow="'+a[1]+'">'+a[0]+'</button>'}).join('')+'</div></div>':'';
+    wrap.innerHTML='<div class="msg-user">'+f.user+'<span class="at">Today · '+stamp()+'</span></div>'
+      +'<div class="msg-ai"><div class="av">AI</div><div class="body">'+(f.intro?'<p class="lead">'+f.intro+'</p>':'')+'<ul class="wops">'+f.ops.map(opHtml).join('')+'</ul>'+sum+nq+'</div></div>';
+    host.appendChild(wrap);
+    function settle(li,cls,txt,sub){li.classList.add(cls);var a=$('.act',li);if(a)a.remove();var st=document.createElement('div');st.className='st';st.innerHTML=txt+(sub?'<small>'+sub+'</small>':'');li.appendChild(st);check()}
+    function check(){ if($$('.wop .act',wrap).length) return; var w=$('.wsum',wrap); if(w)w.hidden=false; var n=$('.nextq',wrap); if(n)n.hidden=false; bindFlows(wrap); }
+    $$('.wop',wrap).forEach(function(li){
+      $$('.opts button',li).forEach(function(b){b.addEventListener('click',function(){
+        $$('.opts button',li).forEach(function(x){x.classList.toggle('on',x===b)});
+        var q=$('.chk .q,.chk .bad',li); if(q){q.className='';q.innerHTML=q.innerHTML.replace(/Required field missing: <b>Due date<\/b>.*/,'Due date: <b>'+b.textContent+'</b>').replace(/Possible duplicate:.*/,'Duplicate check: <b>'+b.textContent+'</b>').replace(/Required on Closed Lost:.*/,'Loss reason: <b>'+b.textContent+'</b>')}
+        $('.js-ok',li).disabled=false;
+      })});
+      var ok=$('.js-ok',li), sk=$('.js-skip',li), ask=$('.js-ask',li);
+      if(ok) ok.addEventListener('click',function(){var o=$('.obj b',li).textContent;settle(li,'done',o==='Outlook'?'✓ Drafted':'✓ Written',(o==='Outlook'?'Outlook':'Salesforce')+' · '+stamp())});
+      if(sk) sk.addEventListener('click',function(){settle(li,'skip','Skipped','nothing written')});
+      if(ask) ask.addEventListener('click',function(){settle(li,'blocked','Sent to Sales Ops','Teams message · '+stamp())});
+    });
+    wrap.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+  function bindFlows(root){ $$('.js-flow',root||document).forEach(function(b){ if(b._bound) return; b._bound=true; b.addEventListener('click',function(){
+    var sec=b.closest('.thread'), host=$('.flows',sec); if(!host){host=document.createElement('div');host.className='flows';sec.insertBefore(host,$('.dock',sec))}
+    var grp=b.closest('.next'); if(grp) $$('.btn',grp).forEach(function(x){x.disabled=true; x.classList.toggle('primary',x===b)});
+    runFlow(b.getAttribute('data-flow'),host);
+  })}) }
+  bindFlows();
+  $$('.js-toast').forEach(function(b){b.addEventListener('click',function(){toast(b.getAttribute('data-t'))})});
+  // Capture: in-place editing of the summary and next steps
+  $$('.js-edit').forEach(function(b){b.addEventListener('click',function(){
+    var on=b.textContent==='Edit'; $$('#v-capture .ed').forEach(function(e){e.contentEditable=on;e.classList.toggle('editing',on)});
+    $('#eHint').hidden=!on; b.textContent=on?'Done editing':'Edit'; if(on)$('#v-capture .ed').focus();
+  })});
 
   // Company brief: one-click picker
   $$('.pick[data-co]').forEach(function(p){p.addEventListener('click',function(){

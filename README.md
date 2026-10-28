@@ -30,6 +30,8 @@ Left sidebar follows a general-purpose agent harness (New chat, My Briefs, AI Wo
 - Check / uncheck items in Today's brief (re-orders the list)
 - Tabs in Needs attention
 - "Prep my next meeting" (chip, prepared card, or typing it) opens the meeting-prep screen; Home or New chat returns
+- Every write to Salesforce runs as a chat exchange: the producer's message, then one card per record with required-field and access checks and its own Confirm / Skip; refused writes say why and offer "Ask Sales Ops"
+- "Salesforce ↗" links open the record in a new tab; Capture notes can be edited in place and exported
 - Every agent chip opens its own screen: Pipeline (stage board + reversible fixes), Deal Review (promises + one question at a time), Capture Agent (dictated note → what gets written), Company brief (one-click picker → internal + external brief), BDR Agent (untouched leads + first-touch draft). Direct links: `#pipeline`, `#deal-review`, `#capture`, `#company-brief`, `#bdr`
 - Chips and Prepared-for-you cards fill the prompt
 - Hover on monthly bars
@@ -51,6 +53,7 @@ README.md
 
 ## Versions
 
+- **v0.8** (2026-10-28) — confirm-per-record write flow in the chat, validation and access checks, Salesforce links, Capture edit/export; sources slide: Power BI, data warehouse (Azure DW → Databricks), no Data Cloud
 - **v0.7** (2026-10-28) — one screen per agent chip, in their wave-1 form
 - **v0.6** (2026-10-27) — Briefing and Client summary merged into one "Company brief" chip (internal CRM summary + external research)
 - **v0.5** (2026-10-27) — chips renamed to the agents: Prep my next meeting · BDR Agent · Briefing · Deal Review · Client summary · Capture Agent · Pipeline · Update Salesforce
