@@ -39,6 +39,14 @@ Left sidebar follows a general-purpose agent harness (New chat, My Briefs, AI Wo
 
 Everything else is static.
 
+## January version (`jan.html`)
+
+The skinny stage-1 home: what can be live on day one on an existing portal agent. Same page, same code, with the stage-2 blocks removed instead of promised: no goal panel (a "coming with the production data feed" strip), no prepared-for-you cards, no pipeline tiles, no At-risk tab, four chips instead of seven (Prep my next meeting · Deal Review · Capture Agent · Pipeline). Company brief and BDR answer "stage 2" when typed. The four agent screens are the same as in `index.html`.
+
+**Live:** https://julijakvetna.github.io/epic-producer-assistant-demo/jan.html · direct links: `jan.html#prep`, `#deal-review`, `#capture`, `#pipeline`
+
+`jan.html` is generated from `index.html` by `build_jan.py`.
+
 ## Sales Leader home (`leader.html`)
 
 Same harness, second lens. A regional sales leader (fictional, 12 producers) sees the same agents, data and guardrails through a predefined view for his role: everything he sees is what his CRM role hierarchy already shows him; writes are Tasks on producers' deals, chat messages and his own 1:1 notes, each confirmed.
@@ -69,12 +77,15 @@ The agents are named once, as chips under the prompt, so producers learn what th
 
 ```
 index.html                   producer home — single self-contained page (HTML + CSS + JS)
+jan.html                     stage-1 home — generated from index.html by build_jan.py
 leader.html                  sales leader home — same shell, second lens
 docs/data-sources-slide.png  16:9 export of the data-sources view
 README.md
 ```
 
 ## Versions
+
+- **v0.10** (2026-11-02) — stage-1 home: `jan.html`
 
 - **v0.9** (2026-11-02) — Sales Leader lens: `leader.html` with team home, Team pipeline review and Prep my 1:1
 

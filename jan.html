@@ -1,0 +1,1112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Producer Home — January</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+img{max-width:100%}[hidden]{display:none!important}
+</style>
+<style>
+/* Layout: fixed app shell — agent-harness sidebar on the left, scrolling producer home in the center.
+   Hero prompt → agent cards → pipeline tiles → brief + attention → connected sources. */
+:root{
+  --bg:#f3f4f9;          /* cool page ground */
+  --panel:#ffffff;
+  --panel-2:#eef0f8;
+  --line:#dcdfeb;
+  --fg:#15193a;
+  --muted:#5b6080;
+  --faint:#8a8fb0;
+  --navy:#1e2e9a;        /* brand navy */
+  --navy-ink:#ffffff;
+  --gold:#f2c230;        /* brand accent */
+  --gold-ink:#2a2000;
+  --ok:#1e8a5a; --ok-bg:#e3f5ec;
+  --warn:#b7791f; --warn-bg:#fbf1dc;
+  --crit:#c0392b; --crit-bg:#fbe5e2;
+  --info:#2a56c6; --info-bg:#e6ecfb;
+  --shadow:0 1px 2px rgba(21,25,58,.06),0 6px 20px -12px rgba(21,25,58,.18);
+  --sans:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f1226;--panel:#171b36;--panel-2:#1f2444;--line:#2b3157;--fg:#eceef8;--muted:#a3a8c8;--faint:#6f75a0;
+  --navy:#3d4fd0;--gold:#f2c230;--ok:#4fcf8f;--ok-bg:#15372a;--warn:#e6b352;--warn-bg:#3a2e12;--crit:#f07a6c;--crit-bg:#40201c;--info:#8ea6f5;--info-bg:#1f2a52;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.6);color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1226;--panel:#171b36;--panel-2:#1f2444;--line:#2b3157;--fg:#eceef8;--muted:#a3a8c8;--faint:#6f75a0;
+  --navy:#3d4fd0;--gold:#f2c230;--ok:#4fcf8f;--ok-bg:#15372a;--warn:#e6b352;--warn-bg:#3a2e12;--crit:#f07a6c;--crit-bg:#40201c;--info:#8ea6f5;--info-bg:#1f2a52;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.6);color-scheme:dark}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.45 var(--sans);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+h1,h2,h3{margin:0;text-wrap:balance}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+.app{display:grid;grid-template-columns:248px 1fr;height:100%}
+/* ---------- Sidebar (harness structure, producer labels) ---------- */
+.side{background:var(--panel);border-right:1px solid var(--line);display:flex;flex-direction:column;min-width:0;padding-left:max(0px,env(safe-area-inset-left,0px))}
+.brand{display:flex;align-items:center;gap:10px;padding:16px 18px 10px}
+.brand .mark{width:30px;height:22px;background:var(--navy);color:#fff;font:700 11px/22px var(--sans);letter-spacing:.08em;text-align:center;border-radius:3px}
+.brand .name{font-weight:600;font-size:15px}
+.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--ok);margin-left:2px}
+.ws{margin:4px 12px 10px;display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;font-size:13px}
+.ws .av{width:22px;height:22px;border-radius:50%;background:var(--gold);color:var(--gold-ink);font-size:10px;font-weight:700;display:grid;place-items:center}
+.ws .chev{margin-left:auto;color:var(--faint)}
+.nav{display:flex;flex-direction:column;gap:2px;padding:0 10px}
+.nav a{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:7px;color:var(--fg);text-decoration:none;font-size:13.5px}
+.nav a:hover{background:var(--panel-2)}
+.nav a.active{background:var(--panel-2);font-weight:600}
+.nav svg{width:16px;height:16px;flex:none;color:var(--muted)}
+.nav .badge{margin-left:auto;background:var(--navy);color:#fff;font-size:10.5px;font-weight:600;padding:1px 7px;border-radius:10px}
+.nav .sub{margin-left:auto;color:var(--faint);font-size:12px}
+.sect{margin:14px 20px 4px;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);font-weight:600}
+.recents a{color:var(--muted);font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
+.side .spacer{flex:1}
+.side .foot{padding:12px 18px;border-top:1px solid var(--line);font-size:11.5px;color:var(--faint)}
+
+/* ---------- Main ---------- */
+.main{min-width:0;display:flex;flex-direction:column;overflow:hidden}
+.top{display:flex;align-items:center;gap:14px;padding:10px 24px;padding-right:max(24px,env(safe-area-inset-right,0px));border-bottom:1px solid var(--line);background:var(--panel)}
+.top .title{font-weight:600;font-size:15px}
+.top .role{color:var(--muted);font-size:12.5px;margin-left:4px}
+.search{margin-left:auto;display:flex;align-items:center;gap:8px;width:min(380px,40vw);padding:7px 12px;border:1px solid var(--line);border-radius:8px;color:var(--faint);font-size:13px;background:var(--bg)}
+.search kbd{margin-left:auto;font:11px var(--mono);border:1px solid var(--line);border-radius:4px;padding:0 5px;color:var(--faint)}
+.icon-btn{width:32px;height:32px;border-radius:8px;display:grid;place-items:center;color:var(--muted);position:relative}
+.icon-btn:hover{background:var(--panel-2)}
+.icon-btn .pip{position:absolute;top:7px;right:7px;width:7px;height:7px;border-radius:50%;background:var(--crit);border:2px solid var(--panel)}
+.user{display:flex;align-items:center;gap:8px;font-size:13px}
+.user .av{width:28px;height:28px;border-radius:50%;background:var(--navy);color:#fff;font-size:11px;font-weight:700;display:grid;place-items:center}
+
+.scroll{overflow:auto;flex:1}
+.content{max-width:1120px;margin:0 auto;padding-block:28px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:22px}
+
+/* Goal panel — single series (navy) + pace marker + status ink; no categorical palette needed */
+.goal{background:var(--panel);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);display:grid;grid-template-columns:5fr 6fr 4fr;gap:0;overflow:hidden}
+.goal>div{padding:16px 20px;min-width:0}
+.goal>div+div{border-left:1px solid var(--line)}
+.goal .eyebrow{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);font-weight:600;display:flex;gap:8px;align-items:center}
+.goal .eyebrow .src{margin-left:auto;text-transform:none;letter-spacing:0;font-weight:500}
+.goal .big{display:flex;align-items:baseline;gap:8px;margin-top:6px;flex-wrap:wrap}
+.goal .big .v{font-size:34px;font-weight:600;letter-spacing:-.03em;line-height:1}
+.goal .big .of{font-size:14px;color:var(--muted)}
+.goal .pct{font-size:13px;color:var(--muted);margin-top:4px}
+.bullet{position:relative;height:10px;border-radius:5px;background:var(--panel-2);margin-top:14px}
+.bullet .fill{position:absolute;inset:0 auto 0 0;border-radius:5px;background:var(--navy)}
+.bullet .pace{position:absolute;top:-5px;bottom:-5px;width:2px;background:var(--fg);border-radius:1px}
+.bullet .pace::after{content:attr(data-label);position:absolute;top:-18px;left:50%;transform:translateX(-50%);font-size:10.5px;color:var(--muted);white-space:nowrap}
+.goal .status{display:inline-flex;align-items:center;gap:6px;margin-top:14px;font-size:12.5px;font-weight:600;padding:3px 9px;border-radius:10px}
+.status.ahead{background:var(--ok-bg);color:var(--ok)} .status.behind{background:var(--warn-bg);color:var(--warn)}
+.goal .fine{font-size:12px;color:var(--muted);margin-top:8px}
+
+.months{display:grid;grid-template-columns:repeat(12,1fr);gap:4px;align-items:end;height:92px;margin-top:12px;position:relative}
+.months .m{position:relative;display:flex;flex-direction:column;justify-content:flex-end;height:100%;min-width:0}
+.months .b{width:100%;border-radius:4px 4px 0 0;background:var(--navy);min-height:2px}
+.months .m.exp .b{background:color-mix(in srgb,var(--navy) 35%,var(--panel));background-image:repeating-linear-gradient(135deg,transparent 0 3px,color-mix(in srgb,var(--navy) 30%,transparent) 3px 4px)}
+.months .m.cur .b{outline:2px solid var(--gold);outline-offset:-2px}
+.months .m:hover .b{filter:brightness(.9)}
+.months .lab{text-align:center;font-size:10px;color:var(--faint);margin-top:4px;font-family:var(--mono)}
+.months .tip{position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:var(--fg);color:var(--bg);font-size:11.5px;padding:4px 8px;border-radius:6px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .12s;z-index:5}
+.months .m:hover .tip{opacity:1}
+.goal .legend{display:flex;gap:14px;font-size:11.5px;color:var(--muted);margin-top:6px}
+.legend .k{display:inline-flex;align-items:center;gap:5px}
+.legend .k::before{content:"";width:10px;height:10px;border-radius:2px;background:var(--navy)}
+.legend .k.exp::before{background:color-mix(in srgb,var(--navy) 35%,var(--panel))}
+.legend .k.cur::before{background:transparent;outline:2px solid var(--gold);outline-offset:-2px}
+
+.gap{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-direction:column;gap:7px}
+.gap li{display:flex;justify-content:space-between;gap:10px;font-size:13px;align-items:baseline}
+.gap li .n{color:var(--fg)} .gap li small{color:var(--muted);font-size:11.5px;display:block}
+.gap li .amt{font-family:var(--mono);font-variant-numeric:tabular-nums;color:var(--fg);white-space:nowrap}
+.gap .sum{border-top:1px solid var(--line);padding-top:7px;font-weight:600}
+.gap .sum .amt{color:var(--ok)}
+
+/* Chips + prepared */
+.chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;width:min(820px,100%)}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border:1px solid var(--line);border-radius:20px;background:var(--panel);font-size:12.5px;color:var(--fg)}
+.chip:hover{border-color:var(--navy);color:var(--navy)}
+.chip svg{width:13px;height:13px;color:var(--muted)}
+.prepared{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.prep{text-align:left;color:inherit;text-decoration:none;cursor:pointer;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;min-width:0}
+.prep:hover{border-color:var(--navy)}
+.prep .when{font-family:var(--mono);font-size:12px;color:var(--muted);text-align:center;line-height:1.2;min-width:44px}
+.prep .when b{display:block;font-size:14px;color:var(--fg);font-weight:500}
+.prep .who{font-weight:600;font-size:13.5px}
+.prep .what{font-size:12px;color:var(--muted);margin-top:2px}
+.prep .go{font-size:12.5px;font-weight:600;color:var(--navy);white-space:nowrap}
+.prep .ready{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--ok);margin-right:5px;vertical-align:middle}
+.prep .ready.run{background:var(--warn)}
+
+/* Hero */
+.hero{display:flex;flex-direction:column;align-items:center;gap:14px;padding-top:8px}
+.hero h1{font-size:26px;font-weight:600;letter-spacing:-.01em}
+.hero .date{color:var(--muted);font-size:13px;margin-top:-8px}
+.prompt{width:min(760px,100%);background:var(--panel);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:10px 12px;display:flex;align-items:center;gap:8px}
+.prompt:focus-within{border-color:var(--navy);box-shadow:0 0 0 3px color-mix(in srgb,var(--navy) 18%,transparent)}
+.prompt input{flex:1;min-width:0;border:0;outline:0;background:transparent;color:var(--fg);font:15px var(--sans);padding:8px 4px}
+.prompt input::placeholder{color:var(--faint)}
+.prompt .mic{width:34px;height:34px;border-radius:8px;display:grid;place-items:center;color:var(--muted)}
+.prompt .mic:hover{background:var(--panel-2);color:var(--navy)}
+.prompt .send{width:34px;height:34px;border-radius:8px;background:var(--navy);color:#fff;display:grid;place-items:center}
+.hint{font-size:12px;color:var(--faint)}
+
+/* Agent cards */
+.cards{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;width:min(980px,100%);margin:0 auto}
+.card{text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 14px 12px;display:flex;flex-direction:column;gap:8px;min-width:0;transition:transform .12s,border-color .12s}
+.card:hover{border-color:var(--navy);transform:translateY(-1px)}
+.card .ic{width:28px;height:28px;border-radius:7px;background:var(--info-bg);color:var(--info);display:grid;place-items:center}
+.card .ic svg{width:15px;height:15px}
+.card .t{font-weight:600;font-size:13.5px}
+.card .s{font-size:12.5px;color:var(--muted);line-height:1.35}
+.card .st{margin-top:auto;display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;padding:2px 8px;border-radius:10px;width:fit-content}
+.st.ok{background:var(--ok-bg);color:var(--ok)} .st.warn{background:var(--warn-bg);color:var(--warn)} .st.info{background:var(--info-bg);color:var(--info)}
+
+/* Tiles */
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.tile{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.tile .l{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px}
+.tile .v{font-size:26px;font-weight:600;letter-spacing:-.02em;display:flex;align-items:baseline;gap:8px}
+.tile .v small{font-size:13px;font-weight:500;color:var(--muted)}
+.tile .d{font-size:12px;color:var(--muted)}
+.tile .d b{font-weight:600}
+.d .up{color:var(--ok)} .d .risk{color:var(--crit)}
+.src{margin-left:auto;font-size:10.5px;color:var(--faint);letter-spacing:.04em;text-transform:uppercase}
+
+/* Two columns */
+.cols{display:grid;grid-template-columns:7fr 5fr;gap:16px;align-items:start}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;min-width:0}
+.ph{display:flex;align-items:baseline;gap:10px;padding:14px 18px 10px;border-bottom:1px solid var(--line)}
+.ph h2{font-size:15px;font-weight:600}
+.ph .sub{color:var(--muted);font-size:12.5px}
+.ph .right{margin-left:auto;font-size:12px;color:var(--muted)}
+
+/* Brief list */
+.brief{list-style:none;margin:0;padding:6px 8px 10px;display:flex;flex-direction:column}
+.item{display:grid;grid-template-columns:22px 1fr auto;gap:12px;align-items:start;padding:10px 10px;border-radius:8px}
+.item:hover{background:var(--panel-2)}
+.item .cb{width:18px;height:18px;margin-top:2px;border:1.5px solid var(--faint);border-radius:5px;display:grid;place-items:center;color:#fff;transition:background .15s,border-color .15s}
+.item .cb svg{width:11px;height:11px;opacity:0}
+.item .cb:hover{border-color:var(--navy)}
+.item .kind{font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-right:8px}
+.kind.decide{color:var(--crit)} .kind.review{color:var(--info)} .kind.call{color:var(--warn)} .kind.renewal{color:var(--ok)} .kind.done{color:var(--faint)}
+.item .txt{font-size:13.5px;line-height:1.4}
+.item .meta{font-size:12px;color:var(--muted);margin-top:3px;display:flex;gap:10px;flex-wrap:wrap}
+.item .meta .via{color:var(--faint)}
+.item .act{text-decoration:none;cursor:pointer;font-size:12.5px;font-weight:600;color:var(--navy);white-space:nowrap;padding:4px 8px;border-radius:6px;border:1px solid transparent}
+.item .act:hover{border-color:var(--line);background:var(--panel)}
+.item.done .cb{background:var(--ok);border-color:var(--ok)}
+.item.done .cb svg{opacity:1}
+.item.done .txt{text-decoration:line-through;color:var(--muted)}
+.item.done .act{display:none}
+.item.done .kind{color:var(--faint)}
+.divider{display:flex;align-items:center;gap:10px;margin:6px 10px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+.divider::before,.divider::after{content:"";flex:1;height:1px;background:var(--line)}
+.divider:first-child,.divider:last-child{display:none}
+
+/* Attention */
+.tabs{display:flex;gap:2px;padding:8px 10px 0;border-bottom:1px solid var(--line);overflow-x:auto}
+.tab{padding:8px 10px;font-size:12.5px;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;display:flex;gap:6px;align-items:center}
+.tab .n{font-family:var(--mono);font-size:11px;background:var(--panel-2);padding:0 6px;border-radius:8px}
+.tab.active{color:var(--fg);font-weight:600;border-color:var(--navy)}
+.tab.active .n{background:var(--navy);color:#fff}
+.alist{list-style:none;margin:0;padding:6px 8px 10px;display:flex;flex-direction:column}
+.alist li{display:grid;grid-template-columns:4px 1fr;gap:12px;padding:10px 10px;border-radius:8px}
+.alist li:hover{background:var(--panel-2)}
+.alist .bar{border-radius:2px;background:var(--line)}
+.bar.crit{background:var(--crit)} .bar.warn{background:var(--warn)} .bar.info{background:var(--info)}
+.alist .c{font-weight:600;font-size:13.5px;display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.alist .c small{font-weight:500;color:var(--muted);font-size:12px}
+.alist .r{font-size:12.5px;color:var(--muted);margin-top:2px}
+.alist .a{font-size:12.5px;color:var(--navy);font-weight:600;margin-top:5px}
+.alist .a::before{content:"→ ";color:var(--faint)}
+
+/* Sources */
+.sources{display:flex;align-items:center;gap:8px 14px;flex-wrap:wrap;padding:12px 18px;border:1px dashed var(--line);border-radius:12px;font-size:12.5px;color:var(--muted)}
+.sources .l{font-weight:600;color:var(--faint);font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+.sources .s{display:inline-flex;align-items:center;gap:6px}
+.sources .s::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--ok)}
+.sources .src-link{margin-left:auto;color:var(--navy);font-weight:600;text-decoration:none;font-size:12.5px}
+.sources .src-link:hover{text-decoration:underline}
+
+/* ---------- Prep view (assistant thread) ---------- */
+.thread{max-width:920px;margin:0 auto;padding-block:20px 120px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:18px}
+.crumb{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted)}
+.crumb button{color:var(--navy);font-weight:600;display:inline-flex;align-items:center;gap:4px;padding:4px 6px;border-radius:6px}
+.crumb button:hover{background:var(--panel-2)}
+.msg-user{align-self:flex-end;max-width:70%;background:var(--navy);color:#fff;padding:10px 14px;border-radius:14px 14px 4px 14px;font-size:14px}
+.msg-user .at{display:block;font-size:11px;opacity:.7;margin-top:4px;text-align:right}
+.msg-ai{display:grid;grid-template-columns:28px 1fr;gap:12px;min-width:0}
+.msg-ai .av{width:28px;height:28px;border-radius:8px;background:var(--navy);color:#fff;display:grid;place-items:center;font-size:10px;font-weight:700;letter-spacing:.04em}
+.msg-ai .body{min-width:0;display:flex;flex-direction:column;gap:14px}
+.msg-ai .lead{font-size:14.5px;line-height:1.5}
+.msg-ai .lead b{font-weight:600}
+.working{display:flex;flex-wrap:wrap;gap:6px 10px;font-size:11.5px;color:var(--faint)}
+.working span{display:inline-flex;align-items:center;gap:5px}
+.working span::before{content:"✓";color:var(--ok);font-weight:700}
+
+.brief-card{background:var(--panel);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);overflow:hidden}
+.bh{display:flex;align-items:center;gap:14px;padding:16px 20px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.bh .logo{width:44px;height:44px;border-radius:10px;background:var(--panel-2);display:grid;place-items:center;font-weight:700;color:var(--navy);font-size:15px}
+.bh h2{font-size:18px;font-weight:600}
+.bh .tagline{font-size:12.5px;color:var(--muted);margin-top:2px}
+.bh .when{margin-left:auto;text-align:right;font-size:12.5px;color:var(--muted)}
+.bh .when b{display:block;font-size:15px;color:var(--fg);font-weight:600}
+.bh .stage{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;padding:2px 8px;border-radius:10px;background:var(--info-bg);color:var(--info)}
+.facts{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--line)}
+.facts>div{padding:12px 20px;min-width:0}
+.facts>div+div{border-left:1px solid var(--line)}
+.facts .k{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);font-weight:600}
+.facts .v{font-size:14px;font-weight:600;margin-top:3px}
+.facts .v small,.loss .v small{font-weight:500;color:var(--muted);font-size:12px;font-family:var(--sans)}
+.bsec{padding:16px 20px;border-bottom:1px solid var(--line)}
+.bsec:last-child{border-bottom:0}
+.bsec h3{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);font-weight:600;display:flex;align-items:center;gap:8px}
+.bsec h3 .src{margin-left:auto;text-transform:none;letter-spacing:0;font-weight:500;font-size:11px}
+.bsec p{margin:8px 0 0;font-size:13.5px;line-height:1.5;max-width:70ch}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.two>.bsec+.bsec{border-left:1px solid var(--line)}
+.who{display:flex;flex-direction:column;gap:10px;margin-top:10px}
+.who .p{display:grid;grid-template-columns:32px 1fr;gap:10px;align-items:start}
+.who .p .av{width:32px;height:32px;border-radius:50%;background:var(--panel-2);display:grid;place-items:center;font-size:11px;font-weight:700;color:var(--muted)}
+.who .p b{font-size:13.5px;font-weight:600}
+.who .p small{display:block;font-size:12px;color:var(--muted)}
+.who .p .note{font-size:12.5px;margin-top:3px}
+.prog{width:100%;border-collapse:collapse;margin-top:10px;font-size:12.5px}
+.prog th{text-align:left;font-weight:600;color:var(--faint);font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:0 0 6px;border-bottom:1px solid var(--line)}
+.prog td{padding:7px 0;border-bottom:1px solid var(--line);vertical-align:top}
+.prog td:last-child,.prog th:last-child{text-align:right}
+.prog tr.gap td{color:var(--crit)}
+.prog .tag{display:inline-block;font-size:10.5px;font-weight:700;padding:1px 6px;border-radius:8px;background:var(--crit-bg);color:var(--crit);margin-left:6px;vertical-align:middle}
+.gaps{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-direction:column;gap:10px}
+.gaps li{display:grid;grid-template-columns:4px 1fr;gap:12px}
+.gaps .bar{border-radius:2px;background:var(--crit)}
+.gaps .bar.warn{background:var(--warn)}
+.gaps b{font-size:13.5px;font-weight:600}
+.gaps p{margin:3px 0 0;font-size:13px}
+.gaps .so{font-size:12.5px;color:var(--muted);margin-top:3px}
+.gaps .so b{font-weight:600;color:var(--fg)}
+.loss{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}
+.loss>div{background:var(--panel-2);border-radius:8px;padding:10px 12px}
+.loss .k{font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.06em;font-weight:600}
+.loss .v{font-size:16px;font-weight:600;margin-top:2px}
+.loss .v small{font-size:11.5px;font-weight:500;color:var(--muted)}
+.ask{list-style:none;margin:10px 0 0;padding:0;counter-reset:q;display:flex;flex-direction:column;gap:8px}
+.ask li{display:grid;grid-template-columns:22px 1fr;gap:10px;font-size:13.5px;line-height:1.45}
+.ask li::before{counter-increment:q;content:counter(q);width:22px;height:22px;border-radius:50%;background:var(--navy);color:#fff;font-size:11.5px;font-weight:700;display:grid;place-items:center;margin-top:1px}
+.ask li small{grid-column:2;display:block;color:var(--muted);font-size:12.5px}
+.sme{display:grid;grid-template-columns:36px 1fr auto;gap:12px;align-items:center;margin-top:10px;background:var(--panel-2);border-radius:10px;padding:10px 12px}
+.sme .av{width:36px;height:36px;border-radius:50%;background:var(--gold);color:var(--gold-ink);display:grid;place-items:center;font-weight:700;font-size:12px}
+.sme b{font-size:13.5px;font-weight:600;display:block}
+.sme small{font-size:12px;color:var(--muted)}
+.sme .act{font-size:12.5px;font-weight:600;color:var(--navy);white-space:nowrap}
+.next{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:8px;font-size:13px;font-weight:600;border:1px solid var(--line);background:var(--panel)}
+.btn:hover{border-color:var(--navy);color:var(--navy)}
+.btn.primary{background:var(--navy);color:#fff;border-color:var(--navy)}
+.btn.primary:hover{color:#fff;filter:brightness(1.1)}
+.after{display:flex;gap:10px;align-items:center;padding:12px 20px;background:var(--panel-2);font-size:12.5px;color:var(--muted)}
+.after svg{width:16px;height:16px;color:var(--navy);flex:none}
+.followups{display:flex;gap:8px;flex-wrap:wrap}
+.dock{position:sticky;bottom:0;padding:12px 0 calc(8px + env(safe-area-inset-bottom,0px));background:linear-gradient(to top,var(--bg) 70%,transparent)}
+.dock .prompt{width:100%}
+@media (max-width:760px){.facts{grid-template-columns:1fr 1fr}.facts>div:nth-child(3){border-left:0}.facts>div:nth-child(n+3){border-top:1px solid var(--line)}.two{grid-template-columns:1fr}.two>.bsec+.bsec{border-left:0}.loss{grid-template-columns:1fr}.msg-user{max-width:90%}.bh .when{margin-left:0;text-align:left}}
+
+[hidden]{display:none!important}
+/* ---------- Use-case views ---------- */
+.scope{font-size:12px;color:var(--muted);margin:0;padding:8px 12px;border-left:3px solid var(--gold);background:var(--panel-2);border-radius:0 8px 8px 0}
+.scope b{color:var(--fg);font-weight:600}
+.muted{color:var(--muted)}
+.board{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:16px 20px;border-bottom:1px solid var(--line);background:var(--panel-2)}
+.board .col{display:flex;flex-direction:column;gap:8px;min-width:0}
+.board .ch{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);font-weight:600;display:flex;justify-content:space-between;gap:6px}
+.board .ch span{text-transform:none;letter-spacing:0;font-family:var(--mono);color:var(--muted);font-weight:500}
+.deal{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:9px 11px;display:grid;grid-template-columns:1fr auto;gap:2px 8px;font-size:13px}
+.deal b{font-weight:600}
+.deal .amt{font-weight:600}
+.deal small{grid-column:1/-1;color:var(--muted);font-size:11.5px}
+.deal.flagged{border-left:3px solid var(--warn)}
+.deal.hot{border-left:3px solid var(--ok)}
+.flag{grid-column:1/-1;justify-self:start;font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:8px;background:var(--warn-bg);color:var(--warn)}
+.flag.ok{background:var(--ok-bg);color:var(--ok)}
+.changes{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-direction:column;gap:8px}
+.changes li{display:grid;grid-template-columns:18px 1fr;gap:10px;align-items:start;font-size:13.5px}
+.changes input{margin-top:3px;accent-color:var(--navy)}
+.changes small{display:block;color:var(--muted);font-size:12px}
+.promises{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-direction:column;gap:8px}
+.promises li{display:grid;grid-template-columns:72px 1fr;gap:10px;align-items:start;font-size:13.5px}
+.promises li.kept{color:var(--muted)}
+.promises small{display:block;color:var(--muted);font-size:12px}
+.promises .st{font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:8px;text-align:center;background:var(--info-bg);color:var(--info)}
+.promises .st.late{background:var(--crit-bg);color:var(--crit)}
+.promises .st.ok{background:var(--ok-bg);color:var(--ok)}
+.qa .qq{font-size:15px;font-weight:600;margin:10px 0 0}
+.qa .qdone{font-size:13.5px;color:var(--ok);font-weight:600}
+.written{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-direction:column;gap:4px;font-size:12.5px;color:var(--muted)}
+.written li::before{content:"✓ ";color:var(--ok);font-weight:700}
+.msg-user.voice{max-width:78%;font-size:13.5px;line-height:1.5}
+.vlab{display:flex;align-items:center;gap:5px;font-size:11px;opacity:.8;margin-bottom:5px;font-weight:600}
+.steps{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-direction:column;gap:8px;font-size:13.5px}
+.steps small{display:block;color:var(--muted);font-size:12px}
+.picker{display:flex;flex-direction:column;gap:8px}
+.pg{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.pl{width:120px;flex:none;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);font-weight:600}
+.pick{display:inline-flex;align-items:center;gap:7px;padding:7px 12px;border:1px solid var(--line);border-radius:10px;background:var(--panel);font-size:13px;font-weight:600;color:var(--fg);text-decoration:none;cursor:pointer}
+.pick:hover{border-color:var(--navy)}
+.pick small{font-weight:500;color:var(--muted);font-size:12px}
+.pick.on{border-color:var(--navy);background:var(--info-bg)}
+.tg{font-size:10px;font-weight:700;padding:1px 6px;border-radius:7px;text-transform:uppercase;letter-spacing:.04em}
+.tg.cl{background:var(--ok-bg);color:var(--ok)}
+.tg.pr{background:var(--info-bg);color:var(--info)}
+.ortype{font-size:13px;color:var(--faint);font-style:italic}
+#cbResult{display:flex;flex-direction:column;gap:18px}
+.stage.cl{background:var(--ok-bg);color:var(--ok)}
+.side-h{display:flex;align-items:center;gap:10px;padding:12px 20px;font-size:14px;font-weight:600;border-bottom:1px solid var(--line)}
+.side-h span{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:11.5px;color:#fff}
+.side-h small{margin-left:auto;font-size:11.5px;font-weight:500;color:var(--muted)}
+.side-h.int{background:var(--ok-bg)}.side-h.int span{background:var(--ok)}
+.side-h.ext{background:var(--info-bg)}.side-h.ext span{background:var(--info)}
+.gaps .bar.info{background:var(--info)}
+.prog tr.nic td{color:var(--muted);font-style:italic}
+.prog tr.nic a{color:var(--navy);font-style:normal;font-weight:600;text-decoration:none}
+.note-pr{font-size:13px;color:var(--muted);margin:0}
+.note-pr a{color:var(--navy);font-weight:600}
+.leads{width:100%;border-collapse:collapse;font-size:13px}
+.leads th{text-align:left;font-weight:600;color:var(--faint);font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:12px 12px 8px;border-bottom:1px solid var(--line)}
+.leads td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+.leads th:first-child,.leads td:first-child{padding-left:20px}
+.leads td small{display:block;color:var(--muted);font-size:11.5px}
+.leads tr.sel td{background:var(--panel-2)}
+.leads .yes,.leads .no{font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:8px}
+.leads .yes{background:var(--ok-bg);color:var(--ok)}
+.leads .no{background:var(--panel-2);color:var(--muted);border:1px solid var(--line)}
+.leads .lk{color:var(--navy);font-weight:600;font-size:12.5px}
+.mail{border:1px solid var(--line);border-radius:10px;margin-top:10px;overflow:hidden}
+.mh{display:grid;grid-template-columns:64px 1fr;padding:7px 12px;border-bottom:1px solid var(--line);font-size:13px}
+.mh span{color:var(--faint);font-size:12px}
+.mb{padding:12px;font-size:13.5px;line-height:1.55}
+.sfl{font-size:11px;font-weight:600;color:var(--navy);text-decoration:none;white-space:nowrap;opacity:.85}
+.sfl:hover{text-decoration:underline;opacity:1}
+.deal .sfl{grid-column:1/-1;justify-self:start;margin-top:2px}
+.bh .sfl{align-self:center}
+.leads .sfl,.promises .sfl{margin-left:6px}
+.flows{display:contents}
+.wops{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.wop{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:grid;grid-template-columns:96px 1fr auto;gap:6px 12px;align-items:start;font-size:13px}
+.wop.done{border-color:var(--ok);background:var(--ok-bg)}
+.wop.skip{opacity:.6}
+.wop.blocked{border-color:var(--crit)}
+.wop .obj{font-family:var(--mono);font-size:11px;color:var(--muted);padding-top:2px}
+.wop .obj b{display:block;font-family:var(--sans);font-size:12.5px;color:var(--fg);font-weight:600}
+.wop .what{font-size:13.5px}
+.wop .what b{font-weight:600}
+.wop .what small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
+.wop .chk{grid-column:2;display:flex;flex-direction:column;gap:3px;font-size:12px;color:var(--muted)}
+.wop .chk span::before{content:"✓ ";color:var(--ok);font-weight:700}
+.wop .chk span.bad::before{content:"✕ ";color:var(--crit)}
+.wop .chk span.q::before{content:"? ";color:var(--warn);font-weight:700}
+.wop .chk span.bad{color:var(--crit)}
+.wop .chk span.q{color:var(--fg)}
+.wop .opts{grid-column:2;display:flex;gap:6px;flex-wrap:wrap}
+.wop .opts button{font-size:12px;font-weight:600;padding:4px 9px;border-radius:7px;border:1px solid var(--line);background:var(--panel)}
+.wop .opts button:hover,.wop .opts button.on{border-color:var(--navy);color:var(--navy)}
+.wop .opts button.on{background:var(--info-bg)}
+.wop .act{grid-column:3;grid-row:1/span 3;display:flex;flex-direction:column;gap:6px;align-items:stretch;min-width:112px}
+.wop .act .btn{justify-content:center;padding:6px 10px;font-size:12.5px}
+.wop .act .btn[disabled]{opacity:.45;cursor:not-allowed}
+.wop .st{grid-column:3;grid-row:1/span 3;align-self:center;font-size:12.5px;font-weight:600;text-align:right;white-space:nowrap}
+.wop.done .st{color:var(--ok)}
+.wop.skip .st{color:var(--muted)}
+.wop.blocked .st{color:var(--crit)}
+.wop .st small{display:block;font-weight:500;color:var(--muted);font-size:11.5px}
+.wop .tag{font-size:10px;font-weight:700;padding:1px 6px;border-radius:7px;background:var(--panel-2);color:var(--muted);border:1px solid var(--line);margin-left:6px;vertical-align:middle;text-transform:uppercase;letter-spacing:.04em}
+.wsum{font-size:13.5px;line-height:1.5}
+.wsum b{font-weight:600}
+.nextq{margin-top:4px}
+.nextq .qq{font-size:15px;font-weight:600;margin:0 0 8px}
+.msg-ai .lead.q{font-weight:500}
+@media (max-width:760px){.wop{grid-template-columns:1fr}.wop .chk,.wop .opts{grid-column:1}.wop .act,.wop .st{grid-column:1;grid-row:auto;flex-direction:row;text-align:left}}
+@media (max-width:760px){.ops li{grid-template-columns:1fr}.ops .ch{justify-self:start}}
+@media (max-width:760px){.board{grid-template-columns:1fr}.pl{width:100%}.leads th:nth-child(2),.leads td:nth-child(2){display:none}.msg-user.voice{max-width:92%}}
+
+/* ---------- Sources view (slide) ---------- */
+:root{--s-sf:#0b7bd1;--s-ms:#7a3fd1;--s-ams:#d1660b;--s-wf:#0b9e8f;--s-reg:#2f8f3a;--s-sme:#b8860b;--s-in:#1e2e9a;--s-wf-bg:#e2f5f2}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--s-sf:#5cb3f0;--s-ms:#b48cf5;--s-ams:#f2a05c;--s-wf:#5cd6c8;--s-reg:#7fd48a;--s-sme:#e6c15c;--s-in:#8fa0ff}}
+:root[data-theme="dark"]{--s-sf:#5cb3f0;--s-ms:#b48cf5;--s-ams:#f2a05c;--s-wf:#5cd6c8;--s-reg:#7fd48a;--s-sme:#e6c15c;--s-in:#8fa0ff}
+.slide{max-width:1400px;margin:0 auto;padding-block:20px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:14px}
+.slide .crumb{justify-content:flex-start}
+.slide-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.slide-head h1{font-size:22px;font-weight:600;letter-spacing:-.01em}
+.slide-head p{margin:0;color:var(--muted);font-size:13.5px;max-width:70ch}
+.slide-body{display:grid;grid-template-columns:5fr 6fr;gap:18px;align-items:start}
+.mini{background:var(--panel);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);display:grid;grid-template-columns:140px 1fr;position:relative}
+.mini .mside{border-radius:14px 0 0 14px}
+.mini .mside{border-right:1px solid var(--line);padding:12px 10px;display:flex;flex-direction:column;gap:6px;font-size:11px;color:var(--muted);position:relative}
+.mini .mside .mb{display:flex;align-items:center;gap:6px;font-weight:600;color:var(--fg);margin-bottom:6px}
+.mini .mside .mb .mark{width:26px;height:16px;font-size:8px;line-height:16px}
+.mini .mside div.n{padding:4px 6px;border-radius:5px}
+.mini .mside div.n.on{background:var(--panel-2);color:var(--fg);font-weight:600}
+.mini .mmain{padding:12px 14px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.mblk{position:relative;border:1px dashed var(--line);border-radius:9px;padding:10px 12px;background:var(--bg)}
+.mblk .ml{font-size:11.5px;font-weight:600;color:var(--fg)}
+.mblk .ms{font-size:10.5px;color:var(--muted);margin-top:2px;line-height:1.4}
+.mrow{display:grid;gap:8px}
+.mrow.c3{grid-template-columns:repeat(3,1fr)} .mrow.c4{grid-template-columns:repeat(4,1fr)} .mrow.c2{grid-template-columns:7fr 5fr}
+.mini .mgoal{display:grid;grid-template-columns:5fr 6fr 4fr;gap:10px}
+.mini .mgoal .bullet{margin-top:8px;height:6px}
+.mini .mbars{display:flex;gap:3px;align-items:flex-end;height:30px;margin-top:8px}
+.mini .mbars i{flex:1;background:var(--navy);border-radius:2px 2px 0 0;opacity:.85}
+.mini .mbars i.e{opacity:.3}
+.mini .mprompt{border:1px solid var(--line);background:var(--panel);border-radius:10px;padding:8px 10px;font-size:11px;color:var(--faint);display:flex;align-items:center;gap:8px}
+.mini .mprompt .send{width:18px;height:18px;margin-left:auto;border-radius:5px;background:var(--navy)}
+.mini .mchips{display:flex;gap:5px;flex-wrap:wrap;justify-content:center}
+.mini .mchips span{border:1px solid var(--line);border-radius:10px;padding:2px 7px;font-size:9.5px;color:var(--muted);background:var(--panel)}
+.mini .mlist{display:flex;flex-direction:column;gap:4px;margin-top:6px}
+.mini .mlist span{height:7px;border-radius:3px;background:var(--panel-2)}
+.mini .mlist span:nth-child(2){width:85%} .mini .mlist span:nth-child(3){width:70%} .mini .mlist span.d{opacity:.5;width:60%}
+.mini .mtabs{display:flex;gap:6px;font-size:9.5px;color:var(--muted);margin-top:4px}
+.mini .mtabs b{color:var(--fg);border-bottom:2px solid var(--navy)}
+.mini .msrc{display:flex;gap:8px;flex-wrap:wrap;font-size:9.5px;color:var(--muted);border:1px dashed var(--line);border-radius:8px;padding:6px 10px}
+.pin{position:absolute;top:-9px;left:-9px;width:22px;height:22px;border-radius:50%;background:var(--gold);color:var(--gold-ink);font:700 11.5px/22px var(--sans);text-align:center;box-shadow:0 0 0 2px var(--panel);z-index:2}
+.pin.r{left:auto;right:-9px}
+.legend-list{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-content:start}
+.lg{display:grid;grid-template-columns:22px 1fr;gap:10px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:9px 12px;align-items:start}
+.lg .pin{position:static;box-shadow:none;margin-top:1px}
+.lg b{font-size:12px;font-weight:600;display:block}
+.lg .d{font-size:11px;color:var(--muted);margin:2px 0 5px;line-height:1.4}
+.srcs{display:flex;flex-wrap:wrap;gap:4px}
+.sc{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:600;padding:2px 7px 2px 6px;border-radius:9px;background:var(--panel-2);color:var(--fg);white-space:nowrap}
+.sc::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--c,var(--muted));flex:none}
+.sc.sf{--c:var(--s-sf)} .sc.ms{--c:var(--s-ms)} .sc.ams{--c:var(--s-ams)} .sc.wf{--c:var(--s-wf)} .sc.reg{--c:var(--s-reg)} .sc.sme{--c:var(--s-sme)} .sc.in{--c:var(--s-in)}
+.sc.w{border:1px dashed var(--line);background:transparent}
+.key{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:11.5px;color:var(--muted);padding:10px 14px;border:1px solid var(--line);border-radius:10px;background:var(--panel);align-items:center}
+.key .t{font-weight:600;color:var(--faint);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;margin-right:4px}
+.key .sc{background:transparent;padding-left:0;font-weight:500}
+.key .note{margin-left:auto;font-size:11px}
+@media (max-width:1000px){.slide-body{grid-template-columns:1fr}.mini{grid-template-columns:1fr}.mini .mside{display:none}}
+@media (max-width:1200px){.legend-list{grid-template-columns:1fr}}
+/* export mode: ?export hides the app chrome so the slide view can be captured as a 16:9 image */
+.export .side,.export .top,.export .crumb{display:none}
+.export .app{grid-template-columns:1fr}
+.export .slide{max-width:1560px;padding-block:28px}
+@media (max-width:760px){.mrow.c3,.mrow.c4,.mrow.c2,.mini .mgoal{grid-template-columns:1fr}.key .note{margin-left:0}}
+
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(10px);background:var(--fg);color:var(--bg);padding:9px 14px;border-radius:8px;font-size:13px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:20}
+.toast.show{opacity:1;transform:translateX(-50%)}
+
+:focus-visible{outline:2px solid var(--navy);outline-offset:2px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+
+/* ---------- Responsive ---------- */
+@media (max-width:1000px){.goal{grid-template-columns:1fr 1fr}.goal>div:last-child{grid-column:1/-1;border-left:0;border-top:1px solid var(--line)}.cols{grid-template-columns:1fr}.tiles{grid-template-columns:repeat(2,1fr)}.prepared{grid-template-columns:1fr}}
+@media (max-width:760px){
+  .app{grid-template-columns:1fr;grid-template-rows:auto 1fr}
+  .side{border-right:0;border-bottom:1px solid var(--line);flex-direction:row;align-items:center;gap:6px;overflow-x:auto;padding:0 8px;padding-left:max(8px,env(safe-area-inset-left,0px))}
+  .side .ws,.side .sect,.side .recents,.side .spacer,.side .foot{display:none}
+  .nav{flex-direction:row;padding:6px 0}
+  .nav a{padding:6px 8px;font-size:12.5px}
+  .nav .badge,.nav .sub{display:none}
+  .top{padding:8px 12px}
+  .top .role,.search{display:none}
+  .top .gap{flex:1}
+  .goal{grid-template-columns:1fr}.goal>div+div{border-left:0;border-top:1px solid var(--line)}
+  .goal .big .v{font-size:28px}
+  .months .lab{font-size:8px}
+  .hero h1{font-size:22px}
+  .item{grid-template-columns:22px 1fr}
+  .item .act{grid-column:2;justify-self:start;padding-left:0}
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <!-- ================= Sidebar ================= -->
+  <aside class="side" aria-label="Workspace navigation">
+    <div class="brand"><span class="mark">PA</span><span class="name">Producer Assistant</span><span class="dot" title="Connected"></span></div>
+    <div class="ws"><span class="av">DW</span><span>Dana Whitfield</span><span class="chev">⌃⌄</span></div>
+    <nav class="nav">
+      <a href="#home" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg>New chat</a>
+      <a href="#briefs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8"/></svg>My Briefs<span class="sub">12</span></a>
+      <a href="#workflows"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l1.8 4.6L18 9l-4.2 1.4L12 15l-1.8-4.6L6 9l4.2-1.4zM5 17l.9 2.1L8 20l-2.1.9L5 23l-.9-2.1L2 20l2.1-.9zM19 15l.7 1.6 1.6.7-1.6.7L19 19.6l-.7-1.6-1.6-.7 1.6-.7z"/></svg>AI Workflows</a>
+      <a href="#memory"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.5 2a3.5 3.5 0 00-3.4 4.3A4 4 0 004 13a4 4 0 002.3 3.6A3.5 3.5 0 109.5 22V2zM14.5 2a3.5 3.5 0 013.4 4.3A4 4 0 0120 13a4 4 0 01-2.3 3.6A3.5 3.5 0 1114.5 22V2z"/></svg>Memory<span class="badge">1</span></a>
+      <a href="#dashboards"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>Dashboards<span class="sub">›</span></a>
+      <a href="#scheduled"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Scheduled<span class="sub">›</span></a>
+      <a href="#proposals"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="13" rx="1"/><path d="M8 21h8M12 17v4"/></svg>Proposals</a>
+    </nav>
+    <div class="sect">Archived ›</div>
+    <div class="sect">Recents ⌄</div>
+    <nav class="nav recents">
+      <a href="#r1">Prep: Meridian Logistics first meeting</a>
+      <a href="#r2">Harbor Point Health — renewal strategy</a>
+      <a href="#r3">Who covers trucking physical damage?</a>
+      <a href="#r4">Draft BOR letter for Cobalt Ridge</a>
+      <a href="#r5">Compare Beazley vs Coalition cyber quotes</a>
+    </nav>
+    <div class="spacer"></div>
+    <div class="foot">Signed in as Dana Whitfield via the broker portal · Salesforce permissions apply</div>
+  </aside>
+
+  <!-- ================= Main ================= -->
+  <div class="main">
+    <header class="top">
+      <span class="title">Producer Home</span><span class="role">January version</span>
+      <span class="gap"></span>
+      <div class="search" role="search"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>Search clients, prospects, policies, people…<kbd>⌘K</kbd></div>
+      <button class="icon-btn" aria-label="Notifications"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 00-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0"/></svg><span class="pip"></span></button>
+      <button class="icon-btn" id="themeBtn" aria-label="Toggle theme"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button>
+      <div class="user"><span class="av">DW</span></div>
+    </header>
+
+    <div class="scroll">
+      <main class="content">
+        <!-- Goal strip: not in the January scope -->
+        <section class="sources" aria-label="Goal panel coming" style="justify-content:flex-start">
+          <span class="l">Your goal &amp; pace</span>
+          <span style="color:var(--muted);font-size:12.5px">Booked vs goal, pace and “what closes the gap” arrive with the production data feed (stage 2). Everything below works on 4 January.</span>
+        </section>
+
+        <!-- Hero prompt -->
+        <section class="hero">
+          <h1>Good morning, Dana.</h1>
+          <div class="date">Monday, 5 January · 2 meetings today · 3 items need you</div>
+          <form class="prompt" id="promptForm">
+            <button type="button" class="mic" aria-label="Attach files" title="Attach policies, loss runs, census files"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button>
+            <input id="promptInput" type="text" placeholder="Ask anything — / for workflows, @ for briefs, # for clients" autocomplete="off">
+            <button type="button" class="mic" aria-label="Dictate" title="Dictate — notes, next steps and tasks are captured to Salesforce"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0014 0M12 17v4M8 21h8"/></svg></button>
+            <button type="submit" class="send" aria-label="Send"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+          </form>
+          <div class="hint">Try: “Prep me for the 2:00 with Meridian” · “What did I promise this week?” · “Capture: just met Jordan at Northwind, they want revised numbers by Nov 4”</div>
+        </section>
+
+        <!-- Capability chips -->
+        <section class="chips" aria-label="Things you can ask" style="margin:-6px auto 0">
+          <button class="chip" data-prompt="Prep me for my next meeting"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>Prep my next meeting</button>
+          <button class="chip" data-prompt="Run my deal review: what did I promise this week and what is due?"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>Deal Review</button>
+          <button class="chip" data-prompt="Capture my meeting notes: "><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0014 0M12 17v4M8 21h8"/></svg>Capture Agent</button>
+          <button class="chip" data-prompt="Show my pipeline: what moved, what is stale, what needs a fix"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 5-6"/></svg>Pipeline</button>
+          </section>
+
+        <!-- Brief + attention -->
+        <section class="cols">
+          <div class="panel">
+            <div class="ph"><h2>Today’s brief</h2><span class="sub">What needs you, in order</span><span class="right" id="briefCount"></span></div>
+            <ul class="brief" id="brief">
+              <li class="item" data-kind="decide">
+                <button class="cb" aria-label="Mark done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></button>
+                <div><div class="txt"><span class="kind decide">Decide</span>Approve the Beazley cyber quote for Brightline Foods. The $2.1M limit is held until 5:00 PM today.</div>
+                  <div class="meta"><span>Brightline Foods · Opportunity · Proposal</span><span class="via">surfaced by Deal Review</span></div></div>
+                <button class="act">Compare quotes</button>
+              </li>
+              <li class="item" data-kind="review">
+                <button class="cb" aria-label="Mark done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></button>
+                <div><div class="txt"><span class="kind review">Review</span>Prep for Meridian Logistics is ready: CRM context, the existing prospect brief and last week’s emails.</div>
+                  <div class="meta"><span>Meeting 2:00 PM · Trucking, 140 units</span><span class="via">Prep my next meeting</span></div></div>
+                <a class="act" href="#prep">Open brief</a>
+              </li>
+              <li class="item" data-kind="renewal">
+                <button class="cb" aria-label="Mark done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></button>
+                <div><div class="txt"><span class="kind renewal">Renewal</span>Lakeshore Hospitality Group Package expires in 23 days and has no renewal opportunity yet.</div>
+                  <div class="meta"><span>Client · Policy PK-4471120 · exp 11/18</span><span class="via">Pipeline sweep</span></div></div>
+                <button class="act">Open renewal</button>
+              </li>
+              <li class="item done" data-kind="done" data-done="8:47 AM">
+                <button class="cb" aria-label="Mark not done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></button>
+                <div><div class="txt"><span class="kind done">Follow-up</span>Send Harbor Point Health the recap and the two open items from Friday’s meeting.</div>
+                  <div class="meta"><span>Done 8:47 AM</span><span class="via">dictated in the car · email drafted and sent</span></div></div>
+                <button class="act">Open</button>
+              </li>
+              <li class="item done" data-kind="done" data-done="8:52 AM">
+                <button class="cb" aria-label="Mark not done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></button>
+                <div><div class="txt"><span class="kind done">Capture</span>Log Friday’s meeting notes and create 3 follow-up tasks on the Harbor Point opportunity.</div>
+                  <div class="meta"><span>Done 8:52 AM</span><span class="via">3 Tasks and 1 Event written to Salesforce</span></div></div>
+                <button class="act">Open</button>
+              </li>
+            </ul>
+          </div>
+
+          <div class="panel">
+            <div class="ph"><h2>Needs attention</h2><span class="sub">From the sweep</span></div>
+            <div class="tabs" role="tablist">
+                            <button class="tab" role="tab" data-tab="renew">Renewals 90d<span class="n">6</span></button>
+              <button class="tab active" role="tab" data-tab="tasks">Overdue tasks<span class="n">4</span></button>
+              <button class="tab" role="tab" data-tab="stalled">Stalled deals<span class="n">2</span></button>
+            </div>
+            <ul class="alist" data-pane="renew" hidden>
+              <li><span class="bar crit"></span><div><div class="c">Lakeshore Hospitality Group<small>Package · exp 11/18</small></div><div class="r">23 days. No renewal opportunity opened.</div><div class="a">Open renewal and start policy review</div></div></li>
+              <li><span class="bar warn"></span><div><div class="c">Northwind Dental Partners<small>Medical, Dental, Vision, Life · exp 12/01</small></div><div class="r">36 days. Competing quote in play.</div><div class="a">Schedule pre-renewal meeting</div></div></li>
+              <li><span class="bar info"></span><div><div class="c">Cobalt Ridge Construction<small>Workers Comp · exp 12/15</small></div><div class="r">50 days. Client at risk.</div><div class="a">Pull loss runs now</div></div></li>
+              <li><span class="bar info"></span><div><div class="c">Pinecrest Senior Living<small>Package · exp 01/01</small></div><div class="r">67 days.</div><div class="a">Confirm new contact first</div></div></li>
+              <li><span class="bar info"></span><div><div class="c">Harbor Point Health<small>Cyber Liability · exp 01/10</small></div><div class="r">76 days. Limit increase discussed Friday.</div><div class="a">Request indications at $5M</div></div></li>
+              <li><span class="bar info"></span><div><div class="c">Brightline Foods<small>Property · exp 01/22</small></div><div class="r">88 days.</div><div class="a">Add to Q1 renewal plan</div></div></li>
+            </ul>
+            <ul class="alist" data-pane="tasks">
+              <li><span class="bar crit"></span><div><div class="c">Sable &amp; Finch Architects<small>due Oct 17</small></div><div class="r">Send revised professional liability proposal.</div><div class="a">Draft the proposal from the last quote</div></div></li>
+              <li><span class="bar crit"></span><div><div class="c">Cobalt Ridge Construction<small>due Oct 20</small></div><div class="r">Reply on GL audit dispute.</div><div class="a">Draft reply with servicer’s notes</div></div></li>
+              <li><span class="bar warn"></span><div><div class="c">Orion Cold Storage<small>due Oct 22</small></div><div class="r">Confirm discovery call.</div><div class="a">Propose 3 times</div></div></li>
+              <li><span class="bar warn"></span><div><div class="c">Brightline Foods<small>due Oct 23</small></div><div class="r">Share cyber application with CISO.</div><div class="a">Send the ACORD pre-filled</div></div></li>
+            </ul>
+            <ul class="alist" data-pane="stalled" hidden>
+              <li><span class="bar warn"></span><div><div class="c">Sable &amp; Finch Architects<small>Proposal · $86K</small></div><div class="r">No activity for 21 days. Close date passed on Oct 15.</div><div class="a">Ask: move close date or mark lost?</div></div></li>
+              <li><span class="bar warn"></span><div><div class="c">Orion Cold Storage<small>Qualification · $140K</small></div><div class="r">Discovery call rescheduled twice.</div><div class="a">Send a one-page capabilities note</div></div></li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- Connected sources -->
+        <section class="sources" aria-label="Connected sources">
+          <span class="l">Connected</span>
+          <span class="s">Salesforce</span><span class="s">Outlook · Teams</span><span class="s">Broker portal agent</span><span class="s">Existing prospect briefs</span><span class="s">SME directory</span><span class="src-link" style="cursor:default">January scope: four agents, reads and writes as you</span>
+        </section>
+      </main>
+
+      <!-- ================= Prep view ================= -->
+      <section class="thread" id="prepView" hidden aria-label="Meeting prep">
+        <div class="crumb"><button type="button" id="backHome"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>Home</button><span>›</span><span>Prep: Meridian Logistics first meeting</span></div>
+
+        <div class="msg-user" id="prepUserMsg">Prep me for my next meeting<span class="at">Today · 9:14 AM</span></div>
+
+        <div class="msg-ai">
+          <div class="av">AI</div>
+          <div class="body">
+            <div class="working"><span>Calendar: next meeting is Meridian Logistics, 2:00 PM</span><span>Salesforce opportunity + 6 emails</span><span>3 policies &amp; loss runs from the prospect portal</span><span>Coverage Gap Analyzer</span><span>FMCSA SAFER</span><span>SME directory</span></div>
+            <p class="lead">Your next meeting is <b>Meridian Logistics at 2:00 PM</b>, first in-person after the intro call on Oct 14. They are a <b>referred, engaged prospect</b>: they shared their current program, so this is a gap-analysis meeting, not a discovery meeting. Two coverage gaps are worth leading with, and their current carrier's renewal is <b>58 days out</b>, which sets your timeline.</p>
+
+            <div class="brief-card">
+              <div class="bh">
+                <div class="logo">ML</div>
+                <div><h2>Meridian Logistics, Inc.</h2><div class="tagline">Regional refrigerated freight · Fresno, CA · est. 2004</div></div>
+                <span class="stage">Prospect · engaged</span>
+                <div class="when"><b>Today, 2:00 – 3:00 PM</b>At their yard, 4410 S Cedar Ave · with Karen Harris (SME) joining by phone at 2:30</div>
+              </div>
+              <div class="facts">
+                <div><div class="k">Fleet</div><div class="v">140 power units <small>· 210 reefer trailers</small></div></div>
+                <div><div class="k">Revenue</div><div class="v num">$48M <small>est. · 2025</small></div></div>
+                <div><div class="k">Current program</div><div class="v num">$1.62M <small>premium · 5 lines · renews Dec 23</small></div></div>
+                <div><div class="k">Our opportunity</div><div class="v num">$95K <small>revenue est. · Package + Auto</small></div></div>
+              </div>
+
+              <div class="two">
+                <div class="bsec">
+                  <h3>Who you're meeting<span class="src">Salesforce · LinkedIn</span></h3>
+                  <div class="who">
+                    <div class="p"><span class="av">RO</span><div><b>Rosa Ortega</b><small>CFO · decision maker · joined 2023 from a 3PL</small><div class="note">Asked twice about total cost of risk, not premium. Prefers numbers before narrative.</div></div></div>
+                    <div class="p"><span class="av">DK</span><div><b>Dale Kowalski</b><small>Director of Fleet Operations · 19 years at Meridian</small><div class="note">Owns the safety program. Proud of the CSA scores; sensitive about the 2024 cargo claim.</div></div></div>
+                  </div>
+                </div>
+                <div class="bsec">
+                  <h3>Why now<span class="src">Email thread · Oct 14 call notes</span></h3>
+                  <p>Referred by Karen Harris after Meridian's broker of 11 years was acquired and their service team changed. Rosa's words on Oct 14: "we found out about the reefer breakdown exclusion from the claim denial, not from our broker." Renewal with Great West is Dec 23; they want a decision by Thanksgiving.</p>
+                  <p>Last touch: Dale sent the loss runs Friday 4:52 PM without comment.</p>
+                </div>
+              </div>
+
+              <div class="bsec">
+                <h3>Current program<span class="src">3 policies uploaded · extracted by Policy Review</span></h3>
+                <table class="prog">
+                  <thead><tr><th>Line</th><th>Carrier</th><th>Limit</th><th>Premium</th></tr></thead>
+                  <tbody>
+                    <tr><td>Commercial Auto</td><td>Great West</td><td class="num">$1M CSL</td><td class="num">$1,120,000</td></tr>
+                    <tr class="gap"><td>Motor Truck Cargo<span class="tag">GAP</span></td><td>Great West</td><td class="num">$100K / $250K</td><td class="num">$168,000</td></tr>
+                    <tr><td>General Liability</td><td>Great West</td><td class="num">$1M / $2M</td><td class="num">$84,000</td></tr>
+                    <tr><td>Workers Comp</td><td>State Fund</td><td class="num">Statutory</td><td class="num">$212,000</td></tr>
+                    <tr><td>Umbrella</td><td>Great West</td><td class="num">$5M</td><td class="num">$36,000</td></tr>
+                    <tr class="gap"><td>Contingent Cargo<span class="tag">MISSING</span></td><td>—</td><td>—</td><td>—</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="bsec">
+                <h3>Coverage gaps to raise<span class="src">Coverage Gap Analyzer · run Oct 24</span></h3>
+                <ul class="gaps">
+                  <li><span class="bar"></span><div><b>Reefer breakdown is excluded on the cargo form</b><p>The Great West MTC form excludes spoilage from mechanical breakdown unless endorsed. 100% of their freight is temperature-controlled. The 2024 denied claim ($84K) was exactly this.</p><div class="so">So: <b>quote MTC with reefer breakdown endorsed, $250K per trailer</b>, and show the 2024 claim as paid under our structure.</div></div></li>
+                  <li><span class="bar"></span><div><b>No contingent cargo, but they broker 15–20% of loads</b><p>Dale confirmed on Oct 14 that overflow goes to owner-operators under Meridian's authority. Those loads carry Meridian's name and no cargo cover.</p><div class="so">So: <b>add contingent cargo at $250K</b>; est. $18–24K premium. Ask how many brokered loads per month.</div></div></li>
+                  <li><span class="bar warn"></span><div><b>Cargo per-shipment limit is low for pharma lanes</b><p>Three 2026 lanes to Central Valley pharma distributors. Typical reefer pharma load values exceed $100K.</p><div class="so">So: ask about max load value on those lanes before proposing a limit.</div></div></li>
+                </ul>
+              </div>
+
+              <div class="two">
+                <div class="bsec">
+                  <h3>Loss history<span class="src">5-year loss runs · FMCSA SAFER</span></h3>
+                  <div class="loss">
+                    <div><div class="k">Auto incurred</div><div class="v num">$412K <small>/ 5 yrs · 11 claims</small></div></div>
+                    <div><div class="k">Cargo incurred</div><div class="v num">$96K <small>+ $84K denied</small></div></div>
+                    <div><div class="k">Loss ratio</div><div class="v num">38% <small>auto · below trucking avg</small></div></div>
+                  </div>
+                  <p>FMCSA: Satisfactory rating, Unsafe Driving BASIC 31st percentile, no OOS orders. Dale's safety story holds up. Lead with it.</p>
+                </div>
+                <div class="bsec">
+                  <h3>Ask these<span class="src">Prepared from the gaps and the CFO's priorities</span></h3>
+                  <ol class="ask">
+                    <li>How many loads a month go to owner-operators, and under whose authority?<small>Sizes the contingent cargo exposure.</small></li>
+                    <li>What is the highest load value on the pharma lanes?<small>Sets the cargo limit.</small></li>
+                    <li>What did the $84K denial cost beyond the claim: the customer, the lane?<small>Rosa's total-cost-of-risk frame.</small></li>
+                    <li>Who else needs to see the proposal before Thanksgiving?<small>Confirms the decision path.</small></li>
+                  </ol>
+                </div>
+              </div>
+
+              <div class="bsec">
+                <h3>SME on call<span class="src">SME directory</span></h3>
+                <div class="sme"><span class="av">KH</span><div><b>Karen Harris · Transportation, Regional Specialties (West)</b><small>Made the referral. Placed 3 reefer fleets this year with reefer breakdown endorsed. Joining by phone at 2:30 for the cargo discussion.</small></div><button class="act">Message on Teams</button></div>
+              </div>
+
+              <div class="bsec">
+                <h3>Suggested next step</h3>
+                <p>Leave with agreement to quote a Package + Auto program with MTC reefer breakdown endorsed and contingent cargo added, indications by Nov 14, proposal meeting the week of Nov 17. That keeps you two weeks ahead of their Thanksgiving decision.</p>
+                <div class="next">
+                  <button class="btn primary">Add agenda to the invite</button>
+                  <button class="btn">Draft recap email for after</button>
+                  <button class="btn">Open opportunity in Salesforce</button>
+                  <button class="btn">Share brief with Karen</button>
+                </div>
+              </div>
+              <div class="after"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0014 0M12 17v4M8 21h8"/></svg>After the meeting, dictate what happened on the drive back. Notes, next steps and tasks go to the opportunity; the recap email is drafted for you.</div>
+            </div>
+
+            <div class="followups">
+              <button class="chip" data-prompt="Compare Meridian's program to our last 3 reefer fleet wins">Compare to our last 3 reefer wins</button>
+              <button class="chip" data-prompt="What did Rosa say about budget on the Oct 14 call?">What did Rosa say about budget?</button>
+              <button class="chip" data-prompt="Draft a one-page agenda for the Meridian meeting">One-page agenda</button>
+              <button class="chip" data-prompt="Which carriers endorse reefer breakdown for fleets this size?">Which carriers endorse reefer breakdown?</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="dock">
+          <form class="prompt" id="promptForm2">
+            <button type="button" class="mic" aria-label="Attach files"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button>
+            <input id="promptInput2" type="text" placeholder="Ask a follow-up about Meridian…" autocomplete="off">
+            <button type="button" class="mic" aria-label="Dictate"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0014 0M12 17v4M8 21h8"/></svg></button>
+            <button type="submit" class="send" aria-label="Send"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+          </form>
+        </div>
+      </section>
+
+      <!-- ================= Use-case views (one per chip) ================= -->
+      <!-- Pipeline -->
+      <section class="thread uc" id="v-pipeline" hidden aria-label="Pipeline">
+        <div class="crumb"><button type="button" class="back"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>Home</button><span>›</span><span>Pipeline</span></div>
+        <div class="msg-user">Show my pipeline: what moved, what is stale, what needs a fix<span class="at">Today · 8:05 AM</span></div>
+        <div class="msg-ai"><div class="av">AI</div><div class="body">
+          <div class="working"><span>7 open opportunities you own</span><span>Tasks &amp; Events, last 30 days</span><span>Stage history</span></div>
+          <p class="lead"><b>7 open deals, $2.4M.</b> Brightline Foods is the only one closing this month. <b>5 flags on 3 deals</b>; 3 of them I can fix now if you confirm. Since Friday, Northwind Dental moved to Negotiation.</p>
+          <div class="brief-card">
+            <div class="board">
+              <div class="col"><div class="ch">Qualification<span>2 · $235K</span></div>
+                <div class="deal"><b>Meridian Logistics</b><span class="amt num">$95K</span><small>Package + Auto · meeting today 2:00</small><a class="sfl" href="#" onclick="return false" title="Open in Salesforce (new tab)">Salesforce ↗</a></div>
+                <div class="deal flagged"><b>Orion Cold Storage</b><span class="amt num">$140K</span><small>Close Dec 12</small><span class="flag">No next step</span><span class="flag">Rescheduled twice</span><a class="sfl" href="#" onclick="return false" title="Open in Salesforce (new tab)">Salesforce ↗</a></div>
+              </div>
+              <div class="col"><div class="ch">Proposal<span>3 · $396K</span></div>
+                <div class="deal hot"><b>Brightline Foods</b><span class="amt num">$310K</span><small>Cyber · close Oct 31 · quote held till 5 PM</small><span class="flag ok">Closing this month</span><a class="sfl" href="#" onclick="return false" title="Open in Salesforce (new tab)">Salesforce ↗</a></div>
+                <div class="deal flagged"><b>Sable &amp; Finch Architects</b><span class="amt num">$86K</span><small>Prof. liability · close Oct 15</small><span class="flag">Close date passed</span><span class="flag">No activity 21 days</span><a class="sfl" href="#" onclick="return false" title="Open in Salesforce (new tab)">Salesforce ↗</a></div>
+                <div class="deal flagged"><b>Harbor Point Health</b><span class="amt num">—</span><small>Cyber limit increase · close Jan 10</small><span class="flag">Amount missing</span><a class="sfl" href="#" onclick="return false" title="Open in Salesforce (new tab)">Salesforce ↗</a></div>
+              </div>
+              <div class="col"><div class="ch">Negotiation<span>2 · $1.77M</span></div>
+                <div class="deal"><b>Northwind Dental Partners</b><span class="amt num">$680K</span><small>EB renewal · close Dec 1 · moved Fri</small><a class="sfl" href="#" onclick="return false" title="Open in Salesforce (new tab)">Salesforce ↗</a></div>
+                <div class="deal"><b>Cobalt Ridge Construction</b><span class="amt num">$1.09M</span><small>WC renewal · close Dec 15</small><a class="sfl" href="#" onclick="return false" title="Open in Salesforce (new tab)">Salesforce ↗</a></div>
+              </div>
+            </div>
+            <div class="bsec">
+              <h3>Fix the reversible ones?<span class="src">Writes as you, with your Salesforce access</span></h3>
+              <ul class="changes">
+                <li><input type="checkbox" checked aria-label="Include"><div><b>Sable &amp; Finch</b> · close date Oct 15 → <b>Nov 14</b><small>Or mark it lost. That one stays your call.</small></div></li>
+                <li><input type="checkbox" checked aria-label="Include"><div><b>Orion Cold Storage</b> · next step → <b>"Send one-page capabilities note"</b><small>+ Task due Oct 30</small></div></li>
+                <li><input type="checkbox" checked aria-label="Include"><div><b>Harbor Point Health</b> · amount → <b>$120K</b><small>From Friday's notes: $5M limit, est. revenue</small></div></li>
+              </ul>
+              <div class="next"><button class="btn primary js-flow" data-flow="pipe">Save the 3 fixes to Salesforce</button><button class="btn">One by one</button></div>
+              
+            </div>
+            <div class="after"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="9"/></svg>Runs every morning at 7:30. The flags also feed Needs attention and the pipeline tiles on Home.</div>
+          </div>
+          <div class="followups">
+            <button class="chip" data-prompt="Only the deals closing this quarter">Only this quarter</button>
+            <button class="chip" data-prompt="What changed since last week?">What changed since last week?</button>
+            <button class="chip" data-prompt="Draft the Sable & Finch check-in email">Draft Sable &amp; Finch check-in</button>
+          </div>
+          <p class="scope"><b>January:</b> Opportunity, Task/Event, stage history. Writes limited to close date, next step, amount and Task, each confirmed. Scheduled morning run if Artemis supports schedules, otherwise on open.</p>
+        </div></div>
+        <div class="flows"></div>
+        <div class="dock"><form class="prompt tform"><input class="tin" type="text" placeholder="Ask about your pipeline…" autocomplete="off"><button type="submit" class="send" aria-label="Send"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button></form></div>
+      </section>
+
+      <!-- Deal Review -->
+      <section class="thread uc" id="v-deal-review" hidden aria-label="Deal Review">
+        <div class="crumb"><button type="button" class="back"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>Home</button><span>›</span><span>Deal Review</span></div>
+        <div class="msg-user">Run my deal review: what did I promise this week and what is due?<span class="at">Today · 9:02 AM</span></div>
+        <div class="msg-ai"><div class="av">AI</div><div class="body">
+          <div class="working"><span>Your Tasks due this week</span><span>Meetings with no follow-up</span><span>Open decisions on your deals</span></div>
+          <p class="lead"><b>8 promises this week: 5 kept, 2 overdue, 1 decision waiting on you.</b> The Brightline decision is the urgent one; the quote is held until 5:00 PM.</p>
+          <div class="brief-card">
+            <div class="bsec">
+              <h3>This week's promises<span class="src">Tasks · Events · Opportunities</span></h3>
+              <ul class="promises">
+                <li class="due"><span class="st">Decide</span><div><b>Approve the Beazley cyber quote</b> · Brightline Foods<a class="sfl" href="#" onclick="return false" title="Open in Salesforce (new tab)">Salesforce ↗</a><small>Limit held until 5:00 PM today</small></div></li>
+                <li class="due"><span class="st late">Overdue</span><div><b>Send revised professional liability proposal</b> · Sable &amp; Finch<a class="sfl" href="#" onclick="return false" title="Open in Salesforce (new tab)">Salesforce ↗</a><small>Promised Oct 17</small></div></li>
+                <li class="due"><span class="st late">Overdue</span><div><b>Share cyber application with the CISO</b> · Brightline Foods<a class="sfl" href="#" onclick="return false" title="Open in Salesforce (new tab)">Salesforce ↗</a><small>Promised Oct 23</small></div></li>
+                <li class="kept"><span class="st ok">Kept</span><div>Recap + 2 open items to Harbor Point Health<small>Sent today 8:47 AM</small></div></li>
+                <li class="kept"><span class="st ok">Kept</span><div>Notes and 3 follow-ups on Harbor Point<small>Logged today 8:52 AM</small></div></li>
+                <li class="kept"><span class="st ok">Kept</span><div>Loss runs request to Cobalt Ridge · Pricing grid to Northwind · Intro to Karen Harris<small>Mon–Tue</small></div></li>
+              </ul>
+            </div>
+            <div class="bsec qa"><h3>One question at a time<span class="src">You answer in the chat; every write is confirmed one by one</span></h3>
+              <p class="qq">Did Brightline approve the Beazley quote?</p>
+              <div class="next"><button class="btn primary js-flow" data-flow="dr1y">Yes, signed</button><button class="btn js-flow" data-flow="dr1n">Not yet</button><button class="btn js-flow" data-flow="dr1l">Lost it</button></div>
+            </div>
+            <div class="after"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>The same list is "Today's brief" on Home. Ticking an item there writes the Task status.</div>
+          </div>
+          <p class="scope"><b>Wave 1:</b> runs on existing Tasks and Opportunities, richer once Capture logs every meeting. Every write is confirmed by you, one record at a time. "Meeting ended" trigger only if the agent exposes calendar events.</p>
+        </div></div>
+        <div class="flows"></div>
+        <div class="dock"><form class="prompt tform"><input class="tin" type="text" placeholder="Answer, or ask about a deal…" autocomplete="off"><button type="submit" class="send" aria-label="Send"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button></form></div>
+      </section>
+
+      <!-- Capture Agent -->
+      <section class="thread uc" id="v-capture" hidden aria-label="Capture Agent">
+        <div class="crumb"><button type="button" class="back"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>Home</button><span>›</span><span>Capture: Northwind Dental call</span></div>
+        <div class="msg-user voice"><span class="vlab"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0014 0M12 17v4M8 21h8"/></svg>Dictated · 0:52</span>"Just off the call with Jordan at Northwind. They got the Guardian quote, about 6% under us on dental. Jordan cares more about the network than price. Anita in HR wants the disruption report. I said we'd have revised numbers by next Wednesday. They also want vision added for the new Plano office."<span class="at">Today · 11:34 AM</span></div>
+        <div class="msg-ai"><div class="av">AI</div><div class="body">
+          <div class="working"><span>Calendar: 11:00 call, Northwind Dental Partners</span><span>Opportunity: EB renewal · Negotiation <a class="sfl" href="#" onclick="return false" title="Open in Salesforce (new tab)">Salesforce ↗</a></span><span>Speech-to-text by Microsoft</span></div>
+          <p class="lead">Matched to your <b>11:00 call with Northwind Dental Partners</b> (EB renewal, $680K). Here is what I'll log. Edit anything, then confirm what goes to Salesforce.</p>
+          <div class="brief-card">
+            <div class="two">
+              <div class="bsec"><h3>Summary<span class="src ehint" id="eHint" hidden>Editing: click any text</span></h3><p class="ed">Competing Guardian quote ~6% below ours on dental. Jordan Lee (CFO) weighs network depth over price. HR (Anita Ruiz) needs a network disruption report. Vision to be added for the new Plano office.</p></div>
+              <div class="bsec"><h3>Next steps</h3>
+                <ul class="steps ed"><li><b>Revised numbers to Jordan</b><small>You · due Wed Nov 4</small></li><li><b>Network disruption report to Anita</b><small>You · due: not said</small></li><li><b>Vision quote for Plano office</b><small>You · due Wed Nov 4</small></li></ul></div>
+            </div>
+            <div class="bsec">
+              <h3>Proposed for Salesforce<span class="src">Each write is confirmed one by one in the chat</span></h3>
+              <ul class="changes">
+                <li><input type="checkbox" checked aria-label="Include"><div><b>Task (completed)</b> · "Call with Jordan Lee: competing quote, network" on the opportunity</div></li>
+                <li><input type="checkbox" checked aria-label="Include"><div><b>3 follow-up Tasks</b> · the next steps above, with due dates</div></li>
+                <li><input type="checkbox" checked aria-label="Include"><div><b>Opportunity</b> · next step → "Revised numbers Nov 4" · competitor → Guardian</div></li>
+                <li><input type="checkbox" aria-label="Include"><div><b>New contact</b> · Anita Ruiz, HR Director<small>Not in Salesforce yet. Add?</small></div></li>
+              </ul>
+              <div class="next"><button class="btn primary js-flow" data-flow="cap">Write to Salesforce</button><button class="btn js-edit">Edit</button><button class="btn js-toast" data-t="Wireframe: exported as Word (.docx)">Export (.docx)</button><button class="btn">Draft recap to Jordan</button></div>
+              
+            </div>
+          </div>
+          <div class="followups">
+            <button class="chip" data-prompt="Ask me the three capture questions instead">Interview me instead</button>
+            <button class="chip" data-prompt="Draft the recap email to Jordan">Draft recap to Jordan</button>
+          </div>
+          <p class="scope"><b>Wave 1:</b> dictation and speech-to-text come from the Microsoft stack (Teams / Azure AI Speech). Writes in wave 1: Task and Opportunity fields on the allow-list, each confirmed. Creating Contacts is a later increment.</p>
+        </div></div>
+        <div class="flows"></div>
+        <div class="dock"><form class="prompt tform"><input class="tin" type="text" placeholder="Correct something, or add a detail…" autocomplete="off"><button type="submit" class="send" aria-label="Send"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button></form></div>
+      </section>
+
+      <!-- Company brief -->
+          </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(function(){
+  var $=function(s,r){return (r||document).querySelector(s)}, $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+  var toastEl=$('#toast'), tt;
+  function toast(m){toastEl.textContent=m;toastEl.classList.add('show');clearTimeout(tt);tt=setTimeout(function(){toastEl.classList.remove('show')},2200)}
+
+  // Theme toggle
+  $('#themeBtn').addEventListener('click',function(){
+    var r=document.documentElement, dark=r.getAttribute('data-theme')==='dark'||(!r.getAttribute('data-theme')&&matchMedia('(prefers-color-scheme: dark)').matches);
+    r.setAttribute('data-theme',dark?'light':'dark');
+  });
+
+  // Views: home ↔ use-case threads ↔ sources slide. Hash = view name.
+  var home=$('.content'), scroll=$('.scroll');
+  var input=$('#promptInput');
+  var VIEWS={prep:['#prepView','Prep: Meridian Logistics'],
+    pipeline:['#v-pipeline','Pipeline'],'deal-review':['#v-deal-review','Deal Review'],capture:['#v-capture','Capture Agent']};
+  var current='';
+  function hideAll(){home.hidden=true;Object.keys(VIEWS).forEach(function(k){$(VIEWS[k][0]).hidden=true})}
+  function setHash(h){try{history.replaceState(null,'',h?('#'+h):(location.pathname+location.search))}catch(e){}}
+  function showView(name,text){
+    if(!VIEWS[name]) return showHome();
+    hideAll(); $(VIEWS[name][0]).hidden=false; scroll.scrollTop=0; current=name;
+    if(name==='prep'&&text) $('#prepUserMsg').firstChild.nodeValue=text;
+    $$('.nav a').forEach(function(a){a.classList.toggle('active',name==='prep'&&a.getAttribute('href')==='#r1')});
+    $('.top .title').textContent=VIEWS[name][1];
+    if(location.hash!=='#'+name) setHash(name);
+  }
+  function showHome(){
+    hideAll(); home.hidden=false; scroll.scrollTop=0; input.value=''; current='';
+    $$('.nav a').forEach(function(a){a.classList.toggle('active',a.getAttribute('href')==='#home')});
+    $('.top .title').textContent='Producer Home';
+    if(location.hash) setHash('');
+  }
+  function fromHash(){var h=location.hash.slice(1); if(VIEWS[h]) showView(h); else if(!h||h==='home') showHome();}
+  window.addEventListener('hashchange',fromHash);
+  if(/[?&]export/.test(location.search)) document.body.classList.add('export');
+  fromHash();
+  $$('#backHome,#backHome2,.thread .back').forEach(function(b){b.addEventListener('click',showHome)});
+  $$('.nav a').forEach(function(a){a.addEventListener('click',function(e){
+    var h=a.getAttribute('href'); if(h==='#home'){e.preventDefault();showHome()} else if(h==='#r1'){e.preventDefault();showView('prep')}
+  })});
+
+  // Which view a typed or chip prompt opens
+  var ROUTES=[[/prep|meridian|next meeting/i,'prep'],[/pipeline/i,'pipeline'],[/deal review|promise/i,'deal-review'],[/capture|just met/i,'capture'],[/company brief|client summary|lead|bdr/i,'later']];
+  function route(t){for(var i=0;i<ROUTES.length;i++){if(ROUTES[i][0].test(t))return ROUTES[i][1]}return null}
+
+  // Chips, cards and follow-ups: inside a thread they fill its prompt; on Home, chips open their view
+  $$('[data-prompt]').forEach(function(c){c.addEventListener('click',function(e){
+    var p=c.getAttribute('data-prompt');
+    if(current){var ti=$(VIEWS[current][0]+' .dock input'); if(ti){ti.value=p;ti.focus()} e.preventDefault(); return}
+    var v=c.getAttribute('data-view')||route(p);
+    if(v==='later'){e.preventDefault();toast('Company brief and BDR Agent: stage 2 (after 4 January)');return}
+    if(v){e.preventDefault();showView(v,p);return}
+    input.value=p;input.focus();
+  })});
+  $('#promptForm').addEventListener('submit',function(e){e.preventDefault();var v=input.value.trim();if(!v)return;var r=route(v);if(r==='later'){toast('Company brief and BDR Agent: stage 2 (after 4 January)')}else if(r){showView(r,v)}else{toast('Wireframe: the assistant would answer here')}});
+  $$('#promptForm2,.tform').forEach(function(f){f.addEventListener('submit',function(e){e.preventDefault();var i=$('input',f);if(i.value.trim()){toast('Wireframe: the assistant would answer in this thread');i.value=''}})});
+
+  // Writes happen in the chat: the producer's message, then one agent message that lists every operation
+  // with its validation (required fields) and access check; each operation is confirmed on its own.
+  var SF='<a class="sfl" href="#" onclick="return false">Salesforce ↗</a>';
+  var FLOWS={
+    pipe:{user:'Yes, save the three fixes to Salesforce.',intro:'Three writes, each on its own. I checked required fields and your access first; confirm the ones you want.',ops:[
+      {obj:'Opportunity',act:'update',what:'<b>Sable &amp; Finch Architects</b> · Close date Oct 15 → <b>Nov 14</b>',sub:'Stage stays Proposal · $86K',chk:[['ok','Required on this stage: Stage, Close date, Amount, Next step — all present'],['ok','Access: you own this record, Close date is editable']]},
+      {obj:'Opportunity',act:'update + Task',what:'<b>Orion Cold Storage</b> · Next step → <b>"Send one-page capabilities note"</b>',sub:'+ Task "Send capabilities note" · due Oct 30 · assigned to you',chk:[['ok','Opportunity required fields present'],['ok','Task required fields: Subject, Due date, Related to, Assigned — all set'],['ok','Access: you can edit the opportunity and create Tasks']]},
+      {obj:'Opportunity',act:'update',what:'<b>Harbor Point Health</b> · Amount → <b>$120,000</b>',sub:'From Friday\'s notes: $5M limit, est. revenue',chk:[['ok','Required fields present; Probability stays 60%'],['bad','Access: Amount on this record is restricted to Sales Ops — you can\'t change it, and neither can I on your behalf']],blocked:true,ask:'Ask Sales Ops to set $120K'}],
+      after:'<b>2 of 3 written.</b> Sable &amp; Finch and Orion are updated ('+SF+'). The Harbor Point amount is with Sales Ops; I\'ll tell you when it changes. Needs attention on Home is refreshed.'},
+    cap:{user:'Write it to Salesforce.',intro:'Six operations on three objects. Each one is confirmed separately; two need something from you first.',ops:[
+      {obj:'Task',act:'update',what:'"Call with Jordan Lee: competing quote, network" → <b>Completed</b>',sub:'On opportunity Northwind Dental · EB renewal · today 11:00',chk:[['ok','Required: Subject, Status, Related to — set'],['ok','Access: your Task']]},
+      {obj:'Task',act:'create',what:'<b>"Revised numbers to Jordan"</b> · due Nov 4',sub:'Assigned to you · related to the opportunity',chk:[['ok','Required: Subject, Due date, Related to, Assigned — set']]},
+      {obj:'Task',act:'create',what:'<b>"Vision quote for Plano office"</b> · due Nov 4',sub:'Assigned to you · related to the opportunity',chk:[['ok','Required: Subject, Due date, Related to, Assigned — set']]},
+      {obj:'Task',act:'create',what:'<b>"Network disruption report to Anita"</b>',sub:'Assigned to you · related to the opportunity',chk:[['q','Required field missing: <b>Due date</b>. You didn\'t say one — when?']],opts:['Mon Nov 2','Wed Nov 4','Fri Nov 6','Type a date…'],need:true},
+      {obj:'Opportunity',act:'update',what:'Next step → <b>"Revised numbers Nov 4"</b> · Competitor → <b>Guardian</b>',sub:'Stage stays Negotiation · close date Dec 1 unchanged',chk:[['ok','Required on Negotiation: Close date, Amount, Next step — present'],['ok','Competitor picklist has "Guardian"'],['ok','Access: you own this opportunity']]},
+      {obj:'Contact',act:'create',what:'<b>Anita Ruiz</b> · HR Director<span class="tag">later increment</span>',sub:'Not in Salesforce under this name',chk:[['bad','Possible duplicate: <b>"A. Ruiz, Human Resources"</b> exists on this account (no email, no title)'],['ok','Required: Last name, Account — set']],opts:['Use existing record','Create new','Skip for now'],need:true}],
+      after:'<b>All written.</b> Task closed, three follow-ups created, opportunity updated ('+SF+'). Want the recap email to Jordan drafted now?'},
+    bdr:{user:'Open the Tallgrass draft in Outlook.',intro:'Opened in Outlook. When you send it, the email itself is logged on the Lead automatically — that\'s the communication record, it always happens. Two more updates need your OK:',ops:[
+      {obj:'Lead',act:'update',what:'<b>Tallgrass Manufacturing</b> · Status <b>New → Contacted</b>',sub:'Written when the email is sent',chk:[['ok','Required on Contacted: Status, Last activity — set on send'],['ok','Access: you own this Lead']]},
+      {obj:'Task',act:'create',what:'<b>"First touch email to Greg Olsen"</b> · completed, today',sub:'Related to the Lead · email body attached',chk:[['ok','Required: Subject, Due date, Related to — set']]}],
+      after:'<b>Set.</b> On send: email logged, Lead → Contacted, Task created ('+SF+'). Next draft: Alder Creek Brewing?'},
+    dr1y:{user:'Yes, signed.',intro:'Brightline is won. Three things to write, one at a time:',ops:[
+      {obj:'Opportunity',act:'update',what:'<b>Brightline Foods · Cyber</b> · Stage Proposal → <b>Closed Won</b>',sub:'$310K · close date → today',chk:[['ok','Required on Closed Won: Amount, Close date, Bound carrier — Beazley taken from the quote'],['ok','Access: you own this opportunity']]},
+      {obj:'Task',act:'update',what:'"Approve the Beazley cyber quote" → <b>Completed</b>',chk:[['ok','Required fields set']]},
+      {obj:'Outlook',act:'draft',what:'<b>Binder request to Beazley</b> · drafted, you send it',sub:'Not a Salesforce write · logged on send',chk:[['ok','Uses the quote reference and the signed proposal']]}],
+      after:'<b>Brightline is Closed Won.</b> The binder request is in your Outlook drafts.',next:{q:'Sable &amp; Finch: will the revised proposal go out this week?',answers:[['Yes, by Friday','dr2y'],['Next week','dr2n'],['Drop it','dr2l']]}},
+    dr1n:{user:'Not yet.',intro:'I\'ll keep it on your list:',ops:[
+      {obj:'Task',act:'update',what:'"Approve the Beazley cyber quote" · due → <b>tomorrow 9:00 AM</b>',sub:'Reminder today 4:30 PM, before the limit expires',chk:[['ok','Required fields set'],['ok','Access: your Task']]}],
+      after:'Moved. The quote hold still ends at 5:00 PM today.',next:{q:'Sable &amp; Finch: will the revised proposal go out this week?',answers:[['Yes, by Friday','dr2y'],['Next week','dr2n'],['Drop it','dr2l']]}},
+    dr1l:{user:'Lost it.',intro:'Closing it as lost needs one thing from you:',ops:[
+      {obj:'Opportunity',act:'update',what:'<b>Brightline Foods · Cyber</b> · Stage → <b>Closed Lost</b>',chk:[['q','Required on Closed Lost: <b>Loss reason</b> — which one?'],['ok','Access: you own this opportunity']],opts:['Price','Coverage','Timing','Other'],need:true}],
+      after:'Closed Lost. It drops out of the goal panel\'s "what closes the gap".',next:{q:'Sable &amp; Finch: will the revised proposal go out this week?',answers:[['Yes, by Friday','dr2y'],['Next week','dr2n'],['Drop it','dr2l']]}},
+    dr2y:{user:'Yes, by Friday.',intro:'',ops:[
+      {obj:'Task',act:'update',what:'"Send revised professional liability proposal" · due → <b>Fri Oct 30</b>',sub:'Draft started from the last quote',chk:[['ok','Required fields set'],['ok','Access: your Task']]}],
+      after:'Due Friday. The draft is in My Briefs when you want it.',next:{q:'Brightline CISO application: send the pre-filled ACORD now?',answers:[['Draft it','dr3y'],['Friday','dr3n']]}},
+    dr2n:{user:'Next week.',intro:'',ops:[
+      {obj:'Opportunity',act:'update',what:'<b>Sable &amp; Finch</b> · Close date Oct 15 → <b>Nov 14</b>',chk:[['ok','Required on Proposal: present'],['ok','Access: you own this record']]},
+      {obj:'Task',act:'update',what:'"Send revised proposal" · due → <b>Nov 7</b>',chk:[['ok','Required fields set']]}],
+      after:'Moved to next week.',next:{q:'Brightline CISO application: send the pre-filled ACORD now?',answers:[['Draft it','dr3y'],['Friday','dr3n']]}},
+    dr2l:{user:'Drop it.',intro:'',ops:[
+      {obj:'Opportunity',act:'update',what:'<b>Sable &amp; Finch</b> · Stage → <b>Closed Lost</b>',chk:[['q','Required on Closed Lost: <b>Loss reason</b> — which one?']],opts:['No response','Price','Timing','Other'],need:true}],
+      after:'Closed Lost.',next:{q:'Brightline CISO application: send the pre-filled ACORD now?',answers:[['Draft it','dr3y'],['Friday','dr3n']]}},
+    dr3y:{user:'Draft it.',intro:'',ops:[
+      {obj:'Outlook',act:'draft',what:'<b>Email to the Brightline CISO</b> with the pre-filled ACORD attached',sub:'Not a Salesforce write · logged on send',chk:[['ok','ACORD filled from the opportunity and the application']]},
+      {obj:'Task',act:'update',what:'"Share cyber application with the CISO" → <b>Completed on send</b>',chk:[['ok','Required fields set']]}],
+      after:'<b>All three answered.</b> Salesforce is up to date; nothing else is due today.'},
+    dr3n:{user:'Friday.',intro:'',ops:[
+      {obj:'Task',act:'update',what:'"Share cyber application with the CISO" · due → <b>Fri Oct 30</b>',chk:[['ok','Required fields set']]}],
+      after:'<b>All three answered.</b> Nothing else is due today.'}
+  };
+  function stamp(){return now()}
+  function opHtml(o){
+    var chk=o.chk.map(function(c){return '<span class="'+c[0]+'">'+c[1]+'</span>'}).join('');
+    var opts=o.opts?'<div class="opts">'+o.opts.map(function(x){return '<button type="button">'+x+'</button>'}).join('')+'</div>':'';
+    var act=o.blocked?'<div class="act"><button class="btn primary js-ask">'+o.ask+'</button><button class="btn ghost js-skip">Skip</button></div>'
+                     :'<div class="act"><button class="btn primary js-ok"'+(o.need?' disabled':'')+'>Confirm</button><button class="btn ghost js-skip">Skip</button></div>';
+    return '<li class="wop'+(o.blocked?' blocked':'')+'"><span class="obj"><b>'+o.obj+'</b>'+o.act+'</span><div class="what">'+o.what+(o.sub?'<small>'+o.sub+'</small>':'')+'</div>'+act+'<div class="chk">'+chk+'</div>'+opts+'</li>';
+  }
+  function runFlow(key,host){
+    var f=FLOWS[key]; if(!f) return;
+    var wrap=document.createElement('div'); wrap.className='flows';
+    var sum=f.after?'<p class="wsum" hidden>'+f.after+'</p>':'';
+    var nq=f.next?'<div class="nextq" hidden><p class="qq">'+f.next.q+'</p><div class="next">'+f.next.answers.map(function(a,i){return '<button class="btn'+(i?'':' primary')+' js-flow" data-flow="'+a[1]+'">'+a[0]+'</button>'}).join('')+'</div></div>':'';
+    wrap.innerHTML='<div class="msg-user">'+f.user+'<span class="at">Today · '+stamp()+'</span></div>'
+      +'<div class="msg-ai"><div class="av">AI</div><div class="body">'+(f.intro?'<p class="lead">'+f.intro+'</p>':'')+'<ul class="wops">'+f.ops.map(opHtml).join('')+'</ul>'+sum+nq+'</div></div>';
+    host.appendChild(wrap);
+    function settle(li,cls,txt,sub){li.classList.add(cls);var a=$('.act',li);if(a)a.remove();var st=document.createElement('div');st.className='st';st.innerHTML=txt+(sub?'<small>'+sub+'</small>':'');li.appendChild(st);check()}
+    function check(){ if($$('.wop .act',wrap).length) return; var w=$('.wsum',wrap); if(w)w.hidden=false; var n=$('.nextq',wrap); if(n)n.hidden=false; bindFlows(wrap); }
+    $$('.wop',wrap).forEach(function(li){
+      $$('.opts button',li).forEach(function(b){b.addEventListener('click',function(){
+        $$('.opts button',li).forEach(function(x){x.classList.toggle('on',x===b)});
+        var q=$('.chk .q,.chk .bad',li); if(q){q.className='';q.innerHTML=q.innerHTML.replace(/Required field missing: <b>Due date<\/b>.*/,'Due date: <b>'+b.textContent+'</b>').replace(/Possible duplicate:.*/,'Duplicate check: <b>'+b.textContent+'</b>').replace(/Required on Closed Lost:.*/,'Loss reason: <b>'+b.textContent+'</b>')}
+        $('.js-ok',li).disabled=false;
+      })});
+      var ok=$('.js-ok',li), sk=$('.js-skip',li), ask=$('.js-ask',li);
+      if(ok) ok.addEventListener('click',function(){var o=$('.obj b',li).textContent;settle(li,'done',o==='Outlook'?'✓ Drafted':'✓ Written',(o==='Outlook'?'Outlook':'Salesforce')+' · '+stamp())});
+      if(sk) sk.addEventListener('click',function(){settle(li,'skip','Skipped','nothing written')});
+      if(ask) ask.addEventListener('click',function(){settle(li,'blocked','Sent to Sales Ops','Teams message · '+stamp())});
+    });
+    wrap.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+  function bindFlows(root){ $$('.js-flow',root||document).forEach(function(b){ if(b._bound) return; b._bound=true; b.addEventListener('click',function(){
+    var sec=b.closest('.thread'), host=$('.flows',sec); if(!host){host=document.createElement('div');host.className='flows';sec.insertBefore(host,$('.dock',sec))}
+    var grp=b.closest('.next'); if(grp) $$('.btn',grp).forEach(function(x){x.disabled=true; x.classList.toggle('primary',x===b)});
+    runFlow(b.getAttribute('data-flow'),host);
+  })}) }
+  bindFlows();
+  $$('.js-toast').forEach(function(b){b.addEventListener('click',function(){toast(b.getAttribute('data-t'))})});
+  // Capture: in-place editing of the summary and next steps
+  $$('.js-edit').forEach(function(b){b.addEventListener('click',function(){
+    var on=b.textContent==='Edit'; $$('#v-capture .ed').forEach(function(e){e.contentEditable=on;e.classList.toggle('editing',on)});
+    $('#eHint').hidden=!on; b.textContent=on?'Done editing':'Edit'; if(on)$('#v-capture .ed').focus();
+  })});
+
+  // Company brief: one-click picker
+
+  // Booked by month (thousands). Nov–Dec are expected from weighted pipeline.
+  var months=[['Jan',62],['Feb',88],['Mar',131],['Apr',97],['May',115],['Jun',142],['Jul',78],['Aug',104],['Sep',128],['Oct',135,'cur'],['Nov',96,'exp'],['Dec',124,'exp']];
+  var max=Math.max.apply(null,months.map(function(m){return m[1]}));
+  if($('#months')) $('#months').innerHTML=months.map(function(m){
+    var h=Math.round(m[1]/max*72)+2, cls='m'+(m[2]?' '+m[2]:'');
+    var tip=(m[2]==='exp'?'Expected ':'Booked ')+'$'+m[1]+'K'+(m[2]==='cur'?' so far':'');
+    return '<div class="'+cls+'"><span class="tip">'+m[0]+' · '+tip+'</span><div class="b" style="height:'+h+'px"></div><div class="lab">'+m[0].charAt(0)+'</div></div>';
+  }).join('');
+
+  // Needs attention tabs
+  $$('.tab').forEach(function(t){t.addEventListener('click',function(){
+    $$('.tab').forEach(function(x){x.classList.toggle('active',x===t)});
+    $$('.alist').forEach(function(p){p.hidden=p.getAttribute('data-pane')!==t.getAttribute('data-tab')});
+  })});
+
+  // Today's brief: open on top, done at bottom
+  var list=$('#brief');
+  function now(){var d=new Date(),h=d.getHours(),m=d.getMinutes();return ((h%12)||12)+':'+(m<10?'0':'')+m+' '+(h<12?'AM':'PM')}
+  function render(){
+    var items=$$('.item',list), open=items.filter(function(i){return !i.classList.contains('done')}), done=items.filter(function(i){return i.classList.contains('done')});
+    $$('.divider',list).forEach(function(d){d.remove()});
+    open.forEach(function(i){list.appendChild(i)});
+    if(done.length){var d=document.createElement('li');d.className='divider';d.textContent='Handled today';list.appendChild(d)}
+    done.forEach(function(i){list.appendChild(i)});
+    $('#briefCount').textContent=done.length+' of '+items.length+' handled';
+    var dateEl=$('.hero .date');dateEl.textContent='Monday, 5 January · 2 meetings today · '+open.length+(open.length===1?' item needs':' items need')+' you';
+  }
+  list.addEventListener('click',function(e){
+    var cb=e.target.closest('.cb'); if(!cb) return;
+    var it=cb.closest('.item'), meta=$('.meta',it);
+    if(it.classList.contains('done')){
+      it.classList.remove('done'); cb.setAttribute('aria-label','Mark done');
+      var saved=it.getAttribute('data-meta'); if(saved) meta.innerHTML=saved;
+    }else{
+      it.classList.add('done'); cb.setAttribute('aria-label','Mark not done');
+      it.setAttribute('data-meta',meta.innerHTML);
+      var via=$('.via',meta); meta.innerHTML='<span>Done '+now()+'</span><span class="via">marked by you'+(via?' · '+via.textContent.replace(/^surfaced by /,''):'')+'</span>';
+      toast('Marked done — stays in today’s brief, moved to the bottom');
+    }
+    render();
+  });
+  render();
+})();
+</script>
+
+</body>
+</html>
