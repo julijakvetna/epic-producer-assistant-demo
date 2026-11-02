@@ -87,7 +87,7 @@ h = rep(h, '<div class="foot">Signed in as Dana Whitfield · Salesforce permissi
 
 # scope notes in threads → January wording
 h = rep(h, '<p class="scope"><b>Wave 1:</b> Opportunity, Task/Event, stage history. Writes limited to close date, next step, amount and Task, each confirmed.</p>',
-        '<p class="scope"><b>January:</b> Opportunity, Task/Event, stage history. Writes limited to close date, next step, amount and Task, each confirmed. Scheduled morning run if Artemis supports schedules, otherwise on open.</p>')
+        '<p class="scope"><b>January:</b> Opportunity, Task/Event, stage history. Writes limited to close date, next step, amount and Task, each confirmed. Scheduled morning run if the portal agent supports schedules, otherwise on open.</p>')
 
 assert 'v-company-brief' not in h and 'sourcesView' not in h and 'v-bdr' not in h
 open('jan.html', 'w', encoding='utf-8').write(h)
