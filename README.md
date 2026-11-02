@@ -39,6 +39,28 @@ Left sidebar follows a general-purpose agent harness (New chat, My Briefs, AI Wo
 
 Everything else is static.
 
+## Sales Leader home (`leader.html`)
+
+Same harness, second lens. A regional sales leader (fictional, 12 producers) sees the same agents, data and guardrails through a predefined view for his role: everything he sees is what his CRM role hierarchy already shows him; writes are Tasks on producers' deals, chat messages and his own 1:1 notes, each confirmed.
+
+**Live:** https://julijakvetna.github.io/epic-producer-assistant-demo/leader.html · direct links: `leader.html#team-review`, `leader.html#one-on-one`
+
+| Block | Purpose |
+|---|---|
+| **Team against goal** | Team booked vs goal with pace marker and Q4 commit; booked by producer (who is behind pace); "what closes the gap" — the deals, with owners, that reach the number. |
+| **Chips** | Team pipeline review · Forecast · Who needs help · Prep my 1:1 · Deal Review · Stalled deals · Update Salesforce. |
+| **Prepared for you** | Overnight team review, tomorrow's forecast draft, Thursday's 1:1 prep. |
+| **Team tiles** | Producers (behind pace), open pipeline and coverage, Q4 commit vs needed, stalled deals. |
+| **Today's brief** | Decide · Escalate · Coach · Review · Renewal — what needs the leader, in order. |
+| **Needs attention** | Behind pace · Slipping deals · Single-threaded · CRM hygiene. |
+
+Scenarios that work end to end:
+
+- **Team pipeline review** (`#team-review`) — Monday morning run: KPIs, by-producer table with flags and week-over-week change, what slipped since last Monday, and "send the Monday nudges" → one Task per producer, confirmed one by one (with a duplicate-Task check).
+- **Prep my 1:1** (`#one-on-one`) — the producer's number and activity, what she committed at the last 1:1 and its status (from the agent's Memory), suggested questions derived from her flags, her deals in three columns, and "write the 1:1 outcome" from dictation → Tasks for her and for the leader, a restricted field routed to Sales Ops, and the 1:1 note saved to Memory.
+
+The producer flags are computed once by the pipeline sweep and shown twice — on the producer's home as "fix the reversible ones", on the leader's home rolled up by producer. Nothing the leader sees is a surprise to the producer.
+
 ## Design principle
 
 The agents are named once, as chips under the prompt, so producers learn what the assistant can do. Everywhere else their output appears as brief items, prepared briefs and attention flags rather than as separate tools. The producer talks to one assistant, and the CRM is updated as a by-product of selling.
@@ -46,12 +68,15 @@ The agents are named once, as chips under the prompt, so producers learn what th
 ## Structure
 
 ```
-index.html                   single self-contained page (HTML + CSS + JS)
+index.html                   producer home — single self-contained page (HTML + CSS + JS)
+leader.html                  sales leader home — same shell, second lens
 docs/data-sources-slide.png  16:9 export of the data-sources view
 README.md
 ```
 
 ## Versions
+
+- **v0.9** (2026-11-02) — Sales Leader lens: `leader.html` with team home, Team pipeline review and Prep my 1:1
 
 - **v0.8** (2026-10-28) — confirm-per-record write flow in the chat, validation and access checks, Salesforce links, Capture edit/export; sources slide: Power BI, data warehouse (Azure DW → Databricks), no Data Cloud
 - **v0.7** (2026-10-28) — one screen per agent chip, in their wave-1 form
