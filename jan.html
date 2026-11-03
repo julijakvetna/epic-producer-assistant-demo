@@ -548,6 +548,29 @@ h1,h2,h3{margin:0;text-wrap:balance}
 .voice{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:var(--muted);background:var(--panel-2);border-radius:10px;padding:3px 9px}
 .voice svg{width:12px;height:12px;color:var(--navy)}
 @media (max-width:760px){.mtg li{grid-template-columns:60px 1fr;row-gap:4px}.mtg .tg,.mtg .go{grid-column:2}}
+
+/* Artemis-style sidebar */
+.seg{margin:6px 12px 10px;display:grid;grid-template-columns:1fr 1fr;background:var(--panel-2);border-radius:9px;padding:3px}
+.seg a{text-align:center;padding:7px 0;border-radius:7px;font-size:13px;font-weight:600;color:var(--muted);text-decoration:none}
+.seg a.on{background:var(--navy);color:#fff}
+.newq{margin:0 12px 8px;display:flex;align-items:center;gap:8px;padding:8px 10px;font-size:13.5px;font-weight:600;color:var(--fg);text-decoration:none;border-radius:8px}
+.newq:hover{background:var(--panel-2)}
+.newq svg{width:15px;height:15px}
+.ssearch{margin:0 12px 10px;display:flex;align-items:center;gap:8px;padding:7px 10px;border:1px solid var(--line);border-radius:8px;color:var(--faint);font-size:12.5px;background:var(--bg)}
+.work a{display:flex;justify-content:space-between;gap:8px;color:var(--fg);font-size:12.5px;padding:5px 10px;border-radius:6px;text-decoration:none}
+.work a:hover{background:var(--panel-2)}
+.work a .st{color:var(--ok);font-size:11.5px;font-weight:600}
+.work a .st.run{color:var(--warn)}
+.side .sect.sub{margin-top:8px;color:var(--faint);font-weight:500;letter-spacing:.06em;text-transform:none;font-size:11.5px}
+.quick{padding:6px 10px 0;border-top:1px solid var(--line);margin-top:6px}
+.quick a{display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:7px;color:var(--fg);text-decoration:none;font-size:13px}
+.quick a:hover{background:var(--panel-2)}
+.quick a svg{width:15px;height:15px;color:var(--muted)}
+.quick a small{margin-left:auto;color:var(--faint);font-size:11px;white-space:nowrap}
+.sidefoot{padding:10px 14px;border-top:1px solid var(--line);display:flex;align-items:center;gap:10px}
+.sidefoot .av{width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;font-size:11px;font-weight:700;display:grid;place-items:center}
+.sidefoot b{display:block;font-size:13px;font-weight:600}
+.sidefoot small{color:var(--muted);font-size:11.5px}
 </style>
 </head>
 <body>
@@ -556,28 +579,42 @@ h1,h2,h3{margin:0;text-wrap:balance}
   <!-- ================= Sidebar ================= -->
   <aside class="side" aria-label="Workspace navigation">
     <div class="brand"><span class="mark">PA</span><span class="name">Producer Assistant</span><span class="dot" title="Connected"></span></div>
-    <div class="ws"><span class="av">DW</span><span>Dana Whitfield</span><span class="chev">⌃⌄</span></div>
-    <nav class="nav">
-      <a href="#home" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg>New chat</a>
-      <a href="#briefs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8"/></svg>My Briefs<span class="sub">12</span></a>
-      <a href="#workflows"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l1.8 4.6L18 9l-4.2 1.4L12 15l-1.8-4.6L6 9l4.2-1.4zM5 17l.9 2.1L8 20l-2.1.9L5 23l-.9-2.1L2 20l2.1-.9zM19 15l.7 1.6 1.6.7-1.6.7L19 19.6l-.7-1.6-1.6-.7 1.6-.7z"/></svg>AI Workflows</a>
-      <a href="#memory"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.5 2a3.5 3.5 0 00-3.4 4.3A4 4 0 004 13a4 4 0 002.3 3.6A3.5 3.5 0 109.5 22V2zM14.5 2a3.5 3.5 0 013.4 4.3A4 4 0 0120 13a4 4 0 01-2.3 3.6A3.5 3.5 0 1114.5 22V2z"/></svg>Memory<span class="badge">1</span></a>
-      <a href="#dashboards"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>Dashboards<span class="sub">›</span></a>
-      <a href="#scheduled"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Scheduled<span class="sub">›</span></a>
-      <a href="#proposals"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="13" rx="1"/><path d="M8 21h8M12 17v4"/></svg>Proposals</a>
+    <div class="seg" role="tablist"><a href="#home" class="on" id="segToday">Today</a><a href="#ask" id="segAsk">Ask</a></div>
+    <a class="newq" href="#ask"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg>New question</a>
+    <div class="ssearch"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>Search chat history</div>
+
+    <div class="sect">Today’s work</div>
+    <nav class="nav work">
+      <a href="#prep">Prep · Meridian Logistics 2:00<span class="st">Ready</span></a>
+      <a href="#company-brief" data-prompt="Open the company brief for Harbor Point Health">Company brief · Harbor Point<span class="st">Ready</span></a>
+      <a href="#bdr">First-touch draft · Tallgrass<span class="st">Ready</span></a>
+      <a href="#deal-review">Deal review · this week<span class="st run">Running</span></a>
     </nav>
-    <div class="sect">Archived ›</div>
-    <div class="sect">Recents ⌄</div>
+
+    <div class="sect">Chats</div>
+    <div class="sect sub">Starred</div>
     <nav class="nav recents">
-      <a href="#r1">Prep: Meridian Logistics first meeting</a>
-      <a href="#r2">Harbor Point Health — renewal strategy</a>
+      <a href="#company-brief" data-prompt="Open the company brief for Harbor Point Health">What is happening with Harbor Point Health</a>
+    </nav>
+    <div class="sect sub">Today</div>
+    <nav class="nav recents">
+      <a href="#capture">Capture: call with Jordan at Northwind</a>
+      <a href="#prep">Prepare me for my next meeting</a>
+      <a href="#deal-review">What did I promise this week?</a>
+    </nav>
+    <div class="sect sub">Previous 7 days</div>
+    <nav class="nav recents">
       <a href="#r3">Who covers trucking physical damage?</a>
       <a href="#r4">Draft BOR letter for Cobalt Ridge</a>
-      <a href="#r5">Compare Beazley vs Coalition cyber quotes</a>
     </nav>
+
     <div class="spacer"></div>
+    <div class="quick">
+      <a href="#capture"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0014 0M12 17v4M8 21h8"/></svg>Salesforce quick actions<small>→ Capture Agent</small></a>
+      <a href="#home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Briefing prompts<small>5 agents</small></a>
+    </div>
     <div class="ver"><div class="t">Wireframes</div><a href="index.html">North Star<small>full vision</small></a><a href="jan.html" class="on">January<small>stage 1</small></a><a href="leader.html">Sales Leader<small>second lens</small></a></div><!--/ver-->
-    <div class="foot">Signed in through the broker portal · every read and write runs as Dana in Salesforce</div>
+    <div class="sidefoot"><span class="av">DW</span><div><b>Dana Whitfield</b><small>Producer · Employee Benefits · signed in through the broker portal</small></div></div>
   </aside>
 
   <!-- ================= Main ================= -->
@@ -646,12 +683,6 @@ h1,h2,h3{margin:0;text-wrap:balance}
           <div class="panel">
             <div class="ph"><h2>Today’s brief</h2><span class="sub">What needs you, in order · one source per item, one write-back</span><span class="right" id="briefCount"></span></div>
             <ul class="brief" id="brief">
-              <li class="item" data-kind="decide">
-                <button class="cb" aria-label="Mark done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></button>
-                <div><div class="txt"><span class="kind decide">Decide</span>Approve the Beazley cyber quote for Brightline Foods. The $2.1M limit is held until 5:00 PM today.</div>
-                  <div class="meta"><span>Salesforce · Opportunity · Proposal · closes Jan 9</span><span class="via">Deal Review</span></div></div>
-                <a class="act" href="#deal-review">Open deal review</a>
-              </li>
               <li class="item" data-kind="review">
                 <button class="cb" aria-label="Mark done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></button>
                 <div><div class="txt"><span class="kind review">Follow-up due</span>Send Northwind Dental the revised numbers before the 4:30 call — Jordan asked for them on Friday.</div>
@@ -1023,13 +1054,11 @@ h1,h2,h3{margin:0;text-wrap:balance}
     hideAll(); $(VIEWS[name][0]).hidden=false; scroll.scrollTop=0; current=name;
     if(name==='prep'&&text) $('#prepUserMsg').firstChild.nodeValue=text;
     if(name==='company-brief'){var hp=!!(text&&/harbor/i.test(text)); $('#cbResult').hidden=!hp; $$('.pick').forEach(function(x){x.classList.toggle('on',hp&&x.getAttribute('data-co')==='hp')})}
-    $$('.nav a').forEach(function(a){a.classList.toggle('active',name==='prep'&&a.getAttribute('href')==='#r1')});
     $('.top .title').textContent=VIEWS[name][1];
     if(location.hash!=='#'+name) setHash(name);
   }
   function showHome(){
     hideAll(); home.hidden=false; scroll.scrollTop=0; input.value=''; current='';
-    $$('.nav a').forEach(function(a){a.classList.toggle('active',a.getAttribute('href')==='#home')});
     $('.top .title').textContent='Producer Home';
     if(location.hash) setHash('');
   }
@@ -1038,8 +1067,13 @@ h1,h2,h3{margin:0;text-wrap:balance}
   if(/[?&]export/.test(location.search)) document.body.classList.add('export');
   fromHash();
   $$('#backHome,#backHome2,.thread .back').forEach(function(b){b.addEventListener('click',showHome)});
-  $$('.nav a').forEach(function(a){a.addEventListener('click',function(e){
-    var h=a.getAttribute('href'); if(h==='#home'){e.preventDefault();showHome()} else if(h==='#r1'){e.preventDefault();showView('prep')}
+  function setSeg(ask){ $('#segToday').classList.toggle('on',!ask); $('#segAsk').classList.toggle('on',!!ask); }
+  $$('.nav a, .quick a, .seg a, .newq').forEach(function(a){a.addEventListener('click',function(e){
+    var h=a.getAttribute('href'), p=a.getAttribute('data-prompt');
+    if(h==='#home'){e.preventDefault();showHome();setSeg(false);return}
+    if(h==='#ask'){e.preventDefault();showHome();setSeg(true);input.focus();input.scrollIntoView({behavior:'smooth',block:'center'});return}
+    var v=h.slice(1); if(VIEWS[v]){e.preventDefault();showView(v,p||'');setSeg(true);return}
+    e.preventDefault(); toast('Wireframe: this chat is not filled in');
   })});
 
   // Which view a typed or chip prompt opens
@@ -1052,7 +1086,7 @@ h1,h2,h3{margin:0;text-wrap:balance}
     if(current){var ti=$(VIEWS[current][0]+' .dock input'); if(ti){ti.value=p;ti.focus()} e.preventDefault(); return}
     var v=c.getAttribute('data-view')||route(p);
     if(v==='later'){e.preventDefault();toast('Pipeline sweep and goal panel: stage 2 (after 4 January)');return}
-    if(v){e.preventDefault();showView(v,p);return}
+    if(v){e.preventDefault();showView(v,p);setSeg(true);return}
     input.value=p;input.focus();
   })});
   $('#promptForm').addEventListener('submit',function(e){e.preventDefault();var v=input.value.trim();if(!v)return;var r=route(v);if(r==='later'){toast('Pipeline sweep and goal panel: stage 2 (after 4 January)')}else if(r){showView(r,v)}else{toast('Wireframe: the assistant would answer here')}});

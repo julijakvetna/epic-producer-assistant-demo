@@ -3,6 +3,7 @@
 # Prep my next meeting · Company brief · Capture Agent · Deal Review · BDR Agent. No goal panel, no pipeline
 # screen, no sources slide. Built on what Ask Artemis already does (Today/Ask, Outlook, Salesforce quick actions, Dictate).
 import re
+BRAND = 'PA'
 h = open('index.html', encoding='utf-8').read()
 
 def cut(s, start, end):
@@ -106,7 +107,6 @@ brief = ('<!-- Today\'s brief: what needs an action today. Meetings live in thei
          '          <div class="panel">\n'
          '            <div class="ph"><h2>Today’s brief</h2><span class="sub">What needs you, in order · one source per item, one write-back</span><span class="right" id="briefCount"></span></div>\n'
          '            <ul class="brief" id="brief">\n'
-    + item('decide', 'Decide', 'Approve the Beazley cyber quote for Brightline Foods. The $2.1M limit is held until 5:00 PM today.', 'Salesforce · Opportunity · Proposal · closes Jan 9', 'Deal Review', 'Open deal review', '#deal-review')
     + item('review', 'Follow-up due', 'Send Northwind Dental the revised numbers before the 4:30 call — Jordan asked for them on Friday.', 'Salesforce · Task · due today', 'Deal Review · check = Task completed', 'Draft the email')
     + item('reply', 'Reply', 'Tom Reyes (Cascade Freight) will send the loss runs once you confirm the meeting — the thread has been waiting since Friday.', 'Outlook · thread matched to the Cascade Freight opportunity', 'draft ready', 'Open draft in Outlook')
     + item('call', 'Call back', 'Tallgrass Manufacturing referral from Karen Harris. They asked for a call this week.', 'Salesforce · Lead · untouched 6 days', 'BDR Agent', 'Draft intro', '#bdr')
@@ -124,8 +124,6 @@ h = rep(h, '<span class="s">Salesforce</span><span class="s">Outlook</span><span
 # ---------- Header / sidebar ----------
 h = rep(h, '<span class="title">Producer Home</span><span class="role">Employee Benefits · P&amp;C</span>',
         '<span class="title">Producer Home</span><span class="role">January version</span>')
-h = rep(h, '<div class="foot">Signed in as Dana Whitfield · Salesforce permissions apply</div>',
-        '<div class="foot">Signed in through the broker portal · every read and write runs as Dana in Salesforce</div>')
 
 # ---------- Company brief: Artemis-aware notes ----------
 h = rep(h, '<div class="pg"><span class="pl"></span><span class="ortype">or type a name…</span></div>\n          </div>',
@@ -148,6 +146,92 @@ h = cut(h, '<section class="thread uc" id="v-pipeline"', '<!-- Deal Review -->')
 h = cut(h, '<section class="slide" id="sourcesView"', '<div class="toast"')
 h = rep(h, '<div class="toast"', '    </div>\n  </div>\n</div>\n\n<div class="toast"')
 
+# ---------- Sidebar: portal-agent structure (Today | Ask, New question, search, Today's work, Chats, quick links) ----------
+SIDE_CSS = '''
+/* Artemis-style sidebar */
+.seg{margin:6px 12px 10px;display:grid;grid-template-columns:1fr 1fr;background:var(--panel-2);border-radius:9px;padding:3px}
+.seg a{text-align:center;padding:7px 0;border-radius:7px;font-size:13px;font-weight:600;color:var(--muted);text-decoration:none}
+.seg a.on{background:var(--navy);color:#fff}
+.newq{margin:0 12px 8px;display:flex;align-items:center;gap:8px;padding:8px 10px;font-size:13.5px;font-weight:600;color:var(--fg);text-decoration:none;border-radius:8px}
+.newq:hover{background:var(--panel-2)}
+.newq svg{width:15px;height:15px}
+.ssearch{margin:0 12px 10px;display:flex;align-items:center;gap:8px;padding:7px 10px;border:1px solid var(--line);border-radius:8px;color:var(--faint);font-size:12.5px;background:var(--bg)}
+.work a{display:flex;justify-content:space-between;gap:8px;color:var(--fg);font-size:12.5px;padding:5px 10px;border-radius:6px;text-decoration:none}
+.work a:hover{background:var(--panel-2)}
+.work a .st{color:var(--ok);font-size:11.5px;font-weight:600}
+.work a .st.run{color:var(--warn)}
+.side .sect.sub{margin-top:8px;color:var(--faint);font-weight:500;letter-spacing:.06em;text-transform:none;font-size:11.5px}
+.quick{padding:6px 10px 0;border-top:1px solid var(--line);margin-top:6px}
+.quick a{display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:7px;color:var(--fg);text-decoration:none;font-size:13px}
+.quick a:hover{background:var(--panel-2)}
+.quick a svg{width:15px;height:15px;color:var(--muted)}
+.quick a small{margin-left:auto;color:var(--faint);font-size:11px;white-space:nowrap}
+.sidefoot{padding:10px 14px;border-top:1px solid var(--line);display:flex;align-items:center;gap:10px}
+.sidefoot .av{width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;font-size:11px;font-weight:700;display:grid;place-items:center}
+.sidefoot b{display:block;font-size:13px;font-weight:600}
+.sidefoot small{color:var(--muted);font-size:11.5px}
+'''
+h = rep(h, '</style>\n</head>', SIDE_CSS + '</style>\n</head>')
+
+a = h.index('<aside class="side"'); b = h.index('</aside>') + len('</aside>')
+side = '''<aside class="side" aria-label="Workspace navigation">
+    <div class="brand"><span class="mark">__BRAND__</span><span class="name">Producer Assistant</span><span class="dot" title="Connected"></span></div>
+    <div class="seg" role="tablist"><a href="#home" class="on" id="segToday">Today</a><a href="#ask" id="segAsk">Ask</a></div>
+    <a class="newq" href="#ask"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg>New question</a>
+    <div class="ssearch"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>Search chat history</div>
+
+    <div class="sect">Today’s work</div>
+    <nav class="nav work">
+      <a href="#prep">Prep · Meridian Logistics 2:00<span class="st">Ready</span></a>
+      <a href="#company-brief" data-prompt="Open the company brief for Harbor Point Health">Company brief · Harbor Point<span class="st">Ready</span></a>
+      <a href="#bdr">First-touch draft · Tallgrass<span class="st">Ready</span></a>
+      <a href="#deal-review">Deal review · this week<span class="st run">Running</span></a>
+    </nav>
+
+    <div class="sect">Chats</div>
+    <div class="sect sub">Starred</div>
+    <nav class="nav recents">
+      <a href="#company-brief" data-prompt="Open the company brief for Harbor Point Health">What is happening with Harbor Point Health</a>
+    </nav>
+    <div class="sect sub">Today</div>
+    <nav class="nav recents">
+      <a href="#capture">Capture: call with Jordan at Northwind</a>
+      <a href="#prep">Prepare me for my next meeting</a>
+      <a href="#deal-review">What did I promise this week?</a>
+    </nav>
+    <div class="sect sub">Previous 7 days</div>
+    <nav class="nav recents">
+      <a href="#r3">Who covers trucking physical damage?</a>
+      <a href="#r4">Draft BOR letter for Cobalt Ridge</a>
+    </nav>
+
+    <div class="spacer"></div>
+    <div class="quick">
+      <a href="#capture"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0014 0M12 17v4M8 21h8"/></svg>Salesforce quick actions<small>→ Capture Agent</small></a>
+      <a href="#home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Briefing prompts<small>5 agents</small></a>
+    </div>
+    <div class="ver"><div class="t">Wireframes</div><a href="index.html">North Star<small>full vision</small></a><a href="jan.html" class="on">January<small>stage 1</small></a><a href="leader.html">Sales Leader<small>second lens</small></a></div><!--/ver-->
+    <div class="sidefoot"><span class="av">DW</span><div><b>Dana Whitfield</b><small>Producer · Employee Benefits · signed in through the broker portal</small></div></div>
+  </aside>'''
+h = h[:a] + side.replace('__BRAND__', BRAND) + h[b:]
+
+# nav handling: Today -> home; Ask -> home + focus prompt; chat links -> their views; segment state follows the view
+h = rep(h, """  $$('.nav a').forEach(function(a){a.addEventListener('click',function(e){
+    var h=a.getAttribute('href'); if(h==='#home'){e.preventDefault();showHome()} else if(h==='#r1'){e.preventDefault();showView('prep')}
+  })});""",
+"""  function setSeg(ask){ $('#segToday').classList.toggle('on',!ask); $('#segAsk').classList.toggle('on',!!ask); }
+  $$('.nav a, .quick a, .seg a, .newq').forEach(function(a){a.addEventListener('click',function(e){
+    var h=a.getAttribute('href'), p=a.getAttribute('data-prompt');
+    if(h==='#home'){e.preventDefault();showHome();setSeg(false);return}
+    if(h==='#ask'){e.preventDefault();showHome();setSeg(true);input.focus();input.scrollIntoView({behavior:'smooth',block:'center'});return}
+    var v=h.slice(1); if(VIEWS[v]){e.preventDefault();showView(v,p||'');setSeg(true);return}
+    e.preventDefault(); toast('Wireframe: this chat is not filled in');
+  })});""")
+# the old showView toggled .nav a.active by href; keep it harmless
+h = rep(h, "    $$('.nav a').forEach(function(a){a.classList.toggle('active',name==='prep'&&a.getAttribute('href')==='#r1')});\n", "")
+h = rep(h, "    $$('.nav a').forEach(function(a){a.classList.toggle('active',a.getAttribute('href')==='#home')});\n", "")
+
+
 # ---------- JS ----------
 h = rep(h, """  var VIEWS={prep:['#prepView','Prep: Meridian Logistics'],sources:['#sourcesView','Where the data comes from'],
     pipeline:['#v-pipeline','Pipeline'],'deal-review':['#v-deal-review','Deal Review'],capture:['#v-capture','Capture Agent'],
@@ -158,7 +242,7 @@ h = rep(h, """  var VIEWS={prep:['#prepView','Prep: Meridian Logistics'],sources
 h = rep(h, "var ROUTES=[[/prep|meridian|next meeting/i,'prep'],[/pipeline/i,'pipeline'],[/deal review|promise/i,'deal-review'],[/capture/i,'capture'],[/company brief|client summary|harbor point/i,'company-brief'],[/lead|bdr/i,'bdr']];",
         "var ROUTES=[[/prep|meridian|next meeting/i,'prep'],[/pipeline|goal|pace/i,'later'],[/deal review|promise/i,'deal-review'],[/capture|just met/i,'capture'],[/company brief|client summary|harbor point/i,'company-brief'],[/lead|bdr/i,'bdr']];")
 h = rep(h, "    var v=c.getAttribute('data-view')||route(p);\n    if(v){e.preventDefault();showView(v,p);return}",
-        "    var v=c.getAttribute('data-view')||route(p);\n    if(v==='later'){e.preventDefault();toast('Pipeline sweep and goal panel: stage 2 (after 4 January)');return}\n    if(v){e.preventDefault();showView(v,p);return}")
+        "    var v=c.getAttribute('data-view')||route(p);\n    if(v==='later'){e.preventDefault();toast('Pipeline sweep and goal panel: stage 2 (after 4 January)');return}\n    if(v){e.preventDefault();showView(v,p);setSeg(true);return}")
 h = rep(h, "var r=route(v);if(r){showView(r,v)}else{toast('Wireframe: the assistant would answer here')}",
         "var r=route(v);if(r==='later'){toast('Pipeline sweep and goal panel: stage 2 (after 4 January)')}else if(r){showView(r,v)}else{toast('Wireframe: the assistant would answer here')}")
 h = rep(h, "if(current&&current!=='sources'){", "if(current){")
