@@ -521,6 +521,25 @@ h1,h2,h3{margin:0;text-wrap:balance}
   .item{grid-template-columns:22px 1fr}
   .item .act{grid-column:2;justify-self:start;padding-left:0}
 }
+
+/* January additions */
+.jan-goal{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:10px 16px;border:1px dashed var(--line);border-radius:12px;font-size:12.5px;color:var(--muted)}
+.jan-goal .l{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);font-weight:600}
+.jan-goal b{color:var(--fg);font-weight:600}
+.jan-goal .num{font-size:15px;color:var(--fg)}
+.jan-goal .later{margin-left:auto;font-size:11.5px;color:var(--faint)}
+.mtg{list-style:none;margin:0;padding:0}
+.mtg li{display:grid;grid-template-columns:76px 1fr auto auto;gap:12px;align-items:center;padding:10px 16px;border-top:1px solid var(--line);font-size:13.5px}
+.mtg li:first-child{border-top:0}
+.mtg .t{font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+.mtg .n b{font-weight:600}
+.mtg .n small{display:block;color:var(--muted);font-size:11.5px}
+.mtg .tg{font-size:11px;padding:2px 8px;border-radius:9px;background:var(--info-bg);color:var(--info);white-space:nowrap}
+.mtg .tg.cl{background:var(--ok-bg);color:var(--ok)}
+.mtg .go{font-size:12.5px;font-weight:600;color:var(--navy);text-decoration:none;white-space:nowrap}
+.voice{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:var(--muted);background:var(--panel-2);border-radius:10px;padding:3px 9px}
+.voice svg{width:12px;height:12px;color:var(--navy)}
+@media (max-width:760px){.mtg li{grid-template-columns:60px 1fr;row-gap:4px}.mtg .tg,.mtg .go{grid-column:2}}
 </style>
 </head>
 <body>
@@ -549,7 +568,7 @@ h1,h2,h3{margin:0;text-wrap:balance}
       <a href="#r5">Compare Beazley vs Coalition cyber quotes</a>
     </nav>
     <div class="spacer"></div>
-    <div class="foot">Signed in as Dana Whitfield via the broker portal · Salesforce permissions apply</div>
+    <div class="foot">Signed in through the broker portal · every read and write runs as Dana in Salesforce</div>
   </aside>
 
   <!-- ================= Main ================= -->
@@ -565,32 +584,53 @@ h1,h2,h3{margin:0;text-wrap:balance}
 
     <div class="scroll">
       <main class="content">
-        <!-- Goal strip: not in the January scope -->
-        <section class="sources" aria-label="Goal panel coming" style="justify-content:flex-start">
-          <span class="l">Your goal &amp; pace</span>
-          <span style="color:var(--muted);font-size:12.5px">Booked vs goal, pace and “what closes the gap” arrive with the production data feed (stage 2). Everything below works on 4 January.</span>
+        <!-- Goal: what Salesforce can say today; goal & pace come with the production feed (stage 2) -->
+        <section class="jan-goal" aria-label="New business">
+          <span class="l">New business · 2026</span>
+          <span><b class="num">$1.08M</b> closed won YTD <span class="num">· 7</span> open deals <span class="num">· $2.4M</span> pipeline</span>
+          <span class="src">Salesforce opportunities, as you</span>
+          <span class="later">Goal, pace and “what closes the gap” arrive with the production data feed → stage 2</span>
         </section>
 
         <!-- Hero prompt -->
         <section class="hero">
           <h1>Good morning, Dana.</h1>
-          <div class="date">Monday, 5 January · 2 meetings today · 3 items need you</div>
+          <div class="date">Monday, 5 January · 3 meetings today · 4 items need you</div>
           <form class="prompt" id="promptForm">
             <button type="button" class="mic" aria-label="Attach files" title="Attach policies, loss runs, census files"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button>
             <input id="promptInput" type="text" placeholder="Ask anything — / for workflows, @ for briefs, # for clients" autocomplete="off">
             <button type="button" class="mic" aria-label="Dictate" title="Dictate — notes, next steps and tasks are captured to Salesforce"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0014 0M12 17v4M8 21h8"/></svg></button>
             <button type="submit" class="send" aria-label="Send"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
           </form>
-          <div class="hint">Try: “Prep me for the 2:00 with Meridian” · “What did I promise this week?” · “Capture: just met Jordan at Northwind, they want revised numbers by Nov 4”</div>
+          <div class="hint"><span class="voice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0014 0M12 17v4M8 21h8"/></svg>Speak or type</span> &nbsp;Try: “Prep me for the 2:00 with Meridian” · “Just met Jordan at Northwind — they want revised numbers by the 14th” · “What did I promise this week?”</div>
         </section>
 
         <!-- Capability chips -->
         <section class="chips" aria-label="Things you can ask" style="margin:-6px auto 0">
           <button class="chip" data-prompt="Prep me for my next meeting"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>Prep my next meeting</button>
-          <button class="chip" data-prompt="Run my deal review: what did I promise this week and what is due?"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>Deal Review</button>
+          <button class="chip" data-prompt="Give me a company brief on: "><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>Company brief</button>
           <button class="chip" data-prompt="Capture my meeting notes: "><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0014 0M12 17v4M8 21h8"/></svg>Capture Agent</button>
-          <button class="chip" data-prompt="Show my pipeline: what moved, what is stale, what needs a fix"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 5-6"/></svg>Pipeline</button>
+          <button class="chip" data-prompt="Run my deal review: what did I promise this week and what is due?"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>Deal Review</button>
+          <button class="chip" data-prompt="Which of my leads haven't been touched? Draft first touches."><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg>BDR Agent</button>
           </section>
+
+        <!-- Counters: what the portal agent already shows today, now with our flags behind them -->
+        <section class="tiles" aria-label="Today">
+          <div class="tile"><div class="l">Meetings today<span class="src">Outlook</span></div><div class="v num">3</div><div class="d"><b>1</b> prospect, <b>2</b> clients · prep ready for all</div></div>
+          <div class="tile"><div class="l">Emails to answer<span class="src">Outlook</span></div><div class="v num">7</div><div class="d"><b>2</b> from clients with an open deal · drafts ready</div></div>
+          <div class="tile"><div class="l">Closing this month<span class="src">Salesforce</span></div><div class="v num">1 <small>$310K</small></div><div class="d">Brightline Foods · quote held till 5 PM</div></div>
+          <div class="tile"><div class="l">Gone cold<span class="src">Salesforce</span></div><div class="v num">2 <small>$226K</small></div><div class="d"><b class="risk">Sable &amp; Finch</b> 21 days · Orion 18 days</div></div>
+        </section>
+
+        <!-- Today's meetings: the calendar is the context for Prep -->
+        <section class="panel" aria-label="Today's meetings">
+          <div class="ph"><h2>Today’s meetings</h2><span class="sub">From Outlook · matched to Salesforce</span><span class="right"><a class="src-link" href="#prep">Prep my next meeting →</a></span></div>
+          <ul class="mtg">
+            <li><span class="t">10:30 AM</span><span class="n"><b>Harbor Point Health</b><small>Cyber renewal review · Dr. Amir Patel, Mia Chen</small></span><span class="tg cl">client</span><a class="go" href="#company-brief" data-prompt="Open the company brief for Harbor Point Health">Prepare me →</a></li>
+            <li><span class="t">2:00 PM</span><span class="n"><b>Meridian Logistics</b><small>First in-person · at their yard · Karen Harris (SME) joins 2:30</small></span><span class="tg">prospect</span><a class="go" href="#prep">Prepare me →</a></li>
+            <li><span class="t">4:30 PM</span><span class="n"><b>Northwind Dental Partners</b><small>EB renewal · revised numbers · Jordan Lee</small></span><span class="tg cl">client</span><a class="go" href="#" onclick="return false">Prepare me →</a></li>
+          </ul>
+        </section>
 
         <!-- Brief + attention -->
         <section class="cols">
@@ -605,14 +645,20 @@ h1,h2,h3{margin:0;text-wrap:balance}
               </li>
               <li class="item" data-kind="review">
                 <button class="cb" aria-label="Mark done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></button>
-                <div><div class="txt"><span class="kind review">Review</span>Prep for Meridian Logistics is ready: CRM context, the existing prospect brief and last week’s emails.</div>
+                <div><div class="txt"><span class="kind review">Review</span>Prep for Meridian Logistics at 2:00 is ready: CRM context, the existing prospect brief, last week’s emails and two questions to lead with.</div>
                   <div class="meta"><span>Meeting 2:00 PM · Trucking, 140 units</span><span class="via">Prep my next meeting</span></div></div>
                 <a class="act" href="#prep">Open brief</a>
+              </li>
+              <li class="item" data-kind="call">
+                <button class="cb" aria-label="Mark done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></button>
+                <div><div class="txt"><span class="kind call">Call back</span>Tallgrass Manufacturing referral from Karen Harris, scored 82. They asked for a call this week.</div>
+                  <div class="meta"><span>New lead · Manufacturing · Workers Comp &amp; Package</span><span class="via">BDR Agent</span></div></div>
+                <button class="act">Draft intro</button>
               </li>
               <li class="item" data-kind="renewal">
                 <button class="cb" aria-label="Mark done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></button>
                 <div><div class="txt"><span class="kind renewal">Renewal</span>Lakeshore Hospitality Group Package expires in 23 days and has no renewal opportunity yet.</div>
-                  <div class="meta"><span>Client · Policy PK-4471120 · exp 11/18</span><span class="via">Pipeline sweep</span></div></div>
+                  <div class="meta"><span>Client · Policy PK-4471120 · exp 11/18</span><span class="via">Renewals · portal</span></div></div>
                 <button class="act">Open renewal</button>
               </li>
               <li class="item done" data-kind="done" data-done="8:47 AM">
@@ -631,12 +677,17 @@ h1,h2,h3{margin:0;text-wrap:balance}
           </div>
 
           <div class="panel">
-            <div class="ph"><h2>Needs attention</h2><span class="sub">From the sweep</span></div>
+            <div class="ph"><h2>Needs attention</h2><span class="sub">Portal flags · Salesforce tasks</span></div>
             <div class="tabs" role="tablist">
-                            <button class="tab" role="tab" data-tab="renew">Renewals 90d<span class="n">6</span></button>
-              <button class="tab active" role="tab" data-tab="tasks">Overdue tasks<span class="n">4</span></button>
-              <button class="tab" role="tab" data-tab="stalled">Stalled deals<span class="n">2</span></button>
-            </div>
+              <button class="tab active" role="tab" data-tab="risk">At risk<span class="n">3</span></button>
+              <button class="tab" role="tab" data-tab="renew">Renewals 90d<span class="n">6</span></button>
+              <button class="tab" role="tab" data-tab="tasks">Overdue tasks<span class="n">4</span></button>
+                          </div>
+            <ul class="alist" data-pane="risk">
+              <li><span class="bar crit"></span><div><div class="c">Cobalt Ridge Construction<small>P&amp;C · 9 policies</small></div><div class="r">Marked at risk by servicer on Oct 21: billing dispute on the GL audit, two unanswered emails.</div><div class="a">Draft a call plan with the servicer’s notes</div></div></li>
+              <li><span class="bar warn"></span><div><div class="c">Northwind Dental Partners<small>EB · 4 lines</small></div><div class="r">CFO mentioned a competing quote on the Oct 17 call. Renewal 12/01.</div><div class="a">Run plan comparison against the incumbent</div></div></li>
+              <li><span class="bar warn"></span><div><div class="c">Pinecrest Senior Living<small>P&amp;C · Package</small></div><div class="r">Primary contact left the company; no new contact on the account.</div><div class="a">Find the new decision-maker</div></div></li>
+            </ul>
             <ul class="alist" data-pane="renew" hidden>
               <li><span class="bar crit"></span><div><div class="c">Lakeshore Hospitality Group<small>Package · exp 11/18</small></div><div class="r">23 days. No renewal opportunity opened.</div><div class="a">Open renewal and start policy review</div></div></li>
               <li><span class="bar warn"></span><div><div class="c">Northwind Dental Partners<small>Medical, Dental, Vision, Life · exp 12/01</small></div><div class="r">36 days. Competing quote in play.</div><div class="a">Schedule pre-renewal meeting</div></div></li>
@@ -645,23 +696,19 @@ h1,h2,h3{margin:0;text-wrap:balance}
               <li><span class="bar info"></span><div><div class="c">Harbor Point Health<small>Cyber Liability · exp 01/10</small></div><div class="r">76 days. Limit increase discussed Friday.</div><div class="a">Request indications at $5M</div></div></li>
               <li><span class="bar info"></span><div><div class="c">Brightline Foods<small>Property · exp 01/22</small></div><div class="r">88 days.</div><div class="a">Add to Q1 renewal plan</div></div></li>
             </ul>
-            <ul class="alist" data-pane="tasks">
+            <ul class="alist" data-pane="tasks" hidden>
               <li><span class="bar crit"></span><div><div class="c">Sable &amp; Finch Architects<small>due Oct 17</small></div><div class="r">Send revised professional liability proposal.</div><div class="a">Draft the proposal from the last quote</div></div></li>
               <li><span class="bar crit"></span><div><div class="c">Cobalt Ridge Construction<small>due Oct 20</small></div><div class="r">Reply on GL audit dispute.</div><div class="a">Draft reply with servicer’s notes</div></div></li>
               <li><span class="bar warn"></span><div><div class="c">Orion Cold Storage<small>due Oct 22</small></div><div class="r">Confirm discovery call.</div><div class="a">Propose 3 times</div></div></li>
               <li><span class="bar warn"></span><div><div class="c">Brightline Foods<small>due Oct 23</small></div><div class="r">Share cyber application with CISO.</div><div class="a">Send the ACORD pre-filled</div></div></li>
             </ul>
-            <ul class="alist" data-pane="stalled" hidden>
-              <li><span class="bar warn"></span><div><div class="c">Sable &amp; Finch Architects<small>Proposal · $86K</small></div><div class="r">No activity for 21 days. Close date passed on Oct 15.</div><div class="a">Ask: move close date or mark lost?</div></div></li>
-              <li><span class="bar warn"></span><div><div class="c">Orion Cold Storage<small>Qualification · $140K</small></div><div class="r">Discovery call rescheduled twice.</div><div class="a">Send a one-page capabilities note</div></div></li>
-            </ul>
-          </div>
+                      </div>
         </section>
 
         <!-- Connected sources -->
         <section class="sources" aria-label="Connected sources">
           <span class="l">Connected</span>
-          <span class="s">Salesforce</span><span class="s">Outlook · Teams</span><span class="s">Broker portal agent</span><span class="s">Existing prospect briefs</span><span class="s">SME directory</span><span class="src-link" style="cursor:default">January scope: four agents, reads and writes as you</span>
+          <span class="s">Broker portal agent</span><span class="s">Salesforce (as you)</span><span class="s">Outlook · Teams</span><span class="s">Existing prospect briefs</span><span class="s">SME directory</span><span class="src-link" style="cursor:default">January: five agents on the existing portal agent · goal panel, pipeline and sales-leader lens in stage 2</span>
         </section>
       </main>
 
@@ -790,51 +837,6 @@ h1,h2,h3{margin:0;text-wrap:balance}
 
       <!-- ================= Use-case views (one per chip) ================= -->
       <!-- Pipeline -->
-      <section class="thread uc" id="v-pipeline" hidden aria-label="Pipeline">
-        <div class="crumb"><button type="button" class="back"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>Home</button><span>›</span><span>Pipeline</span></div>
-        <div class="msg-user">Show my pipeline: what moved, what is stale, what needs a fix<span class="at">Today · 8:05 AM</span></div>
-        <div class="msg-ai"><div class="av">AI</div><div class="body">
-          <div class="working"><span>7 open opportunities you own</span><span>Tasks &amp; Events, last 30 days</span><span>Stage history</span></div>
-          <p class="lead"><b>7 open deals, $2.4M.</b> Brightline Foods is the only one closing this month. <b>5 flags on 3 deals</b>; 3 of them I can fix now if you confirm. Since Friday, Northwind Dental moved to Negotiation.</p>
-          <div class="brief-card">
-            <div class="board">
-              <div class="col"><div class="ch">Qualification<span>2 · $235K</span></div>
-                <div class="deal"><b>Meridian Logistics</b><span class="amt num">$95K</span><small>Package + Auto · meeting today 2:00</small><a class="sfl" href="#" onclick="return false" title="Open in Salesforce (new tab)">Salesforce ↗</a></div>
-                <div class="deal flagged"><b>Orion Cold Storage</b><span class="amt num">$140K</span><small>Close Dec 12</small><span class="flag">No next step</span><span class="flag">Rescheduled twice</span><a class="sfl" href="#" onclick="return false" title="Open in Salesforce (new tab)">Salesforce ↗</a></div>
-              </div>
-              <div class="col"><div class="ch">Proposal<span>3 · $396K</span></div>
-                <div class="deal hot"><b>Brightline Foods</b><span class="amt num">$310K</span><small>Cyber · close Oct 31 · quote held till 5 PM</small><span class="flag ok">Closing this month</span><a class="sfl" href="#" onclick="return false" title="Open in Salesforce (new tab)">Salesforce ↗</a></div>
-                <div class="deal flagged"><b>Sable &amp; Finch Architects</b><span class="amt num">$86K</span><small>Prof. liability · close Oct 15</small><span class="flag">Close date passed</span><span class="flag">No activity 21 days</span><a class="sfl" href="#" onclick="return false" title="Open in Salesforce (new tab)">Salesforce ↗</a></div>
-                <div class="deal flagged"><b>Harbor Point Health</b><span class="amt num">—</span><small>Cyber limit increase · close Jan 10</small><span class="flag">Amount missing</span><a class="sfl" href="#" onclick="return false" title="Open in Salesforce (new tab)">Salesforce ↗</a></div>
-              </div>
-              <div class="col"><div class="ch">Negotiation<span>2 · $1.77M</span></div>
-                <div class="deal"><b>Northwind Dental Partners</b><span class="amt num">$680K</span><small>EB renewal · close Dec 1 · moved Fri</small><a class="sfl" href="#" onclick="return false" title="Open in Salesforce (new tab)">Salesforce ↗</a></div>
-                <div class="deal"><b>Cobalt Ridge Construction</b><span class="amt num">$1.09M</span><small>WC renewal · close Dec 15</small><a class="sfl" href="#" onclick="return false" title="Open in Salesforce (new tab)">Salesforce ↗</a></div>
-              </div>
-            </div>
-            <div class="bsec">
-              <h3>Fix the reversible ones?<span class="src">Writes as you, with your Salesforce access</span></h3>
-              <ul class="changes">
-                <li><input type="checkbox" checked aria-label="Include"><div><b>Sable &amp; Finch</b> · close date Oct 15 → <b>Nov 14</b><small>Or mark it lost. That one stays your call.</small></div></li>
-                <li><input type="checkbox" checked aria-label="Include"><div><b>Orion Cold Storage</b> · next step → <b>"Send one-page capabilities note"</b><small>+ Task due Oct 30</small></div></li>
-                <li><input type="checkbox" checked aria-label="Include"><div><b>Harbor Point Health</b> · amount → <b>$120K</b><small>From Friday's notes: $5M limit, est. revenue</small></div></li>
-              </ul>
-              <div class="next"><button class="btn primary js-flow" data-flow="pipe">Save the 3 fixes to Salesforce</button><button class="btn">One by one</button></div>
-              
-            </div>
-            <div class="after"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="9"/></svg>Runs every morning at 7:30. The flags also feed Needs attention and the pipeline tiles on Home.</div>
-          </div>
-          <div class="followups">
-            <button class="chip" data-prompt="Only the deals closing this quarter">Only this quarter</button>
-            <button class="chip" data-prompt="What changed since last week?">What changed since last week?</button>
-            <button class="chip" data-prompt="Draft the Sable & Finch check-in email">Draft Sable &amp; Finch check-in</button>
-          </div>
-          <p class="scope"><b>January:</b> Opportunity, Task/Event, stage history. Writes limited to close date, next step, amount and Task, each confirmed. Scheduled morning run if the portal agent supports schedules, otherwise on open.</p>
-        </div></div>
-        <div class="flows"></div>
-        <div class="dock"><form class="prompt tform"><input class="tin" type="text" placeholder="Ask about your pipeline…" autocomplete="off"><button type="submit" class="send" aria-label="Send"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button></form></div>
-      </section>
-
       <!-- Deal Review -->
       <section class="thread uc" id="v-deal-review" hidden aria-label="Deal Review">
         <div class="crumb"><button type="button" class="back"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>Home</button><span>›</span><span>Deal Review</span></div>
@@ -860,7 +862,7 @@ h1,h2,h3{margin:0;text-wrap:balance}
             </div>
             <div class="after"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>The same list is "Today's brief" on Home. Ticking an item there writes the Task status.</div>
           </div>
-          <p class="scope"><b>Wave 1:</b> runs on existing Tasks and Opportunities, richer once Capture logs every meeting. Every write is confirmed by you, one record at a time. "Meeting ended" trigger only if the agent exposes calendar events.</p>
+          <p class="scope"><b>January:</b> runs on existing Tasks and Opportunities, richer once Capture logs every meeting. Every write is confirmed by you, one record at a time. "Meeting ended" trigger only if the agent exposes calendar events.</p>
         </div></div>
         <div class="flows"></div>
         <div class="dock"><form class="prompt tform"><input class="tin" type="text" placeholder="Answer, or ask about a deal…" autocomplete="off"><button type="submit" class="send" aria-label="Send"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button></form></div>
@@ -895,13 +897,113 @@ h1,h2,h3{margin:0;text-wrap:balance}
             <button class="chip" data-prompt="Ask me the three capture questions instead">Interview me instead</button>
             <button class="chip" data-prompt="Draft the recap email to Jordan">Draft recap to Jordan</button>
           </div>
-          <p class="scope"><b>Wave 1:</b> dictation and speech-to-text come from the Microsoft stack (Teams / Azure AI Speech). Writes in wave 1: Task and Opportunity fields on the allow-list, each confirmed. Creating Contacts is a later increment.</p>
+          <p class="scope"><b>January:</b> dictation uses the portal’s Dictate (Microsoft speech-to-text). Writes in wave 1: Task and Opportunity fields on the allow-list, each confirmed. Creating Contacts is a later increment.</p>
         </div></div>
         <div class="flows"></div>
         <div class="dock"><form class="prompt tform"><input class="tin" type="text" placeholder="Correct something, or add a detail…" autocomplete="off"><button type="submit" class="send" aria-label="Send"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button></form></div>
       </section>
 
       <!-- Company brief -->
+      <section class="thread uc" id="v-company-brief" hidden aria-label="Company brief">
+        <div class="crumb"><button type="button" class="back"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>Home</button><span>›</span><span>Company brief</span></div>
+        <div class="msg-user">Give me a company brief<span class="at">Today · 9:20 AM</span></div>
+        <div class="msg-ai"><div class="av">AI</div><div class="body">
+          <p class="lead"><b>Which company?</b></p>
+          <div class="picker">
+            <div class="pg"><span class="pl">Coming up</span><button class="pick" data-co="hp">Harbor Point Health<span class="tg cl">client</span><small>Thu 10:30</small></button><a class="pick" href="#prep">Meridian Logistics<span class="tg pr">prospect</span><small>today 2:00</small></a></div>
+            <div class="pg"><span class="pl">Needs attention</span><button class="pick" data-co="other">Cobalt Ridge Construction<span class="tg cl">client</span><small>at risk</small></button><button class="pick" data-co="other">Lakeshore Hospitality<span class="tg cl">client</span><small>renews in 23 days</small></button></div>
+            <div class="pg"><span class="pl">Recent</span><button class="pick" data-co="other">Orion Cold Storage<span class="tg pr">prospect</span><small>brief ready</small></button></div>
+            <div class="pg"><span class="pl"></span><span class="ortype">or type a name…</span></div>
+          </div>
+          <p class="muted" style="font-size:12px;margin:10px 0 0">Names are matched on Account, Lead and Opportunity; if two records match (“Dreisbach Enterprises” and “Dreisbach Enterprises Inc”), you pick one before anything is read.</p>
+        </div></div>
+
+        <div id="cbResult" hidden>
+          <div class="msg-user">Harbor Point Health<span class="at">Today · 9:20 AM</span></div>
+          <div class="msg-ai"><div class="av">AI</div><div class="body">
+            <div class="working"><span>Salesforce: account, contacts, 1 open opportunity, 14 activities</span><span>Policies: 2 of 5 lines in CRM</span><span>Existing brief from Oct 2</span><span>Web, last 30 days</span></div>
+            <p class="lead"><b>Harbor Point Health is a client</b>, so you get both sides: what we have with them, and what is out there. Thursday's meeting is about the <b>cyber limit increase to $5M</b>.</p>
+            <div class="brief-card">
+              <div class="bh">
+                <div class="logo">HP</div>
+                <div><h2>Harbor Point Health</h2><div class="tagline">Community health network · 3 hospitals, 11 urgent-care sites · Tacoma, WA</div></div>
+                <span class="stage cl">Client since 2019</span><a class="sfl" href="#" onclick="return false" title="Open in Salesforce (new tab)">Salesforce ↗</a>
+                <div class="when"><b>Thu 10:30</b>Cyber renewal review · Dr. Amir Patel, Mia Chen</div>
+              </div>
+              <div class="side-h int"><span>1</span>What we have with you<small>Internal · summarised from CRM</small></div>
+              <div class="two">
+                <div class="bsec"><h3>People</h3>
+                  <div class="who">
+                    <div class="p"><span class="av">AP</span><div><b>Dr. Amir Patel</b><small>CFO · decision maker</small><div class="note">Asked for $5M indications on Friday.</div></div></div>
+                    <div class="p"><span class="av">MC</span><div><b>Mia Chen</b><small>IT Director · owns the security questionnaire</small></div></div>
+                  </div></div>
+                <div class="bsec"><h3>Open with us</h3>
+                  <p><b>Cyber limit increase</b> · Proposal · $120K est. · close Jan 10 <a class="sfl" href="#" onclick="return false" title="Open in Salesforce (new tab)">Salesforce ↗</a></p>
+                  <p class="muted">Last 90 days: 14 activities. Friday's meeting logged with 3 follow-ups; recap sent today 8:47 AM.</p></div>
+              </div>
+              <div class="bsec"><h3>Policies<span class="src">Only lines populated in CRM</span></h3>
+                <table class="prog"><thead><tr><th>Line</th><th>Carrier</th><th>Expires</th><th>Premium</th></tr></thead><tbody>
+                  <tr><td>Cyber Liability</td><td>Beazley</td><td>Jan 10</td><td class="num">$212,000</td></tr>
+                  <tr><td>Medical Professional</td><td>Coverys</td><td>Mar 1</td><td class="num">$1,480,000</td></tr>
+                  <tr class="nic"><td colspan="3">3 more lines are not in CRM</td><td><a href="#" onclick="return false">Open in AMS →</a></td></tr>
+                </tbody></table></div>
+              <div class="side-h ext"><span>2</span>What is out there<small>External · the existing prospect brief (Salesforce) or the portal’s prospect-intelligence agent</small></div>
+              <div class="bsec">
+                <ul class="gaps">
+                  <li><span class="bar warn"></span><div><b>Two regional health systems hit by ransomware since August</b><p>Both in Washington; one had 3 weeks of EHR downtime. Underwriters are asking for MFA and backup evidence at renewal.</p><div class="so">So: get Mia's MFA and backup answers before Thursday; it decides the $5M pricing.</div></div></li>
+                  <li><span class="bar info"></span><div><b>Opening 2 urgent-care sites in Q1 2027</b><p>Local news, Oct 9. More endpoints and patient records; feeds the case for the higher limit.</p></div></li>
+                  <li><span class="bar info"></span><div><b>No reported breaches</b><p>HHS breach portal, checked today.</p></div></li>
+                </ul>
+              </div>
+              <div class="bsec"><h3>Ask on Thursday</h3>
+                <ol class="ask"><li>Is MFA on for all remote access, including vendors?<small>The first question every cyber underwriter asks now.</small></li><li>When do the two new sites go live?<small>Sets the effective date for the higher limit.</small></li></ol>
+                <div class="next"><button class="btn primary">Add to Thursday's invite</button><button class="btn">Request $5M indications</button></div>
+              </div>
+            </div>
+            <p class="note-pr">For a <b>prospect</b> the same brief has only part 2, plus a one-line header with what little the CRM holds (owner, last touch). Try <a href="#prep">Meridian Logistics</a>.</p>
+            <p class="scope"><b>January:</b> internal from Salesforce as you (policies only where the object is populated); external = the brief that already exists — the prospect briefing on the Account or the output of the portal’s prospect-intelligence agent — surfaced here, not regenerated. A fresh research run is stage 2.</p>
+          </div></div>
+        </div>
+        <div class="dock"><form class="prompt tform"><input class="tin" type="text" placeholder="Type a company name…" autocomplete="off"><button type="submit" class="send" aria-label="Send"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button></form></div>
+      </section>
+
+      <!-- BDR Agent -->
+      <section class="thread uc" id="v-bdr" hidden aria-label="BDR Agent">
+        <div class="crumb"><button type="button" class="back"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>Home</button><span>›</span><span>BDR Agent</span></div>
+        <div class="msg-user">Which of my leads haven't been touched? Draft first touches.<span class="at">Today · 7:30 AM · scheduled</span></div>
+        <div class="msg-ai"><div class="av">AI</div><div class="body">
+          <div class="working"><span>Your Leads with no first touch</span><span>Existing briefs</span></div>
+          <p class="lead"><b>5 leads still waiting for a first touch</b>, the oldest for 45 days. Two have a brief, so their drafts use real facts; the other three get CRM-only drafts that are shorter and more generic.</p>
+          <div class="brief-card">
+            <table class="leads">
+              <thead><tr><th>Lead</th><th>Source</th><th>Untouched</th><th>Brief</th><th></th></tr></thead>
+              <tbody>
+                <tr class="sel"><td><b>Tallgrass Manufacturing</b><a class="sfl" href="#" onclick="return false" title="Open in Salesforce (new tab)">Salesforce ↗</a><small>WC &amp; Package · 240 employees</small></td><td>Referral · K. Harris</td><td class="num">3 days</td><td><span class="yes">Yes</span></td><td><button class="lk">Draft ↓</button></td></tr>
+                <tr><td><b>Alder Creek Brewing</b><small>Package · Product liability</small></td><td>Website form</td><td class="num">21 days</td><td><span class="yes">Yes</span></td><td><button class="lk">Draft</button></td></tr>
+                <tr><td><b>Summit Ridge Dental Group</b><small>EB · 6 offices</small></td><td>Event · Oct 2</td><td class="num">19 days</td><td><span class="no">CRM only</span></td><td><button class="lk">Draft</button></td></tr>
+                <tr><td><b>Redwood Valley Farms</b><small>Farm · Auto</small></td><td>List import</td><td class="num">32 days</td><td><span class="no">CRM only</span></td><td><button class="lk">Draft</button></td></tr>
+                <tr><td><b>Keystone Freightways</b><small>Trucking · 60 units</small></td><td>List import</td><td class="num">45 days</td><td><span class="no">CRM only</span></td><td><button class="lk">Draft</button></td></tr>
+              </tbody>
+            </table>
+            <div class="bsec">
+              <h3>First touch · Tallgrass Manufacturing<span class="src">From the brief + referral note</span></h3>
+              <div class="mail">
+                <div class="mh"><span>To</span>Greg Olsen, VP Operations</div>
+                <div class="mh"><span>Subject</span>Karen Harris suggested we talk: workers comp at Tallgrass</div>
+                <div class="mb">Hi Greg,<br><br>Karen Harris mentioned you're reviewing workers comp ahead of the new press line in January. We place programs for several Midwest metal fabricators your size, and the ones who did a safety-credit review before adding shifts saved 8–12% at renewal.<br><br>Would 20 minutes this Thursday or Friday work to see if that applies to Tallgrass?<br><br>Best,<br>Sam</div>
+              </div>
+              <div class="next"><button class="btn primary js-flow" data-flow="bdr">Open in Outlook</button><button class="btn">Copy</button><button class="btn">Next draft</button></div>
+              
+            </div>
+            <div class="after"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="9"/></svg>Runs every morning at 7:30. When you send, the Lead status and a Task are written for you.</div>
+          </div>
+          <p class="scope"><b>January:</b> list + drafts only; the draft opens in Outlook the way the portal already opens replies. Lead scoring, routing and reply tracking are stage 2.</p>
+        </div></div>
+        <div class="flows"></div>
+        <div class="dock"><form class="prompt tform"><input class="tin" type="text" placeholder="Change the tone, or ask about a lead…" autocomplete="off"><button type="submit" class="send" aria-label="Send"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button></form></div>
+      </section>
+
+      <!-- ================= Sources view (slide) ================= -->
           </div>
   </div>
 </div>
@@ -924,7 +1026,8 @@ h1,h2,h3{margin:0;text-wrap:balance}
   var home=$('.content'), scroll=$('.scroll');
   var input=$('#promptInput');
   var VIEWS={prep:['#prepView','Prep: Meridian Logistics'],
-    pipeline:['#v-pipeline','Pipeline'],'deal-review':['#v-deal-review','Deal Review'],capture:['#v-capture','Capture Agent']};
+    'deal-review':['#v-deal-review','Deal Review'],capture:['#v-capture','Capture Agent'],
+    'company-brief':['#v-company-brief','Company brief'],bdr:['#v-bdr','BDR Agent']};
   var current='';
   function hideAll(){home.hidden=true;Object.keys(VIEWS).forEach(function(k){$(VIEWS[k][0]).hidden=true})}
   function setHash(h){try{history.replaceState(null,'',h?('#'+h):(location.pathname+location.search))}catch(e){}}
@@ -932,6 +1035,7 @@ h1,h2,h3{margin:0;text-wrap:balance}
     if(!VIEWS[name]) return showHome();
     hideAll(); $(VIEWS[name][0]).hidden=false; scroll.scrollTop=0; current=name;
     if(name==='prep'&&text) $('#prepUserMsg').firstChild.nodeValue=text;
+    if(name==='company-brief'){var hp=!!(text&&/harbor/i.test(text)); $('#cbResult').hidden=!hp; $$('.pick').forEach(function(x){x.classList.toggle('on',hp&&x.getAttribute('data-co')==='hp')})}
     $$('.nav a').forEach(function(a){a.classList.toggle('active',name==='prep'&&a.getAttribute('href')==='#r1')});
     $('.top .title').textContent=VIEWS[name][1];
     if(location.hash!=='#'+name) setHash(name);
@@ -952,7 +1056,7 @@ h1,h2,h3{margin:0;text-wrap:balance}
   })});
 
   // Which view a typed or chip prompt opens
-  var ROUTES=[[/prep|meridian|next meeting/i,'prep'],[/pipeline/i,'pipeline'],[/deal review|promise/i,'deal-review'],[/capture|just met/i,'capture'],[/company brief|client summary|lead|bdr/i,'later']];
+  var ROUTES=[[/prep|meridian|next meeting/i,'prep'],[/pipeline|goal|pace/i,'later'],[/deal review|promise/i,'deal-review'],[/capture|just met/i,'capture'],[/company brief|client summary|harbor point/i,'company-brief'],[/lead|bdr/i,'bdr']];
   function route(t){for(var i=0;i<ROUTES.length;i++){if(ROUTES[i][0].test(t))return ROUTES[i][1]}return null}
 
   // Chips, cards and follow-ups: inside a thread they fill its prompt; on Home, chips open their view
@@ -960,11 +1064,11 @@ h1,h2,h3{margin:0;text-wrap:balance}
     var p=c.getAttribute('data-prompt');
     if(current){var ti=$(VIEWS[current][0]+' .dock input'); if(ti){ti.value=p;ti.focus()} e.preventDefault(); return}
     var v=c.getAttribute('data-view')||route(p);
-    if(v==='later'){e.preventDefault();toast('Company brief and BDR Agent: stage 2 (after 4 January)');return}
+    if(v==='later'){e.preventDefault();toast('Pipeline sweep and goal panel: stage 2 (after 4 January)');return}
     if(v){e.preventDefault();showView(v,p);return}
     input.value=p;input.focus();
   })});
-  $('#promptForm').addEventListener('submit',function(e){e.preventDefault();var v=input.value.trim();if(!v)return;var r=route(v);if(r==='later'){toast('Company brief and BDR Agent: stage 2 (after 4 January)')}else if(r){showView(r,v)}else{toast('Wireframe: the assistant would answer here')}});
+  $('#promptForm').addEventListener('submit',function(e){e.preventDefault();var v=input.value.trim();if(!v)return;var r=route(v);if(r==='later'){toast('Pipeline sweep and goal panel: stage 2 (after 4 January)')}else if(r){showView(r,v)}else{toast('Wireframe: the assistant would answer here')}});
   $$('#promptForm2,.tform').forEach(function(f){f.addEventListener('submit',function(e){e.preventDefault();var i=$('input',f);if(i.value.trim()){toast('Wireframe: the assistant would answer in this thread');i.value=''}})});
 
   // Writes happen in the chat: the producer's message, then one agent message that lists every operation
@@ -1062,6 +1166,11 @@ h1,h2,h3{margin:0;text-wrap:balance}
   })});
 
   // Company brief: one-click picker
+  $$('.pick[data-co]').forEach(function(p){p.addEventListener('click',function(){
+    if(p.getAttribute('data-co')!=='hp'){toast('Wireframe: only Harbor Point Health is filled in');return}
+    $$('.pick').forEach(function(x){x.classList.toggle('on',x===p)});
+    $('#cbResult').hidden=false; $('#cbResult').scrollIntoView({behavior:'smooth',block:'start'});
+  })});
 
   // Booked by month (thousands). Nov–Dec are expected from weighted pipeline.
   var months=[['Jan',62],['Feb',88],['Mar',131],['Apr',97],['May',115],['Jun',142],['Jul',78],['Aug',104],['Sep',128],['Oct',135,'cur'],['Nov',96,'exp'],['Dec',124,'exp']];
@@ -1088,7 +1197,7 @@ h1,h2,h3{margin:0;text-wrap:balance}
     if(done.length){var d=document.createElement('li');d.className='divider';d.textContent='Handled today';list.appendChild(d)}
     done.forEach(function(i){list.appendChild(i)});
     $('#briefCount').textContent=done.length+' of '+items.length+' handled';
-    var dateEl=$('.hero .date');dateEl.textContent='Monday, 5 January · 2 meetings today · '+open.length+(open.length===1?' item needs':' items need')+' you';
+    var dateEl=$('.hero .date');dateEl.textContent='Monday, 5 January · 3 meetings today · '+open.length+(open.length===1?' item needs':' items need')+' you';
   }
   list.addEventListener('click',function(e){
     var cb=e.target.closest('.cb'); if(!cb) return;

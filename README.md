@@ -41,9 +41,19 @@ Everything else is static.
 
 ## January version (`jan.html`)
 
-The skinny stage-1 home: what can be live on day one on an existing portal agent. Same page, same code, with the stage-2 blocks removed instead of promised: no goal panel (a "coming with the production data feed" strip), no prepared-for-you cards, no pipeline tiles, no At-risk tab, four chips instead of seven (Prep my next meeting · Deal Review · Capture Agent · Pipeline). Company brief and BDR answer "stage 2" when typed. The four agent screens are the same as in `index.html`.
+The stage-1 home: what can be live on day one on an existing portal agent that already has a Today/Ask view, Outlook, Salesforce quick actions and dictation. Same shell and code as `index.html`; the stage-2 blocks are removed instead of promised.
 
-**Live:** https://julijakvetna.github.io/epic-producer-assistant-demo/jan.html · direct links: `jan.html#prep`, `#deal-review`, `#capture`, `#pipeline`
+| Block | Stage 1 |
+|---|---|
+| **New business strip** | Closed-won YTD, open deals and pipeline from Salesforce opportunities; goal, pace and "what closes the gap" marked as stage 2 (production feed). |
+| **Prompt** | Speak or type — dictation is the headline. |
+| **Chips (5)** | Prep my next meeting · Company brief · Capture Agent · Deal Review · BDR Agent. No Pipeline, no Update Salesforce. |
+| **Counters** | Meetings today, emails to answer, closing this month, gone cold. |
+| **Today's meetings** | From Outlook, matched to Salesforce, "Prepare me" on each (client → Company brief, prospect → Prep). |
+| **Today's brief** | Decide · Review · Call back · Renewal, check-off writes the Task. |
+| **Needs attention** | At risk · Renewals 90d · Overdue tasks. No Stalled deals (no pipeline sweep in stage 1). |
+
+**Live:** https://julijakvetna.github.io/epic-producer-assistant-demo/jan.html · direct links: `jan.html#prep`, `#company-brief`, `#capture`, `#deal-review`, `#bdr`
 
 `jan.html` is generated from `index.html` by `build_jan.py`.
 
@@ -85,6 +95,7 @@ README.md
 
 ## Versions
 
+- **v0.11** (2026-11-03) — stage-1 home rebuilt: 5 chips, counters, today's meetings, no pipeline
 - **v0.10** (2026-11-02) — stage-1 home: `jan.html`
 
 - **v0.9** (2026-11-02) — Sales Leader lens: `leader.html` with team home, Team pipeline review and Prep my 1:1
