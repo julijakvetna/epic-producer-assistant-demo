@@ -49,14 +49,14 @@ The stage-1 home: what can be live on day one on an existing portal agent that a
 |---|---|
 | **New business strip** | Closed-won YTD, open deals and pipeline from Salesforce opportunities; goal, pace and "what closes the gap" marked as stage 2 (production feed). |
 | **Prompt** | Speak or type — dictation is the headline. |
-| **Chips (5)** | Prep my next meeting · Company brief · Capture Agent · Deal Review · BDR Agent. No Pipeline, no Update Salesforce. |
+| **Chips (4)** | Prep my next meeting · Company brief · Capture Agent · BDR Agent. Deal Review, Pipeline and Update Salesforce are stage 2. |
 | **Today's meetings** | From Outlook, matched to Salesforce, "Prepare me" on each (client → Company brief, prospect → Prep). |
 | **Look** | Skinned to the client's existing Ask Artemis agent: navy/yellow palette, serif headings, briefing header with Notify / Refresh / Close, pill tabs, stat tiles, Join · Prepare me on meetings, the Ask box with source pills at the bottom. |
 | **Sidebar** | Mirrors the portal agent's existing shell: Today / Ask toggle, New question, chat search, Today's work (ready outputs), Chats (starred / today / 7 days), quick links. |
 | **Today's brief** | Action items only, one source each, one write-back: Follow-up due (Task) · Reply (Outlook thread matched to a deal) · Call back (Lead) · Overdue (Task); check-off completes the Task. Meetings are not to-dos — they live in their own list. |
 | **Needs attention** | Removed in stage 1: at-risk and renewals need portal flags / policy data (stage 2); overdue moved into Today's brief. |
 
-**Live:** https://julijakvetna.github.io/epic-producer-assistant-demo/jan.html · direct links: `jan.html#prep`, `#company-brief`, `#capture`, `#deal-review`, `#bdr`
+**Live:** https://julijakvetna.github.io/epic-producer-assistant-demo/jan.html · direct links: `jan.html#prep`, `#company-brief`, `#capture`, `#bdr`
 
 `jan.html` is generated from `index.html` by `build_jan.py`.
 
