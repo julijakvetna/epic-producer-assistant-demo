@@ -687,7 +687,7 @@ h1,h2,.serif,.tile .v,.goal .big .v,.msg-ai .lead b,.brief-card h2,.kpis .v{font
     <nav class="nav work">
       <a href="#prep">Prep · Meridian Logistics 2:00<span class="st">Ready</span></a>
       <a href="#company-brief" data-prompt="Open the company brief for Harbor Point Health">Company brief · Harbor Point<span class="st">Ready</span></a>
-      <a href="#bdr">First-touch draft · Tallgrass<span class="st">Ready</span></a>
+      <a href="#deal-review">Deal review · this week<span class="st run">Running</span></a>
     </nav>
 
     <div class="sect">Chats</div>
@@ -699,6 +699,7 @@ h1,h2,.serif,.tile .v,.goal .big .v,.msg-ai .lead b,.brief-card h2,.kpis .v{font
     <nav class="nav recents">
       <a href="#capture">Capture: call with Jordan at Northwind</a>
       <a href="#prep">Prepare me for my next meeting</a>
+      <a href="#deal-review">What did I promise this week?</a>
     </nav>
     <div class="sect sub">Previous 7 days</div>
     <nav class="nav recents">
@@ -744,11 +745,11 @@ h1,h2,.serif,.tile .v,.goal .big .v,.msg-ai .lead b,.brief-card h2,.kpis .v{font
         <!-- Capability chips -->
         <section class="chips" aria-label="Things you can ask">
           <button class="chip on" data-view="home">Today</button>
-          <button class="chip" data-prompt="Prep me for my next meeting"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>Prep my next meeting<span class="n">3</span></button>
-          <button class="chip" data-prompt="Give me a company brief on: "><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>Company brief</button>
-          <button class="chip" data-prompt="Capture my meeting notes: "><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0014 0M12 17v4M8 21h8"/></svg>Capture Agent</button>
-          <button class="chip" data-prompt="Which of my leads haven't been touched? Draft first touches."><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg>BDR Agent</button>
-          </section>
+          <button class="chip" data-prompt="Prep me for my next meeting">Prep my next meeting<span class="n">3</span></button>
+          <button class="chip" data-prompt="Give me a company brief on: ">Company brief</button>
+          <button class="chip" data-prompt="Capture my meeting notes: ">Capture Agent</button>
+          <button class="chip" data-prompt="Run my deal review: what did I promise this week and what is due?">Deal Review</button>
+        </section>
 
         <!-- Goal: what Salesforce can say today; goal & pace come with the production feed (stage 2) -->
         <section class="jan-goal" aria-label="New business">
@@ -775,7 +776,7 @@ h1,h2,.serif,.tile .v,.goal .big .v,.msg-ai .lead b,.brief-card h2,.kpis .v{font
               <li class="item" data-kind="review">
                 <button class="cb" aria-label="Mark done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></button>
                 <div><div class="txt"><span class="kind review">Follow-up due</span>Send Northwind Dental the revised numbers before the 4:30 call — Jordan asked for them on Friday.</div>
-                  <div class="meta"><span>Salesforce · Task · due today</span><span class="via">check = Task completed</span></div></div>
+                  <div class="meta"><span>Salesforce · Task · due today</span><span class="via">Deal Review · check = Task completed</span></div></div>
                 <button class="act">Draft the email</button>
               </li>
               <li class="item" data-kind="reply">
@@ -787,13 +788,13 @@ h1,h2,.serif,.tile .v,.goal .big .v,.msg-ai .lead b,.brief-card h2,.kpis .v{font
               <li class="item" data-kind="call">
                 <button class="cb" aria-label="Mark done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></button>
                 <div><div class="txt"><span class="kind call">Call back</span>Tallgrass Manufacturing referral from Karen Harris. They asked for a call this week.</div>
-                  <div class="meta"><span>Salesforce · Lead · untouched 6 days</span><span class="via">BDR Agent</span></div></div>
-                <a class="act" href="#bdr">Draft intro</a>
+                  <div class="meta"><span>Salesforce · Lead · untouched 6 days</span><span class="via">referral</span></div></div>
+                <button class="act">Draft intro</button>
               </li>
               <li class="item" data-kind="overdue">
                 <button class="cb" aria-label="Mark done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></button>
                 <div><div class="txt"><span class="kind overdue">Overdue</span>Sable &amp; Finch: revised professional liability proposal was due Oct 17. The deal has had no activity for 21 days.</div>
-                  <div class="meta"><span>Salesforce · Task · overdue 19 days</span><span class="via">move or mark lost</span></div></div>
+                  <div class="meta"><span>Salesforce · Task · overdue 19 days</span><span class="via">Deal Review · move or mark lost</span></div></div>
                 <button class="act">Decide</button>
               </li>
               <li class="item done" data-kind="done" data-done="8:52 AM">
@@ -950,6 +951,37 @@ h1,h2,.serif,.tile .v,.goal .big .v,.msg-ai .lead b,.brief-card h2,.kpis .v{font
 
       <!-- ================= Use-case views (one per chip) ================= -->
       <!-- Pipeline -->
+      <!-- Deal Review -->
+      <section class="thread uc" id="v-deal-review" hidden aria-label="Deal Review">
+        <div class="crumb"><button type="button" class="back"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>Home</button><span>›</span><span>Deal Review</span></div>
+        <div class="msg-user">Run my deal review: what did I promise this week and what is due?<span class="at">Today · 9:02 AM</span></div>
+        <div class="msg-ai"><div class="av">AI</div><div class="body">
+          <div class="working"><span>Your Tasks due this week</span><span>Meetings with no follow-up</span><span>Open decisions on your deals</span></div>
+          <p class="lead"><b>8 promises this week: 5 kept, 2 overdue, 1 decision waiting on you.</b> The Brightline decision is the urgent one; the quote is held until 5:00 PM.</p>
+          <div class="brief-card">
+            <div class="bsec">
+              <h3>This week's promises<span class="src">Tasks · Events · Opportunities</span></h3>
+              <ul class="promises">
+                <li class="due"><span class="st">Decide</span><div><b>Approve the Beazley cyber quote</b> · Brightline Foods<a class="sfl" href="#" onclick="return false" title="Open in Salesforce (new tab)">Salesforce ↗</a><small>Limit held until 5:00 PM today</small></div></li>
+                <li class="due"><span class="st late">Overdue</span><div><b>Send revised professional liability proposal</b> · Sable &amp; Finch<a class="sfl" href="#" onclick="return false" title="Open in Salesforce (new tab)">Salesforce ↗</a><small>Promised Oct 17</small></div></li>
+                <li class="due"><span class="st late">Overdue</span><div><b>Share cyber application with the CISO</b> · Brightline Foods<a class="sfl" href="#" onclick="return false" title="Open in Salesforce (new tab)">Salesforce ↗</a><small>Promised Oct 23</small></div></li>
+                <li class="kept"><span class="st ok">Kept</span><div>Recap + 2 open items to Harbor Point Health<small>Sent today 8:47 AM</small></div></li>
+                <li class="kept"><span class="st ok">Kept</span><div>Notes and 3 follow-ups on Harbor Point<small>Logged today 8:52 AM</small></div></li>
+                <li class="kept"><span class="st ok">Kept</span><div>Loss runs request to Cobalt Ridge · Pricing grid to Northwind · Intro to Karen Harris<small>Mon–Tue</small></div></li>
+              </ul>
+            </div>
+            <div class="bsec qa"><h3>One question at a time<span class="src">You answer in the chat; every write is confirmed one by one</span></h3>
+              <p class="qq">Did Brightline approve the Beazley quote?</p>
+              <div class="next"><button class="btn primary js-flow" data-flow="dr1y">Yes, signed</button><button class="btn js-flow" data-flow="dr1n">Not yet</button><button class="btn js-flow" data-flow="dr1l">Lost it</button></div>
+            </div>
+            <div class="after"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>The same list is "Today's brief" on Home. Ticking an item there writes the Task status.</div>
+          </div>
+          <p class="scope"><b>January:</b> runs on existing Tasks and Opportunities, richer once Capture logs every meeting. Every write is confirmed by you, one record at a time. "Meeting ended" trigger only if the agent exposes calendar events.</p>
+        </div></div>
+        <div class="flows"></div>
+        <div class="dock"><form class="prompt tform"><input class="tin" type="text" placeholder="Answer, or ask about a deal…" autocomplete="off"><button type="submit" class="send" aria-label="Send"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button></form></div>
+      </section>
+
       <!-- Capture Agent -->
       <section class="thread uc" id="v-capture" hidden aria-label="Capture Agent">
         <div class="crumb"><button type="button" class="back"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>Home</button><span>›</span><span>Capture: Northwind Dental call</span></div>
@@ -1049,43 +1081,6 @@ h1,h2,.serif,.tile .v,.goal .big .v,.msg-ai .lead b,.brief-card h2,.kpis .v{font
         <div class="dock"><form class="prompt tform"><input class="tin" type="text" placeholder="Type a company name…" autocomplete="off"><button type="submit" class="send" aria-label="Send"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button></form></div>
       </section>
 
-      <!-- BDR Agent -->
-      <section class="thread uc" id="v-bdr" hidden aria-label="BDR Agent">
-        <div class="crumb"><button type="button" class="back"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>Home</button><span>›</span><span>BDR Agent</span></div>
-        <div class="msg-user">Which of my leads haven't been touched? Draft first touches.<span class="at">Today · 7:30 AM · scheduled</span></div>
-        <div class="msg-ai"><div class="av">AI</div><div class="body">
-          <div class="working"><span>Your Leads with no first touch</span><span>Existing briefs</span></div>
-          <p class="lead"><b>5 leads still waiting for a first touch</b>, the oldest for 45 days. Two have a brief, so their drafts use real facts; the other three get CRM-only drafts that are shorter and more generic.</p>
-          <div class="brief-card">
-            <table class="leads">
-              <thead><tr><th>Lead</th><th>Source</th><th>Untouched</th><th>Brief</th><th></th></tr></thead>
-              <tbody>
-                <tr class="sel"><td><b>Tallgrass Manufacturing</b><a class="sfl" href="#" onclick="return false" title="Open in Salesforce (new tab)">Salesforce ↗</a><small>WC &amp; Package · 240 employees</small></td><td>Referral · K. Harris</td><td class="num">3 days</td><td><span class="yes">Yes</span></td><td><button class="lk">Draft ↓</button></td></tr>
-                <tr><td><b>Alder Creek Brewing</b><small>Package · Product liability</small></td><td>Website form</td><td class="num">21 days</td><td><span class="yes">Yes</span></td><td><button class="lk">Draft</button></td></tr>
-                <tr><td><b>Summit Ridge Dental Group</b><small>EB · 6 offices</small></td><td>Event · Oct 2</td><td class="num">19 days</td><td><span class="no">CRM only</span></td><td><button class="lk">Draft</button></td></tr>
-                <tr><td><b>Redwood Valley Farms</b><small>Farm · Auto</small></td><td>List import</td><td class="num">32 days</td><td><span class="no">CRM only</span></td><td><button class="lk">Draft</button></td></tr>
-                <tr><td><b>Keystone Freightways</b><small>Trucking · 60 units</small></td><td>List import</td><td class="num">45 days</td><td><span class="no">CRM only</span></td><td><button class="lk">Draft</button></td></tr>
-              </tbody>
-            </table>
-            <div class="bsec">
-              <h3>First touch · Tallgrass Manufacturing<span class="src">From the brief + referral note</span></h3>
-              <div class="mail">
-                <div class="mh"><span>To</span>Greg Olsen, VP Operations</div>
-                <div class="mh"><span>Subject</span>Karen Harris suggested we talk: workers comp at Tallgrass</div>
-                <div class="mb">Hi Greg,<br><br>Karen Harris mentioned you're reviewing workers comp ahead of the new press line in January. We place programs for several Midwest metal fabricators your size, and the ones who did a safety-credit review before adding shifts saved 8–12% at renewal.<br><br>Would 20 minutes this Thursday or Friday work to see if that applies to Tallgrass?<br><br>Best,<br>Sam</div>
-              </div>
-              <div class="next"><button class="btn primary js-flow" data-flow="bdr">Open in Outlook</button><button class="btn">Copy</button><button class="btn">Next draft</button></div>
-              
-            </div>
-            <div class="after"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="9"/></svg>Runs every morning at 7:30. When you send, the Lead status and a Task are written for you.</div>
-          </div>
-          <p class="scope"><b>January:</b> list + drafts only; the draft opens in Outlook the way the portal already opens replies. Lead scoring, routing and reply tracking are stage 2.</p>
-        </div></div>
-        <div class="flows"></div>
-        <div class="dock"><form class="prompt tform"><input class="tin" type="text" placeholder="Change the tone, or ask about a lead…" autocomplete="off"><button type="submit" class="send" aria-label="Send"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button></form></div>
-      </section>
-
-      <!-- ================= Sources view (slide) ================= -->
           </div>
   </div>
 </div>
@@ -1108,8 +1103,8 @@ h1,h2,.serif,.tile .v,.goal .big .v,.msg-ai .lead b,.brief-card h2,.kpis .v{font
   var home=$('.content'), scroll=$('.scroll');
   var input=$('#promptInput');
   var VIEWS={prep:['#prepView','Prep: Meridian Logistics'],
-    capture:['#v-capture','Capture Agent'],
-    'company-brief':['#v-company-brief','Company brief'],bdr:['#v-bdr','BDR Agent']};
+    'deal-review':['#v-deal-review','Deal Review'],capture:['#v-capture','Capture Agent'],
+    'company-brief':['#v-company-brief','Company brief']};
   var current='';
   function hideAll(){home.hidden=true;Object.keys(VIEWS).forEach(function(k){$(VIEWS[k][0]).hidden=true})}
   function setHash(h){try{history.replaceState(null,'',h?('#'+h):(location.pathname+location.search))}catch(e){}}
@@ -1141,7 +1136,7 @@ h1,h2,.serif,.tile .v,.goal .big .v,.msg-ai .lead b,.brief-card h2,.kpis .v{font
   })});
 
   // Which view a typed or chip prompt opens
-  var ROUTES=[[/prep|meridian|next meeting/i,'prep'],[/pipeline|goal|pace/i,'later'],[/deal review|promise/i,'later'],[/capture|just met/i,'capture'],[/company brief|client summary|harbor point/i,'company-brief'],[/lead|bdr/i,'bdr']];
+  var ROUTES=[[/prep|meridian|next meeting/i,'prep'],[/pipeline|goal|pace/i,'later'],[/deal review|promise/i,'deal-review'],[/capture|just met/i,'capture'],[/company brief|client summary|harbor point/i,'company-brief'],[/lead|bdr|first touch/i,'later']];
   function route(t){for(var i=0;i<ROUTES.length;i++){if(ROUTES[i][0].test(t))return ROUTES[i][1]}return null}
 
   // Chips, cards and follow-ups: inside a thread they fill its prompt; on Home, chips open their view

@@ -56,11 +56,11 @@ h = h[:a] + strip + h[b:]
 h = rep(h, '<div class="date">Monday, October 26 · 2 meetings today · 4 items need you</div>',
         '<div class="date">Monday, 5 January · 3 meetings today · 4 items need you</div>')
 h = rep(h, '<div class="hint">Try: “Prep me for the 2:00 with Meridian” · “Which of my renewals in Q1 have no opportunity yet?” · “Find an SME for cold-storage trucking”</div>',
-        '<div class="hint"><span class="voice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0014 0M12 17v4M8 21h8"/></svg>Speak or type</span> &nbsp;Try: “Prep me for the 2:00 with Meridian” · “Just met Jordan at Northwind — they want revised numbers by the 14th”</div>')
+        '<div class="hint"><span class="voice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0014 0M12 17v4M8 21h8"/></svg>Speak or type</span> &nbsp;Try: “Prep me for the 2:00 with Meridian” · “Just met Jordan at Northwind — they want revised numbers by the 14th” · “What did I promise this week?”</div>')
 
 # ---------- Chips: five ----------
 h = rep(h, '<button class="chip" data-prompt="Which of my leads haven\'t been touched? Draft first touches.">',
-        '<button class="chip" data-prompt="Give me a company brief on: "><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>Company brief</button>\n          <button class="chip" data-prompt="Capture my meeting notes: "><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0014 0M12 17v4M8 21h8"/></svg>Capture Agent</button>\n          <button class="chip" data-prompt="Which of my leads haven\'t been touched? Draft first touches.">')
+        '<button class="chip" data-prompt="Give me a company brief on: "><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>Company brief</button>\n          <button class="chip" data-prompt="Capture my meeting notes: "><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0014 0M12 17v4M8 21h8"/></svg>Capture Agent</button>\n          <button class="chip" data-prompt="Run my deal review: what did I promise this week and what is due?"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>Deal Review</button>\n          <button class="chip" data-prompt="Which of my leads haven\'t been touched? Draft first touches.">')
 # remove the original Company brief / Deal Review / Capture / Pipeline / Update chips that follow BDR
 h = cut(h, '<button class="chip" data-prompt="Give me a company brief on: "><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>Company brief</button>\n          <button class="chip" data-prompt="Run my deal review',
         '</section>')
@@ -134,7 +134,7 @@ h = rep(h, '<p class="scope"><b>Wave 1:</b> list + drafts only. Lead scoring, ro
         '<p class="scope"><b>January:</b> list + drafts only; the draft opens in Outlook the way the portal already opens replies. Lead scoring, routing and reply tracking are stage 2.</p>')
 
 # ---------- drop Pipeline, Deal Review views and sources slide ----------
-h = cut(h, '<section class="thread uc" id="v-deal-review"', '<!-- Capture')
+h = cut(h, '<section class="thread uc" id="v-bdr"', '<section class="slide" id="sourcesView"')
 h = cut(h, '<section class="thread uc" id="v-pipeline"', '<!-- Deal Review -->')
 h = cut(h, '<section class="slide" id="sourcesView"', '<div class="toast"')
 h = rep(h, '<div class="toast"', '    </div>\n  </div>\n</div>\n\n<div class="toast"')
@@ -190,6 +190,7 @@ side = '''<aside class="side" aria-label="Workspace navigation">
     <nav class="nav recents">
       <a href="#capture">Capture: call with Jordan at Northwind</a>
       <a href="#prep">Prepare me for my next meeting</a>
+      <a href="#deal-review">What did I promise this week?</a>
     </nav>
     <div class="sect sub">Previous 7 days</div>
     <nav class="nav recents">
@@ -229,10 +230,10 @@ h = rep(h, """  var VIEWS={prep:['#prepView','Prep: Meridian Logistics'],sources
     pipeline:['#v-pipeline','Pipeline'],'deal-review':['#v-deal-review','Deal Review'],capture:['#v-capture','Capture Agent'],
     'company-brief':['#v-company-brief','Company brief'],bdr:['#v-bdr','BDR Agent']};""",
         """  var VIEWS={prep:['#prepView','Prep: Meridian Logistics'],
-    capture:['#v-capture','Capture Agent'],
-    'company-brief':['#v-company-brief','Company brief'],bdr:['#v-bdr','BDR Agent']};""")
+    'deal-review':['#v-deal-review','Deal Review'],capture:['#v-capture','Capture Agent'],
+    'company-brief':['#v-company-brief','Company brief']};""")
 h = rep(h, "var ROUTES=[[/prep|meridian|next meeting/i,'prep'],[/pipeline/i,'pipeline'],[/deal review|promise/i,'deal-review'],[/capture/i,'capture'],[/company brief|client summary|harbor point/i,'company-brief'],[/lead|bdr/i,'bdr']];",
-        "var ROUTES=[[/prep|meridian|next meeting/i,'prep'],[/pipeline|goal|pace/i,'later'],[/deal review|promise/i,'later'],[/capture|just met/i,'capture'],[/company brief|client summary|harbor point/i,'company-brief'],[/lead|bdr/i,'bdr']];")
+        "var ROUTES=[[/prep|meridian|next meeting/i,'prep'],[/pipeline|goal|pace/i,'later'],[/deal review|promise/i,'deal-review'],[/capture|just met/i,'capture'],[/company brief|client summary|harbor point/i,'company-brief'],[/lead|bdr|first touch/i,'later']];")
 h = rep(h, "    var v=c.getAttribute('data-view')||route(p);\n    if(v){e.preventDefault();showView(v,p);return}",
         "    var v=c.getAttribute('data-view')||route(p);\n    if(v==='later'){e.preventDefault();toast('Stage 2 (after 4 January)');return}\n    if(v){e.preventDefault();showView(v,p);setSeg(true);return}")
 h = rep(h, "var r=route(v);if(r){showView(r,v)}else{toast('Wireframe: the assistant would answer here')}",
@@ -436,13 +437,24 @@ _a = h.index('<!-- Goal: what Salesforce'); _b = h.index('<!-- Briefing header')
 _c = h.index('<!-- Today\'s meetings:'); h = h[:_c] + _strip + h[_c:]
 
 
-# ---- final cleanup: no Deal Review in stage 1
-h = h.replace('      <a href="#deal-review">Deal review · this week<span class="st run">Running</span></a>\n', '')
-h = h.replace('Deal Review · check = Task completed', 'check = Task completed').replace('Deal Review · move or mark lost', 'move or mark lost')
-h = h.replace('      <!-- Deal Review -->\n', '')
-assert 'id="v-deal-review"' not in h and 'href="#deal-review"' not in h and '>Deal Review<' not in h
+# ---- final: rebuild the pill row for stage 1 (BDR is second wave)
+_a = h.index('<section class="chips"'); _b = h.index('</section>', _a) + len('</section>')
+h = h[:_a] + ('<section class="chips" aria-label="Things you can ask">\n'
+    '          <button class="chip on" data-view="home">Today</button>\n'
+    '          <button class="chip" data-prompt="Prep me for my next meeting">Prep my next meeting<span class="n">3</span></button>\n'
+    '          <button class="chip" data-prompt="Give me a company brief on: ">Company brief</button>\n'
+    '          <button class="chip" data-prompt="Capture my meeting notes: ">Capture Agent</button>\n'
+    '          <button class="chip" data-prompt="Run my deal review: what did I promise this week and what is due?">Deal Review</button>\n'
+    '        </section>') + h[_b:]
+h = h.replace('<span class="via">BDR Agent</span>', '<span class="via">referral</span>')
+h = h.replace('<a class="act" href="#bdr">Draft intro</a>', '<button class="act">Draft intro</button>')
+h = h.replace('      <!-- BDR Agent -->\n', '')
+import re as _re
+h = _re.sub(r'\s*<a href="#bdr">First-touch draft[^<]*<span class="st">Ready</span></a>', '', h)
+h = _re.sub(r'(<a href="#prep">Prepare me for my next meeting</a>\n)(\s*</nav>)', r'\1      <a href="#deal-review">What did I promise this week?</a>\n\2', h)
+assert 'id="v-bdr"' not in h and 'href="#bdr"' not in h and '>BDR Agent<' not in h, 'bdr leftover'
 
-for bad in ('id="v-pipeline"', 'id="v-deal-review"', 'id="sourcesView"', 'data-tab="stalled"', 'data-tab="risk"', 'Needs attention</h2>', 'Update Salesforce</button>', 'Deal Review</button>', 'Connected sources'):
+for bad in ('id="v-pipeline"', 'id="v-bdr"', 'id="sourcesView"', 'data-tab="stalled"', 'data-tab="risk"', 'Needs attention</h2>', 'Update Salesforce</button>', 'BDR Agent</button>', 'Connected sources'):
     assert bad not in h, bad
 assert h.count('class="chip" data-prompt') >= 4
 open('jan.html', 'w', encoding='utf-8').write(h)
