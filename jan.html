@@ -194,7 +194,7 @@ h1,h2,h3{margin:0;text-wrap:balance}
 .item .cb svg{width:11px;height:11px;opacity:0}
 .item .cb:hover{border-color:var(--navy)}
 .item .kind{font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-right:8px}
-.kind.decide{color:var(--crit)} .kind.review{color:var(--info)} .kind.call{color:var(--warn)} .kind.renewal{color:var(--ok)} .kind.done{color:var(--faint)}
+.kind.decide{color:var(--crit)} .kind.review{color:var(--info)} .kind.call{color:var(--warn)} .kind.renewal{color:var(--ok)} .kind.reply{color:var(--navy)} .kind.overdue{color:var(--crit)} .kind.done{color:var(--faint)}
 .item .txt{font-size:13.5px;line-height:1.4}
 .item .meta{font-size:12px;color:var(--muted);margin-top:3px;display:flex;gap:10px;flex-wrap:wrap}
 .item .meta .via{color:var(--faint)}
@@ -522,6 +522,14 @@ h1,h2,h3{margin:0;text-wrap:balance}
   .item .act{grid-column:2;justify-self:start;padding-left:0}
 }
 
+/* version switcher */
+.ver{margin:10px 12px 6px;padding:8px 10px;border:1px solid var(--line);border-radius:9px;background:var(--panel-2)}
+.ver .t{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);font-weight:600;margin-bottom:6px}
+.ver a{display:flex;justify-content:space-between;gap:8px;padding:4px 6px;border-radius:6px;font-size:12.5px;color:var(--fg);text-decoration:none}
+.ver a:hover{background:var(--panel)}
+.ver a.on{background:var(--navy);color:#fff}
+.ver a small{color:inherit;opacity:.7;font-size:11px}
+
 /* January additions */
 .jan-goal{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:10px 16px;border:1px dashed var(--line);border-radius:12px;font-size:12.5px;color:var(--muted)}
 .jan-goal .l{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);font-weight:600}
@@ -540,14 +548,6 @@ h1,h2,h3{margin:0;text-wrap:balance}
 .voice{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:var(--muted);background:var(--panel-2);border-radius:10px;padding:3px 9px}
 .voice svg{width:12px;height:12px;color:var(--navy)}
 @media (max-width:760px){.mtg li{grid-template-columns:60px 1fr;row-gap:4px}.mtg .tg,.mtg .go{grid-column:2}}
-
-/* version switcher */
-.ver{margin:10px 12px 6px;padding:8px 10px;border:1px solid var(--line);border-radius:9px;background:var(--panel-2)}
-.ver .t{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);font-weight:600;margin-bottom:6px}
-.ver a{display:flex;justify-content:space-between;gap:8px;padding:4px 6px;border-radius:6px;font-size:12.5px;color:var(--fg);text-decoration:none}
-.ver a:hover{background:var(--panel)}
-.ver a.on{background:var(--navy);color:#fff}
-.ver a small{color:inherit;opacity:.7;font-size:11px}
 </style>
 </head>
 <body>
@@ -641,83 +641,61 @@ h1,h2,h3{margin:0;text-wrap:balance}
           </ul>
         </section>
 
-        <!-- Brief + attention -->
-        <section class="cols">
+        <!-- Today's brief: what needs an action today. Meetings live in their own list; prep is one click there. -->
+        <section class="cols" style="grid-template-columns:1fr">
           <div class="panel">
-            <div class="ph"><h2>Today’s brief</h2><span class="sub">What needs you, in order</span><span class="right" id="briefCount"></span></div>
+            <div class="ph"><h2>Today’s brief</h2><span class="sub">What needs you, in order · one source per item, one write-back</span><span class="right" id="briefCount"></span></div>
             <ul class="brief" id="brief">
               <li class="item" data-kind="decide">
                 <button class="cb" aria-label="Mark done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></button>
                 <div><div class="txt"><span class="kind decide">Decide</span>Approve the Beazley cyber quote for Brightline Foods. The $2.1M limit is held until 5:00 PM today.</div>
-                  <div class="meta"><span>Brightline Foods · Opportunity · Proposal</span><span class="via">surfaced by Deal Review</span></div></div>
-                <button class="act">Compare quotes</button>
+                  <div class="meta"><span>Salesforce · Opportunity · Proposal · closes Jan 9</span><span class="via">Deal Review</span></div></div>
+                <a class="act" href="#deal-review">Open deal review</a>
               </li>
               <li class="item" data-kind="review">
                 <button class="cb" aria-label="Mark done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></button>
-                <div><div class="txt"><span class="kind review">Review</span>Prep for Meridian Logistics at 2:00 is ready: CRM context, the existing prospect brief, last week’s emails and two questions to lead with.</div>
-                  <div class="meta"><span>Meeting 2:00 PM · Trucking, 140 units</span><span class="via">Prep my next meeting</span></div></div>
-                <a class="act" href="#prep">Open brief</a>
+                <div><div class="txt"><span class="kind review">Follow-up due</span>Send Northwind Dental the revised numbers before the 4:30 call — Jordan asked for them on Friday.</div>
+                  <div class="meta"><span>Salesforce · Task · due today</span><span class="via">Deal Review · check = Task completed</span></div></div>
+                <button class="act">Draft the email</button>
+              </li>
+              <li class="item" data-kind="reply">
+                <button class="cb" aria-label="Mark done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></button>
+                <div><div class="txt"><span class="kind reply">Reply</span>Tom Reyes (Cascade Freight) will send the loss runs once you confirm the meeting — the thread has been waiting since Friday.</div>
+                  <div class="meta"><span>Outlook · thread matched to the Cascade Freight opportunity</span><span class="via">draft ready</span></div></div>
+                <button class="act">Open draft in Outlook</button>
               </li>
               <li class="item" data-kind="call">
                 <button class="cb" aria-label="Mark done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></button>
-                <div><div class="txt"><span class="kind call">Call back</span>Tallgrass Manufacturing referral from Karen Harris, scored 82. They asked for a call this week.</div>
-                  <div class="meta"><span>New lead · Manufacturing · Workers Comp &amp; Package</span><span class="via">BDR Agent</span></div></div>
-                <button class="act">Draft intro</button>
+                <div><div class="txt"><span class="kind call">Call back</span>Tallgrass Manufacturing referral from Karen Harris. They asked for a call this week.</div>
+                  <div class="meta"><span>Salesforce · Lead · untouched 6 days</span><span class="via">BDR Agent</span></div></div>
+                <a class="act" href="#bdr">Draft intro</a>
               </li>
-              <li class="item" data-kind="renewal">
+              <li class="item" data-kind="overdue">
                 <button class="cb" aria-label="Mark done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></button>
-                <div><div class="txt"><span class="kind renewal">Renewal</span>Lakeshore Hospitality Group Package expires in 23 days and has no renewal opportunity yet.</div>
-                  <div class="meta"><span>Client · Policy PK-4471120 · exp 11/18</span><span class="via">Renewals · portal</span></div></div>
-                <button class="act">Open renewal</button>
-              </li>
-              <li class="item done" data-kind="done" data-done="8:47 AM">
-                <button class="cb" aria-label="Mark not done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></button>
-                <div><div class="txt"><span class="kind done">Follow-up</span>Send Harbor Point Health the recap and the two open items from Friday’s meeting.</div>
-                  <div class="meta"><span>Done 8:47 AM</span><span class="via">dictated in the car · email drafted and sent</span></div></div>
-                <button class="act">Open</button>
+                <div><div class="txt"><span class="kind overdue">Overdue</span>Sable &amp; Finch: revised professional liability proposal was due Oct 17. The deal has had no activity for 21 days.</div>
+                  <div class="meta"><span>Salesforce · Task · overdue 19 days</span><span class="via">Deal Review · move or mark lost</span></div></div>
+                <button class="act">Decide</button>
               </li>
               <li class="item done" data-kind="done" data-done="8:52 AM">
                 <button class="cb" aria-label="Mark not done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></button>
-                <div><div class="txt"><span class="kind done">Capture</span>Log Friday’s meeting notes and create 3 follow-up tasks on the Harbor Point opportunity.</div>
-                  <div class="meta"><span>Done 8:52 AM</span><span class="via">3 Tasks and 1 Event written to Salesforce</span></div></div>
+                <div><div class="txt"><span class="kind done">Capture</span>Friday’s Harbor Point meeting logged: 3 follow-up Tasks and 1 Event written to Salesforce.</div>
+                  <div class="meta"><span>Done 8:52 AM</span><span class="via">dictated in the car</span></div></div>
+                <button class="act">Open</button>
+              </li>
+              <li class="item done" data-kind="done" data-done="8:47 AM">
+                <button class="cb" aria-label="Mark not done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></button>
+                <div><div class="txt"><span class="kind done">Follow-up</span>Recap and the two open items sent to Harbor Point Health.</div>
+                  <div class="meta"><span>Done 8:47 AM</span><span class="via">email drafted by Capture, sent from Outlook</span></div></div>
                 <button class="act">Open</button>
               </li>
             </ul>
           </div>
-
-          <div class="panel">
-            <div class="ph"><h2>Needs attention</h2><span class="sub">Portal flags · Salesforce tasks</span></div>
-            <div class="tabs" role="tablist">
-              <button class="tab active" role="tab" data-tab="risk">At risk<span class="n">3</span></button>
-              <button class="tab" role="tab" data-tab="renew">Renewals 90d<span class="n">6</span></button>
-              <button class="tab" role="tab" data-tab="tasks">Overdue tasks<span class="n">4</span></button>
-                          </div>
-            <ul class="alist" data-pane="risk">
-              <li><span class="bar crit"></span><div><div class="c">Cobalt Ridge Construction<small>P&amp;C · 9 policies</small></div><div class="r">Marked at risk by servicer on Oct 21: billing dispute on the GL audit, two unanswered emails.</div><div class="a">Draft a call plan with the servicer’s notes</div></div></li>
-              <li><span class="bar warn"></span><div><div class="c">Northwind Dental Partners<small>EB · 4 lines</small></div><div class="r">CFO mentioned a competing quote on the Oct 17 call. Renewal 12/01.</div><div class="a">Run plan comparison against the incumbent</div></div></li>
-              <li><span class="bar warn"></span><div><div class="c">Pinecrest Senior Living<small>P&amp;C · Package</small></div><div class="r">Primary contact left the company; no new contact on the account.</div><div class="a">Find the new decision-maker</div></div></li>
-            </ul>
-            <ul class="alist" data-pane="renew" hidden>
-              <li><span class="bar crit"></span><div><div class="c">Lakeshore Hospitality Group<small>Package · exp 11/18</small></div><div class="r">23 days. No renewal opportunity opened.</div><div class="a">Open renewal and start policy review</div></div></li>
-              <li><span class="bar warn"></span><div><div class="c">Northwind Dental Partners<small>Medical, Dental, Vision, Life · exp 12/01</small></div><div class="r">36 days. Competing quote in play.</div><div class="a">Schedule pre-renewal meeting</div></div></li>
-              <li><span class="bar info"></span><div><div class="c">Cobalt Ridge Construction<small>Workers Comp · exp 12/15</small></div><div class="r">50 days. Client at risk.</div><div class="a">Pull loss runs now</div></div></li>
-              <li><span class="bar info"></span><div><div class="c">Pinecrest Senior Living<small>Package · exp 01/01</small></div><div class="r">67 days.</div><div class="a">Confirm new contact first</div></div></li>
-              <li><span class="bar info"></span><div><div class="c">Harbor Point Health<small>Cyber Liability · exp 01/10</small></div><div class="r">76 days. Limit increase discussed Friday.</div><div class="a">Request indications at $5M</div></div></li>
-              <li><span class="bar info"></span><div><div class="c">Brightline Foods<small>Property · exp 01/22</small></div><div class="r">88 days.</div><div class="a">Add to Q1 renewal plan</div></div></li>
-            </ul>
-            <ul class="alist" data-pane="tasks" hidden>
-              <li><span class="bar crit"></span><div><div class="c">Sable &amp; Finch Architects<small>due Oct 17</small></div><div class="r">Send revised professional liability proposal.</div><div class="a">Draft the proposal from the last quote</div></div></li>
-              <li><span class="bar crit"></span><div><div class="c">Cobalt Ridge Construction<small>due Oct 20</small></div><div class="r">Reply on GL audit dispute.</div><div class="a">Draft reply with servicer’s notes</div></div></li>
-              <li><span class="bar warn"></span><div><div class="c">Orion Cold Storage<small>due Oct 22</small></div><div class="r">Confirm discovery call.</div><div class="a">Propose 3 times</div></div></li>
-              <li><span class="bar warn"></span><div><div class="c">Brightline Foods<small>due Oct 23</small></div><div class="r">Share cyber application with CISO.</div><div class="a">Send the ACORD pre-filled</div></div></li>
-            </ul>
-                      </div>
         </section>
 
         <!-- Connected sources -->
         <section class="sources" aria-label="Connected sources">
           <span class="l">Connected</span>
-          <span class="s">Broker portal agent</span><span class="s">Salesforce (as you)</span><span class="s">Outlook · Teams</span><span class="s">Existing prospect briefs</span><span class="s">SME directory</span><span class="src-link" style="cursor:default">January: five agents on the existing portal agent · goal panel, pipeline and sales-leader lens in stage 2</span>
+          <span class="s">Broker portal agent</span><span class="s">Salesforce (as you)</span><span class="s">Outlook · Teams</span><span class="s">Existing prospect briefs</span><span class="s">SME directory</span><span class="src-link" style="cursor:default">January: five agents on the existing portal agent · goal panel, renewals / at-risk, pipeline and sales-leader lens in stage 2</span>
         </section>
       </main>
 

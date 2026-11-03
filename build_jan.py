@@ -1,5 +1,5 @@
 # Builds jan.html — the January (stage-1) producer home — from index.html.
-# Scope after the 2–3 Nov calls: Today's brief · Needs attention (at risk, renewals, overdue) ·
+# Scope after the 2–3 Nov calls: Today's brief (action items from Salesforce + Outlook) · Today's meetings ·
 # Prep my next meeting · Company brief · Capture Agent · Deal Review · BDR Agent. No goal panel, no pipeline
 # screen, no sources slide. Built on what Ask Artemis already does (Today/Ask, Outlook, Salesforce quick actions, Dictate).
 import re
@@ -88,21 +88,38 @@ tiles = '''<!-- Counters: what the portal agent already shows today, now with ou
         '''
 h = h[:a] + tiles + h[b:]
 
-# ---------- Today's brief wording ----------
-h = rep(h, 'Prospect brief for Meridian Logistics is ready. Two coverage gaps flagged: cargo contingent and motor truck cargo sublimit.',
-        'Prep for Meridian Logistics at 2:00 is ready: CRM context, the existing prospect brief, last week’s emails and two questions to lead with.')
-h = rep(h, '<span class="via">Prospect Briefing · Coverage Gap Analyzer</span>', '<span class="via">Prep my next meeting</span>')
-h = rep(h, '<span class="via">Pipeline Agent</span>', '<span class="via">Renewals · portal</span>')
-
-# ---------- Needs attention: At risk · Renewals · Overdue (no Stalled) ----------
-h = rep(h, '<div class="ph"><h2>Needs attention</h2><span class="sub">Across your book</span></div>',
-        '<div class="ph"><h2>Needs attention</h2><span class="sub">Portal flags · Salesforce tasks</span></div>')
-h = rep(h, '<button class="tab" role="tab" data-tab="stalled">Stalled deals<span class="n">2</span></button>\n', '')
-h = cut(h, '<ul class="alist" data-pane="stalled" hidden>', '          </div>\n        </section>\n\n        <!-- Connected sources -->')
+# ---------- Today's brief: action items only, one source each, one write-back; Needs attention removed ----------
+a = h.index('<!-- Brief + attention -->'); b = h.index('<!-- Connected sources -->')
+CB = '<button class="cb" aria-label="Mark done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></button>'
+CBD = '<button class="cb" aria-label="Mark not done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></button>'
+def item(kind, label, txt, meta, via, act, act_href=None, done=None):
+    cls = 'item done' if done else 'item'
+    cb = CBD if done else CB
+    a_ = '<a class="act" href="%s">%s</a>' % (act_href, act) if act_href else '<button class="act">%s</button>' % act
+    extra = ' data-done="%s"' % done if done else ''
+    return ('              <li class="%s" data-kind="%s"%s>\n                %s\n'
+            '                <div><div class="txt"><span class="kind %s">%s</span>%s</div>\n'
+            '                  <div class="meta"><span>%s</span><span class="via">%s</span></div></div>\n'
+            '                %s\n              </li>\n') % (cls, kind, extra, cb, kind, label, txt, meta, via, a_)
+brief = ('<!-- Today\'s brief: what needs an action today. Meetings live in their own list; prep is one click there. -->\n'
+         '        <section class="cols" style="grid-template-columns:1fr">\n'
+         '          <div class="panel">\n'
+         '            <div class="ph"><h2>Today’s brief</h2><span class="sub">What needs you, in order · one source per item, one write-back</span><span class="right" id="briefCount"></span></div>\n'
+         '            <ul class="brief" id="brief">\n'
+    + item('decide', 'Decide', 'Approve the Beazley cyber quote for Brightline Foods. The $2.1M limit is held until 5:00 PM today.', 'Salesforce · Opportunity · Proposal · closes Jan 9', 'Deal Review', 'Open deal review', '#deal-review')
+    + item('review', 'Follow-up due', 'Send Northwind Dental the revised numbers before the 4:30 call — Jordan asked for them on Friday.', 'Salesforce · Task · due today', 'Deal Review · check = Task completed', 'Draft the email')
+    + item('reply', 'Reply', 'Tom Reyes (Cascade Freight) will send the loss runs once you confirm the meeting — the thread has been waiting since Friday.', 'Outlook · thread matched to the Cascade Freight opportunity', 'draft ready', 'Open draft in Outlook')
+    + item('call', 'Call back', 'Tallgrass Manufacturing referral from Karen Harris. They asked for a call this week.', 'Salesforce · Lead · untouched 6 days', 'BDR Agent', 'Draft intro', '#bdr')
+    + item('overdue', 'Overdue', 'Sable &amp; Finch: revised professional liability proposal was due Oct 17. The deal has had no activity for 21 days.', 'Salesforce · Task · overdue 19 days', 'Deal Review · move or mark lost', 'Decide')
+    + item('done', 'Capture', 'Friday’s Harbor Point meeting logged: 3 follow-up Tasks and 1 Event written to Salesforce.', 'Done 8:52 AM', 'dictated in the car', 'Open', None, '8:52 AM')
+    + item('done', 'Follow-up', 'Recap and the two open items sent to Harbor Point Health.', 'Done 8:47 AM', 'email drafted by Capture, sent from Outlook', 'Open', None, '8:47 AM')
+    + '            </ul>\n          </div>\n        </section>\n\n        ')
+h = h[:a] + brief + h[b:]
+h = rep(h, '.kind.renewal{color:var(--ok)}', '.kind.renewal{color:var(--ok)} .kind.reply{color:var(--navy)} .kind.overdue{color:var(--crit)}')
 
 # ---------- Connected ----------
 h = rep(h, '<span class="s">Salesforce</span><span class="s">Outlook</span><span class="s">Broker AI workflows</span><span class="s">Agency management</span><span class="s">SharePoint</span><span class="s">Reports</span><span class="s">SME directory</span><a href="#sources" class="src-link">Where each block gets its data →</a>',
-        '<span class="s">Broker portal agent</span><span class="s">Salesforce (as you)</span><span class="s">Outlook · Teams</span><span class="s">Existing prospect briefs</span><span class="s">SME directory</span><span class="src-link" style="cursor:default">January: five agents on the existing portal agent · goal panel, pipeline and sales-leader lens in stage 2</span>')
+        '<span class="s">Broker portal agent</span><span class="s">Salesforce (as you)</span><span class="s">Outlook · Teams</span><span class="s">Existing prospect briefs</span><span class="s">SME directory</span><span class="src-link" style="cursor:default">January: five agents on the existing portal agent · goal panel, renewals / at-risk, pipeline and sales-leader lens in stage 2</span>')
 
 # ---------- Header / sidebar ----------
 h = rep(h, '<span class="title">Producer Home</span><span class="role">Employee Benefits · P&amp;C</span>',
@@ -150,7 +167,7 @@ h = rep(h, "var dateEl=$('.hero .date');dateEl.textContent='Monday, October 26 �
         "var dateEl=$('.hero .date');dateEl.textContent='Monday, 5 January · 3 meetings today · '")
 
 # the Pipeline flow key is referenced only from the removed screen; harmless.
-for bad in ('id="v-pipeline"', 'id="sourcesView"', 'data-tab="stalled"', 'Update Salesforce</button>'):
+for bad in ('id="v-pipeline"', 'id="sourcesView"', 'data-tab="stalled"', 'data-tab="risk"', 'Needs attention</h2>', 'Update Salesforce</button>'):
     assert bad not in h, bad
 assert h.count('class="chip" data-prompt') >= 5
 open('jan.html', 'w', encoding='utf-8').write(h)

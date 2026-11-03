@@ -52,8 +52,8 @@ The stage-1 home: what can be live on day one on an existing portal agent that a
 | **Chips (5)** | Prep my next meeting · Company brief · Capture Agent · Deal Review · BDR Agent. No Pipeline, no Update Salesforce. |
 | **Counters** | Meetings today, emails to answer, closing this month, gone cold. |
 | **Today's meetings** | From Outlook, matched to Salesforce, "Prepare me" on each (client → Company brief, prospect → Prep). |
-| **Today's brief** | Decide · Review · Call back · Renewal, check-off writes the Task. |
-| **Needs attention** | At risk · Renewals 90d · Overdue tasks. No Stalled deals (no pipeline sweep in stage 1). |
+| **Today's brief** | Action items only, one source each, one write-back: Decide (Opportunity) · Follow-up due (Task) · Reply (Outlook thread matched to a deal) · Call back (Lead) · Overdue (Task); check-off completes the Task. Meetings are not to-dos — they live in their own list. |
+| **Needs attention** | Removed in stage 1: at-risk and renewals need portal flags / policy data (stage 2); overdue moved into Today's brief. |
 
 **Live:** https://julijakvetna.github.io/epic-producer-assistant-demo/jan.html · direct links: `jan.html#prep`, `#company-brief`, `#capture`, `#deal-review`, `#bdr`
 
