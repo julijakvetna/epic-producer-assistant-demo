@@ -4,7 +4,7 @@
 # screen, no sources slide. Built on what Ask Artemis already does (Today/Ask, Outlook, Salesforce quick actions, Dictate).
 import re
 BRAND = 'PA'
-ASSISTANT = 'Ask Atlas'
+ASSISTANT = 'Ask Artemis'
 h = open('index.html', encoding='utf-8').read()
 
 def cut(s, start, end):
