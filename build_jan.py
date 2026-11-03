@@ -266,14 +266,17 @@ SKIN_CSS = '''
   --sans:"Nunito Sans",system-ui,-apple-system,"Segoe UI",sans-serif;--serif:"Lora",Georgia,"Times New Roman",serif;--shadow:0 1px 2px rgba(15,31,77,.05),0 8px 24px -16px rgba(15,31,77,.18)}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0d1430;--panel:#141c3d;--panel-2:#1c254c;--line:#2a3560;--fg:#eef1fb;--muted:#aab4d6;--faint:#7280a8;--navy:#3b5bd6}}
 :root[data-theme="dark"]{--bg:#0d1430;--panel:#141c3d;--panel-2:#1c254c;--line:#2a3560;--fg:#eef1fb;--muted:#aab4d6;--faint:#7280a8;--navy:#3b5bd6}
-body{font-size:14.5px}
+body{font-size:15px}
+.bhead .upd{color:var(--muted);font-size:13.5px;margin-right:4px}
 h1,h2,.serif,.tile .v,.goal .big .v,.msg-ai .lead b,.brief-card h2,.kpis .v{font-family:var(--serif)}
 .hero h1{font-size:34px;font-weight:700;letter-spacing:0}
 .ph h2{font-size:19px;font-weight:600}
 .tile .v{font-size:34px;font-weight:600;color:var(--navy)}
 .tile .v.cold{color:#b24a1b}
 .tile{border-radius:14px;padding:18px 20px}
-.tile .l{font-size:14px;color:var(--fg);order:2;margin-top:2px}
+.tile .l{font-size:15.5px;color:var(--fg);order:2;margin-top:2px;font-weight:600}
+.tile .d{font-size:13.5px;line-height:1.4}
+.tile .v small{font-size:14px}
 .tile .l .src{display:none}
 .tile .d{order:3}
 .tile .v{order:1}
@@ -315,12 +318,13 @@ h1,h2,.serif,.tile .v,.goal .big .v,.msg-ai .lead b,.brief-card h2,.kpis .v{font
 .abtn.soft{background:#dfe7f8;color:var(--navy);border-color:#dfe7f8}
 /* pills */
 .chips{justify-content:flex-start;width:100%;gap:10px;margin:0}
-.chip{padding:10px 18px;border-radius:999px;font-size:14px;font-weight:600;border:1px solid var(--line);background:var(--panel);color:var(--fg)}
+.chip{padding:9px 16px;border-radius:999px;font-size:14px;font-weight:600;border:1px solid var(--line);background:var(--panel);color:var(--fg)}
 .chip.on{background:var(--navy);color:#fff;border-color:var(--navy)}
 .chip .n{background:var(--gold);color:var(--gold-ink);font-size:12px;font-weight:700;padding:1px 7px;border-radius:9px}
 .chip svg{display:none}
 /* meetings / brief cards */
-.mtg li{padding:14px 20px;font-size:15px}
+.mtg li{padding:14px 20px;font-size:15.5px}
+.mtg .n small{font-size:13.5px;margin-top:2px}
 .mtg .t{font-family:var(--sans);font-weight:600;color:var(--fg);font-size:14px}
 .mtg .tg{background:#dfe7f8;color:var(--navy);font-weight:600;padding:3px 10px}
 .mtg .tg.cl{background:#dfe7f8;color:var(--navy)}
@@ -329,10 +333,19 @@ h1,h2,.serif,.tile .v,.goal .big .v,.msg-ai .lead b,.brief-card h2,.kpis .v{font
 .pillmini{font-size:12.5px;font-weight:600;padding:4px 10px;border-radius:999px;background:#dfe7f8;color:var(--navy)}
 .pillmini.ghost{background:transparent;color:#9aaad8}
 .brief .kind{font-family:var(--sans)}
-.brief .txt{font-size:15px}
+.brief .txt{font-size:15.5px}
+.brief .meta{font-size:13px}
+.brief .meta .via{font-size:13px}
+.ph .sub{font-size:14px}
+.ph .right{font-size:13.5px}
 .brief .act{color:var(--info);font-weight:700}
 /* goal strip */
-.jan-goal{border-style:solid;background:var(--panel)}
+.jan-goal{border-style:solid;background:var(--panel);font-size:14px}
+.jan-goal .l{font-size:12px}
+.jan-goal .num{font-size:17px}
+.jan-goal .later{font-size:13px}
+.sources{font-size:13.5px}
+.src-link{font-size:13.5px}
 /* prompt box at the bottom */
 .askbox{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px 16px 12px;box-shadow:var(--shadow)}
 .askbox .prompt{width:100%;border:0;box-shadow:none;padding:0 0 10px;border-radius:0}
@@ -372,7 +385,7 @@ form_html = hero_block[form_a:form_b]
 bhead = ('<!-- Briefing header -->\n'
     '        <section class="bhead" aria-label="Daily briefing">\n'
     '          <div><div class="eyebrow">Daily briefing · Monday, January 5</div><h1>Good morning, Dana</h1><div class="sub date">Briefing ready · 3 meetings today · 4 items need you</div></div>\n'
-    '          <div class="actions"><button class="abtn" type="button">Notify me when it’s done</button><button class="abtn soft" type="button">↻ Refresh</button><button class="abtn" type="button">Close</button></div>\n'
+    '          <div class="actions"><span class="upd">Updated 8:05 AM</span><button class="abtn soft" type="button">↻ Refresh briefing</button></div>\n'
     '        </section>\n'
     '        <section class="hero">\n' + form_html.replace('<form class="prompt" id="promptForm">', '<form class="prompt" id="promptForm" hidden>') + '\n        </section>\n\n        ')
 h = h[:a] + bhead + h[b:]
@@ -393,7 +406,7 @@ h = rep(h, '<div class="l">Closing this month<span class="src">Salesforce</span>
 
 # ---- meetings card header pills + Join links
 h = rep(h, '<div class="ph"><h2>Today’s meetings</h2><span class="sub">From Outlook · matched to Salesforce</span><span class="right"><a class="src-link" href="#prep">Prep my next meeting →</a></span></div>',
-        '<div class="ph"><h2>Today’s meetings</h2><span class="sub">From Outlook · matched to Salesforce</span><span class="right"><span class="pillmini">Graph</span> <span class="pillmini ghost">Update</span></span></div>')
+        '<div class="ph"><h2>Today’s meetings</h2><span class="sub">From Outlook · matched to Salesforce</span><span class="right"></span></div>')
 h = h.replace('<a class="go" href="#company-brief" data-prompt="Open the company brief for Harbor Point Health">Prepare me →</a>',
               '<span><a class="join" href="#" onclick="return false">Join</a>&nbsp;&nbsp;<a class="go" href="#company-brief" data-prompt="Open the company brief for Harbor Point Health">Prepare me</a></span>')
 h = h.replace('<a class="go" href="#prep">Prepare me →</a>', '<span><a class="join" href="#" onclick="return false">Join</a>&nbsp;&nbsp;<a class="go" href="#prep">Prepare me</a></span>')
@@ -402,7 +415,7 @@ h = rep(h, '.mtg li{display:grid;grid-template-columns:76px 1fr auto auto;', '.m
 
 # ---- brief card header pills
 h = rep(h, '<div class="ph"><h2>Today’s brief</h2><span class="sub">What needs you, in order · one source per item, one write-back</span><span class="right" id="briefCount"></span></div>',
-        '<div class="ph"><h2>Today’s brief</h2><span class="sub">What needs you, in order</span><span class="right"><span class="pillmini">Salesforce</span> <span class="pillmini">Outlook</span> <span class="pillmini ghost" id="briefCount"></span></span></div>')
+        '<div class="ph"><h2>Today’s brief</h2><span class="sub">What needs you, in order</span><span class="right" id="briefCount"></span></div>')
 
 # ---- Ask box at the bottom (before Connected)
 askbox = ('<!-- Ask -->\n'
