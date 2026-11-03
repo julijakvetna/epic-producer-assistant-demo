@@ -69,15 +69,7 @@ h = cut(h, '<button class="chip" data-prompt="Give me a company brief on: "><svg
 
 # ---------- Prepared-for-you + pipeline tiles → portal-style counters + today's meetings ----------
 a = h.index('<!-- Prepared for you'); b = h.index('<!-- Brief + attention -->')
-tiles = '''<!-- Counters: what the portal agent already shows today, now with our flags behind them -->
-        <section class="tiles" aria-label="Today">
-          <div class="tile"><div class="l">Meetings today<span class="src">Outlook</span></div><div class="v num">3</div><div class="d"><b>1</b> prospect, <b>2</b> clients · prep ready for all</div></div>
-          <div class="tile"><div class="l">Emails to answer<span class="src">Outlook</span></div><div class="v num">7</div><div class="d"><b>2</b> from clients with an open deal · drafts ready</div></div>
-          <div class="tile"><div class="l">Closing this month<span class="src">Salesforce</span></div><div class="v num">1 <small>$310K</small></div><div class="d">Brightline Foods · quote held till 5 PM</div></div>
-          <div class="tile"><div class="l">Gone cold<span class="src">Salesforce</span></div><div class="v num">2 <small>$226K</small></div><div class="d"><b class="risk">Sable &amp; Finch</b> 21 days · Orion 18 days</div></div>
-        </section>
-
-        <!-- Today's meetings: the calendar is the context for Prep -->
+tiles = '''<!-- Today's meetings: the calendar is the context for Prep -->
         <section class="panel" aria-label="Today's meetings">
           <div class="ph"><h2>Today’s meetings</h2><span class="sub">From Outlook · matched to Salesforce</span><span class="right"><a class="src-link" href="#prep">Prep my next meeting →</a></span></div>
           <ul class="mtg">
@@ -400,9 +392,7 @@ h = rep(h, '</svg>Prep my next meeting</button>', '</svg>Prep my next meeting<sp
 h = rep(h, "    var v=c.getAttribute('data-view')||route(p);\n    if(v==='later')", "    var v=c.getAttribute('data-view')||route(p);\n    if(v==='home'){e.preventDefault();showHome();setSeg(false);return}\n    if(v==='later')")
 
 # ---- tiles: wording and the orange "gone cold"
-h = rep(h, '<div class="tile"><div class="l">Gone cold<span class="src">Salesforce</span></div><div class="v num">2 <small>$226K</small></div>',
-        '<div class="tile"><div class="l">Deals gone cold<span class="src">Salesforce</span></div><div class="v num cold">2 <small>$226K</small></div>')
-h = rep(h, '<div class="l">Closing this month<span class="src">Salesforce</span></div>', '<div class="l">Deals closing this month<span class="src">Salesforce</span></div>')
+
 
 # ---- meetings card header pills + Join links
 h = rep(h, '<div class="ph"><h2>Today’s meetings</h2><span class="sub">From Outlook · matched to Salesforce</span><span class="right"><a class="src-link" href="#prep">Prep my next meeting →</a></span></div>',
@@ -443,7 +433,7 @@ h = rep(h, "    input.value=p;input.focus();\n  })});", "    var ai=$('#askInput
 h = h.replace("$('.top .title').textContent='Producer Home';", "$('.top .title').textContent='Daily briefing';")
 # move the goal strip below the pills
 _a = h.index('<!-- Goal: what Salesforce'); _b = h.index('<!-- Briefing header'); _strip = h[_a:_b]; h = h[:_a] + h[_b:]
-_c = h.index('<!-- Counters:'); h = h[:_c] + _strip + h[_c:]
+_c = h.index('<!-- Today\'s meetings:'); h = h[:_c] + _strip + h[_c:]
 
 for bad in ('id="v-pipeline"', 'id="sourcesView"', 'data-tab="stalled"', 'data-tab="risk"', 'Needs attention</h2>', 'Update Salesforce</button>'):
     assert bad not in h, bad

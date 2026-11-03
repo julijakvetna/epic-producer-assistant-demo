@@ -50,7 +50,6 @@ The stage-1 home: what can be live on day one on an existing portal agent that a
 | **New business strip** | Closed-won YTD, open deals and pipeline from Salesforce opportunities; goal, pace and "what closes the gap" marked as stage 2 (production feed). |
 | **Prompt** | Speak or type — dictation is the headline. |
 | **Chips (5)** | Prep my next meeting · Company brief · Capture Agent · Deal Review · BDR Agent. No Pipeline, no Update Salesforce. |
-| **Counters** | Meetings today, emails to answer, closing this month, gone cold. |
 | **Today's meetings** | From Outlook, matched to Salesforce, "Prepare me" on each (client → Company brief, prospect → Prep). |
 | **Look** | Skinned to the client's existing Ask Artemis agent: navy/yellow palette, serif headings, briefing header with Notify / Refresh / Close, pill tabs, stat tiles, Join · Prepare me on meetings, the Ask box with source pills at the bottom. |
 | **Sidebar** | Mirrors the portal agent's existing shell: Today / Ask toggle, New question, chat search, Today's work (ready outputs), Chats (starred / today / 7 days), quick links. |
