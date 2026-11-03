@@ -148,7 +148,7 @@ h = rep(h, '<div class="toast"', '    </div>\n  </div>\n</div>\n\n<div class="to
 
 # ---------- Sidebar: portal-agent structure (Today | Ask, New question, search, Today's work, Chats, quick links) ----------
 SIDE_CSS = '''
-/* Artemis-style sidebar */
+/* portal-style sidebar */
 .seg{margin:6px 12px 10px;display:grid;grid-template-columns:1fr 1fr;background:var(--panel-2);border-radius:9px;padding:3px}
 .seg a{text-align:center;padding:7px 0;border-radius:7px;font-size:13px;font-weight:600;color:var(--muted);text-decoration:none}
 .seg a.on{background:var(--navy);color:#fff}
