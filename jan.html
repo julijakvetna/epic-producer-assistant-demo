@@ -537,7 +537,7 @@ h1,h2,h3{margin:0;text-wrap:balance}
 .jan-goal .num{font-size:15px;color:var(--fg)}
 .jan-goal .later{margin-left:auto;font-size:11.5px;color:var(--faint)}
 .mtg{list-style:none;margin:0;padding:0}
-.mtg li{display:grid;grid-template-columns:76px 1fr auto auto;gap:12px;align-items:center;padding:10px 16px;border-top:1px solid var(--line);font-size:13.5px}
+.mtg li{display:grid;grid-template-columns:90px 1fr auto auto;gap:12px;align-items:center;padding:10px 16px;border-top:1px solid var(--line);font-size:13.5px}
 .mtg li:first-child{border-top:0}
 .mtg .t{font-family:var(--mono);font-size:12.5px;color:var(--muted)}
 .mtg .n b{font-weight:600}
@@ -571,6 +571,93 @@ h1,h2,h3{margin:0;text-wrap:balance}
 .sidefoot .av{width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;font-size:11px;font-weight:700;display:grid;place-items:center}
 .sidefoot b{display:block;font-size:13px;font-weight:600}
 .sidefoot small{color:var(--muted);font-size:11.5px}
+
+/* ===== portal skin ===== */
+@import url("https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Nunito+Sans:wght@400;600;700&display=swap");
+:root{--bg:#f3f6fb;--panel:#ffffff;--panel-2:#eaf0f9;--line:#dbe3f0;--fg:#0f1f4d;--muted:#4e5d80;--faint:#8592b3;
+  --navy:#14307e;--navy-ink:#fff;--gold:#f5c518;--gold-ink:#2a2000;--info:#1f4fd1;--info-bg:#e4ebfb;--ok:#1d7a52;--ok-bg:#e1f3ea;--warn:#a8640f;--warn-bg:#fdf1dc;--crit:#b23a2b;--crit-bg:#fbe6e2;
+  --sans:"Nunito Sans",system-ui,-apple-system,"Segoe UI",sans-serif;--serif:"Lora",Georgia,"Times New Roman",serif;--shadow:0 1px 2px rgba(15,31,77,.05),0 8px 24px -16px rgba(15,31,77,.18)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0d1430;--panel:#141c3d;--panel-2:#1c254c;--line:#2a3560;--fg:#eef1fb;--muted:#aab4d6;--faint:#7280a8;--navy:#3b5bd6}}
+:root[data-theme="dark"]{--bg:#0d1430;--panel:#141c3d;--panel-2:#1c254c;--line:#2a3560;--fg:#eef1fb;--muted:#aab4d6;--faint:#7280a8;--navy:#3b5bd6}
+body{font-size:14.5px}
+h1,h2,.serif,.tile .v,.goal .big .v,.msg-ai .lead b,.brief-card h2,.kpis .v{font-family:var(--serif)}
+.hero h1{font-size:34px;font-weight:700;letter-spacing:0}
+.ph h2{font-size:19px;font-weight:600}
+.tile .v{font-size:34px;font-weight:600;color:var(--navy)}
+.tile .v.cold{color:#b24a1b}
+.tile{border-radius:14px;padding:18px 20px}
+.tile .l{font-size:14px;color:var(--fg);order:2;margin-top:2px}
+.tile .l .src{display:none}
+.tile .d{order:3}
+.tile .v{order:1}
+.panel,.prompt,.brief-card{border-radius:16px}
+.content{gap:18px;max-width:1180px}
+/* sidebar */
+.brand{padding:18px 16px 12px;gap:10px}
+.brand .mark{display:none}
+.alogo{width:34px;height:34px;flex:none}
+.brand .name{font-size:17px;font-weight:700}
+.brand .dot{display:none}
+.brand .collapse{margin-left:auto;width:18px;height:18px;color:var(--muted)}
+.seg{margin:4px 12px 10px;background:#e8eefb;border-radius:10px;padding:0;gap:0}
+.seg a{padding:10px 0;font-size:14px;border-radius:10px}
+.seg a.on{background:var(--navy)}
+.newq{font-size:15px}
+.ssearch{border-radius:10px;padding:9px 12px}
+.side .sect{font-size:13px;letter-spacing:0;text-transform:none;color:var(--fg);font-weight:700}
+.side .sect.sub{color:var(--faint);font-weight:500;font-size:12px}
+.nav.recents a{font-size:13.5px;color:var(--fg)}
+.work a{font-size:13.5px}
+.quick a{font-size:14px}
+.sidefoot .av{background:#e8eefb;color:var(--navy)}
+/* top bar */
+.top{padding:12px 28px}
+.top .title{font-size:17px;font-weight:700} .top .gap{flex:1}
+.top .search{display:none}
+.top .user{display:none}
+.icon-btn .pip{top:2px;right:2px;width:16px;height:16px;border-radius:8px;background:var(--navy);color:#fff;font:700 9px/12px var(--sans);text-align:center;border-width:2px}
+.srcbtn{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border:1px solid var(--line);border-radius:10px;font-size:14px;font-weight:600;color:var(--fg);background:var(--panel)}
+.srcbtn svg{width:15px;height:15px}
+/* briefing header */
+.bhead{display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap;padding-bottom:14px;border-bottom:3px solid var(--gold)}
+.bhead .eyebrow{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--navy);font-weight:700}
+.bhead h1{margin-top:6px}
+.bhead .sub{color:var(--muted);font-size:14px;margin-top:4px}
+.bhead .actions{margin-left:auto;display:flex;gap:10px;align-items:center}
+.abtn{padding:10px 16px;border-radius:10px;border:1px solid var(--line);background:var(--panel);font-size:14px;font-weight:600;color:var(--fg)}
+.abtn.soft{background:#dfe7f8;color:var(--navy);border-color:#dfe7f8}
+/* pills */
+.chips{justify-content:flex-start;width:100%;gap:10px;margin:0}
+.chip{padding:10px 18px;border-radius:999px;font-size:14px;font-weight:600;border:1px solid var(--line);background:var(--panel);color:var(--fg)}
+.chip.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.chip .n{background:var(--gold);color:var(--gold-ink);font-size:12px;font-weight:700;padding:1px 7px;border-radius:9px}
+.chip svg{display:none}
+/* meetings / brief cards */
+.mtg li{padding:14px 20px;font-size:15px}
+.mtg .t{font-family:var(--sans);font-weight:600;color:var(--fg);font-size:14px}
+.mtg .tg{background:#dfe7f8;color:var(--navy);font-weight:600;padding:3px 10px}
+.mtg .tg.cl{background:#dfe7f8;color:var(--navy)}
+.mtg .go,.mtg .join{color:var(--info);font-weight:700;font-size:14px}
+.ph .right .src-link{font-weight:700}
+.pillmini{font-size:12.5px;font-weight:600;padding:4px 10px;border-radius:999px;background:#dfe7f8;color:var(--navy)}
+.pillmini.ghost{background:transparent;color:#9aaad8}
+.brief .kind{font-family:var(--sans)}
+.brief .txt{font-size:15px}
+.brief .act{color:var(--info);font-weight:700}
+/* goal strip */
+.jan-goal{border-style:solid;background:var(--panel)}
+/* prompt box at the bottom */
+.askbox{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px 16px 12px;box-shadow:var(--shadow)}
+.askbox .prompt{width:100%;border:0;box-shadow:none;padding:0 0 10px;border-radius:0}
+.askbox .prompt input{font-size:16px}
+.askbox .foot{display:flex;align-items:center;gap:8px}
+.askbox .foot .pillmini{background:#e8eefb}
+.askbox .foot .send2{margin-left:auto;padding:9px 20px;border-radius:10px;background:#dfe7f8;color:var(--navy);font-weight:700;font-size:14px}
+.askbox .foot .send2.live{background:var(--navy);color:#fff}
+.asknote{text-align:center;color:var(--muted);font-size:13px;margin-top:-6px}
+.hint{display:none}
+.hero{display:contents}
+.dock .prompt{border-radius:14px}
 </style>
 </head>
 <body>
@@ -578,7 +665,7 @@ h1,h2,h3{margin:0;text-wrap:balance}
 <div class="app">
   <!-- ================= Sidebar ================= -->
   <aside class="side" aria-label="Workspace navigation">
-    <div class="brand"><span class="mark">PA</span><span class="name">Producer Assistant</span><span class="dot" title="Connected"></span></div>
+    <div class="brand"><svg class="alogo" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="20" fill="#14307e"/><ellipse cx="20" cy="20" rx="13" ry="6" fill="none" stroke="#fff" stroke-width="1.6" transform="rotate(-28 20 20)"/><ellipse cx="20" cy="20" rx="13" ry="6" fill="none" stroke="#9fb4e8" stroke-width="1.2" transform="rotate(34 20 20)"/><circle cx="20" cy="20" r="4.2" fill="#fff"/><circle cx="30" cy="12" r="1.8" fill="#f5c518"/></svg><span class="name">Ask Atlas</span><svg class="collapse" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16"/></svg></div>
     <div class="seg" role="tablist"><a href="#home" class="on" id="segToday">Today</a><a href="#ask" id="segAsk">Ask</a></div>
     <a class="newq" href="#ask"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg>New question</a>
     <div class="ssearch"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>Search chat history</div>
@@ -620,16 +707,39 @@ h1,h2,h3{margin:0;text-wrap:balance}
   <!-- ================= Main ================= -->
   <div class="main">
     <header class="top">
-      <span class="title">Producer Home</span><span class="role">January version</span>
+      <span class="title">Ask Atlas</span>
       <span class="gap"></span>
-      <div class="search" role="search"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>Search clients, prospects, policies, people…<kbd>⌘K</kbd></div>
-      <button class="icon-btn" aria-label="Notifications"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 00-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0"/></svg><span class="pip"></span></button>
+      <button class="icon-btn" aria-label="Notifications"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 00-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0"/></svg><span class="pip">1</span></button>
       <button class="icon-btn" id="themeBtn" aria-label="Toggle theme"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button>
-      <div class="user"><span class="av">DW</span></div>
+      <button class="srcbtn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M15 4v16"/></svg>Sources</button>
     </header>
 
     <div class="scroll">
       <main class="content">
+        <!-- Briefing header -->
+        <section class="bhead" aria-label="Daily briefing">
+          <div><div class="eyebrow">Daily briefing · Monday, January 5</div><h1>Good morning, Dana</h1><div class="sub date">Briefing ready · 3 meetings today · 4 items need you</div></div>
+          <div class="actions"><button class="abtn" type="button">Notify me when it’s done</button><button class="abtn soft" type="button">↻ Refresh</button><button class="abtn" type="button">Close</button></div>
+        </section>
+        <section class="hero">
+<form class="prompt" id="promptForm" hidden>
+            <button type="button" class="mic" aria-label="Attach files" title="Attach policies, loss runs, census files"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button>
+            <input id="promptInput" type="text" placeholder="Ask anything — / for workflows, @ for briefs, # for clients" autocomplete="off">
+            <button type="button" class="mic" aria-label="Dictate" title="Dictate — notes, next steps and tasks are captured to Salesforce"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0014 0M12 17v4M8 21h8"/></svg></button>
+            <button type="submit" class="send" aria-label="Send"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+          </form>
+        </section>
+
+        <!-- Capability chips -->
+        <section class="chips" aria-label="Things you can ask">
+          <button class="chip on" data-view="home">Today</button>
+          <button class="chip" data-prompt="Prep me for my next meeting"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>Prep my next meeting<span class="n">3</span></button>
+          <button class="chip" data-prompt="Give me a company brief on: "><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>Company brief</button>
+          <button class="chip" data-prompt="Capture my meeting notes: "><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0014 0M12 17v4M8 21h8"/></svg>Capture Agent</button>
+          <button class="chip" data-prompt="Run my deal review: what did I promise this week and what is due?"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>Deal Review</button>
+          <button class="chip" data-prompt="Which of my leads haven't been touched? Draft first touches."><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg>BDR Agent</button>
+          </section>
+
         <!-- Goal: what Salesforce can say today; goal & pace come with the production feed (stage 2) -->
         <section class="jan-goal" aria-label="New business">
           <span class="l">New business · 2026</span>
@@ -638,50 +748,28 @@ h1,h2,h3{margin:0;text-wrap:balance}
           <span class="later">Goal, pace and “what closes the gap” arrive with the production data feed → stage 2</span>
         </section>
 
-        <!-- Hero prompt -->
-        <section class="hero">
-          <h1>Good morning, Dana.</h1>
-          <div class="date">Monday, 5 January · 3 meetings today · 4 items need you</div>
-          <form class="prompt" id="promptForm">
-            <button type="button" class="mic" aria-label="Attach files" title="Attach policies, loss runs, census files"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button>
-            <input id="promptInput" type="text" placeholder="Ask anything — / for workflows, @ for briefs, # for clients" autocomplete="off">
-            <button type="button" class="mic" aria-label="Dictate" title="Dictate — notes, next steps and tasks are captured to Salesforce"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0014 0M12 17v4M8 21h8"/></svg></button>
-            <button type="submit" class="send" aria-label="Send"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
-          </form>
-          <div class="hint"><span class="voice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0014 0M12 17v4M8 21h8"/></svg>Speak or type</span> &nbsp;Try: “Prep me for the 2:00 with Meridian” · “Just met Jordan at Northwind — they want revised numbers by the 14th” · “What did I promise this week?”</div>
-        </section>
-
-        <!-- Capability chips -->
-        <section class="chips" aria-label="Things you can ask" style="margin:-6px auto 0">
-          <button class="chip" data-prompt="Prep me for my next meeting"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>Prep my next meeting</button>
-          <button class="chip" data-prompt="Give me a company brief on: "><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>Company brief</button>
-          <button class="chip" data-prompt="Capture my meeting notes: "><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0014 0M12 17v4M8 21h8"/></svg>Capture Agent</button>
-          <button class="chip" data-prompt="Run my deal review: what did I promise this week and what is due?"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>Deal Review</button>
-          <button class="chip" data-prompt="Which of my leads haven't been touched? Draft first touches."><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg>BDR Agent</button>
-          </section>
-
         <!-- Counters: what the portal agent already shows today, now with our flags behind them -->
         <section class="tiles" aria-label="Today">
           <div class="tile"><div class="l">Meetings today<span class="src">Outlook</span></div><div class="v num">3</div><div class="d"><b>1</b> prospect, <b>2</b> clients · prep ready for all</div></div>
           <div class="tile"><div class="l">Emails to answer<span class="src">Outlook</span></div><div class="v num">7</div><div class="d"><b>2</b> from clients with an open deal · drafts ready</div></div>
-          <div class="tile"><div class="l">Closing this month<span class="src">Salesforce</span></div><div class="v num">1 <small>$310K</small></div><div class="d">Brightline Foods · quote held till 5 PM</div></div>
-          <div class="tile"><div class="l">Gone cold<span class="src">Salesforce</span></div><div class="v num">2 <small>$226K</small></div><div class="d"><b class="risk">Sable &amp; Finch</b> 21 days · Orion 18 days</div></div>
+          <div class="tile"><div class="l">Deals closing this month<span class="src">Salesforce</span></div><div class="v num">1 <small>$310K</small></div><div class="d">Brightline Foods · quote held till 5 PM</div></div>
+          <div class="tile"><div class="l">Deals gone cold<span class="src">Salesforce</span></div><div class="v num cold">2 <small>$226K</small></div><div class="d"><b class="risk">Sable &amp; Finch</b> 21 days · Orion 18 days</div></div>
         </section>
 
         <!-- Today's meetings: the calendar is the context for Prep -->
         <section class="panel" aria-label="Today's meetings">
-          <div class="ph"><h2>Today’s meetings</h2><span class="sub">From Outlook · matched to Salesforce</span><span class="right"><a class="src-link" href="#prep">Prep my next meeting →</a></span></div>
+          <div class="ph"><h2>Today’s meetings</h2><span class="sub">From Outlook · matched to Salesforce</span><span class="right"><span class="pillmini">Graph</span> <span class="pillmini ghost">Update</span></span></div>
           <ul class="mtg">
-            <li><span class="t">10:30 AM</span><span class="n"><b>Harbor Point Health</b><small>Cyber renewal review · Dr. Amir Patel, Mia Chen</small></span><span class="tg cl">client</span><a class="go" href="#company-brief" data-prompt="Open the company brief for Harbor Point Health">Prepare me →</a></li>
-            <li><span class="t">2:00 PM</span><span class="n"><b>Meridian Logistics</b><small>First in-person · at their yard · Karen Harris (SME) joins 2:30</small></span><span class="tg">prospect</span><a class="go" href="#prep">Prepare me →</a></li>
-            <li><span class="t">4:30 PM</span><span class="n"><b>Northwind Dental Partners</b><small>EB renewal · revised numbers · Jordan Lee</small></span><span class="tg cl">client</span><a class="go" href="#" onclick="return false">Prepare me →</a></li>
+            <li><span class="t">10:30 AM</span><span class="n"><b>Harbor Point Health</b><small>Cyber renewal review · Dr. Amir Patel, Mia Chen</small></span><span class="tg cl">client</span><span><a class="join" href="#" onclick="return false">Join</a>&nbsp;&nbsp;<a class="go" href="#company-brief" data-prompt="Open the company brief for Harbor Point Health">Prepare me</a></span></li>
+            <li><span class="t">2:00 PM</span><span class="n"><b>Meridian Logistics</b><small>First in-person · at their yard · Karen Harris (SME) joins 2:30</small></span><span class="tg">prospect</span><span><a class="join" href="#" onclick="return false">Join</a>&nbsp;&nbsp;<a class="go" href="#prep">Prepare me</a></span></li>
+            <li><span class="t">4:30 PM</span><span class="n"><b>Northwind Dental Partners</b><small>EB renewal · revised numbers · Jordan Lee</small></span><span class="tg cl">client</span><span><a class="join" href="#" onclick="return false">Join</a>&nbsp;&nbsp;<a class="go" href="#" onclick="return false">Prepare me</a></span></li>
           </ul>
         </section>
 
         <!-- Today's brief: what needs an action today. Meetings live in their own list; prep is one click there. -->
         <section class="cols" style="grid-template-columns:1fr">
           <div class="panel">
-            <div class="ph"><h2>Today’s brief</h2><span class="sub">What needs you, in order · one source per item, one write-back</span><span class="right" id="briefCount"></span></div>
+            <div class="ph"><h2>Today’s brief</h2><span class="sub">What needs you, in order</span><span class="right"><span class="pillmini">Salesforce</span> <span class="pillmini">Outlook</span> <span class="pillmini ghost" id="briefCount"></span></span></div>
             <ul class="brief" id="brief">
               <li class="item" data-kind="review">
                 <button class="cb" aria-label="Mark done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></button>
@@ -722,6 +810,16 @@ h1,h2,h3{margin:0;text-wrap:balance}
             </ul>
           </div>
         </section>
+
+        <!-- Ask -->
+        <section class="askbox" aria-label="Ask">
+          <form class="prompt" id="askForm">
+            <input id="askInput" type="text" placeholder="Ask about an account, meeting, or renewal — or dictate what just happened" autocomplete="off">
+            <button type="button" class="mic" aria-label="Dictate" title="Dictate"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0014 0M12 17v4M8 21h8"/></svg></button>
+          </form>
+          <div class="foot"><span class="pillmini">Salesforce</span><span class="pillmini">Outlook</span><span class="pillmini">Briefs</span><button type="submit" form="askForm" class="send2">Send</button></div>
+        </section>
+        <p class="asknote">Check sources before sharing with a client.</p>
 
         <!-- Connected sources -->
         <section class="sources" aria-label="Connected sources">
@@ -1059,7 +1157,7 @@ h1,h2,h3{margin:0;text-wrap:balance}
   }
   function showHome(){
     hideAll(); home.hidden=false; scroll.scrollTop=0; input.value=''; current='';
-    $('.top .title').textContent='Producer Home';
+    $('.top .title').textContent='Daily briefing';
     if(location.hash) setHash('');
   }
   function fromHash(){var h=location.hash.slice(1); if(VIEWS[h]) showView(h); else if(!h||h==='home') showHome();}
@@ -1071,7 +1169,7 @@ h1,h2,h3{margin:0;text-wrap:balance}
   $$('.nav a, .quick a, .seg a, .newq').forEach(function(a){a.addEventListener('click',function(e){
     var h=a.getAttribute('href'), p=a.getAttribute('data-prompt');
     if(h==='#home'){e.preventDefault();showHome();setSeg(false);return}
-    if(h==='#ask'){e.preventDefault();showHome();setSeg(true);input.focus();input.scrollIntoView({behavior:'smooth',block:'center'});return}
+    if(h==='#ask'){e.preventDefault();showHome();setSeg(true);var ai=$('#askInput');ai.focus();ai.scrollIntoView({behavior:'smooth',block:'center'});return}
     var v=h.slice(1); if(VIEWS[v]){e.preventDefault();showView(v,p||'');setSeg(true);return}
     e.preventDefault(); toast('Wireframe: this chat is not filled in');
   })});
@@ -1085,10 +1183,12 @@ h1,h2,h3{margin:0;text-wrap:balance}
     var p=c.getAttribute('data-prompt');
     if(current){var ti=$(VIEWS[current][0]+' .dock input'); if(ti){ti.value=p;ti.focus()} e.preventDefault(); return}
     var v=c.getAttribute('data-view')||route(p);
+    if(v==='home'){e.preventDefault();showHome();setSeg(false);return}
     if(v==='later'){e.preventDefault();toast('Pipeline sweep and goal panel: stage 2 (after 4 January)');return}
     if(v){e.preventDefault();showView(v,p);setSeg(true);return}
-    input.value=p;input.focus();
+    var ai=$('#askInput'); ai.value=p; ai.focus();
   })});
+  $('#askForm').addEventListener('submit',function(e){e.preventDefault();var v=$('#askInput').value.trim();if(!v)return;var r=route(v);if(r==='later'){toast('Pipeline sweep and goal panel: stage 2 (after 4 January)')}else if(r){showView(r,v)}else{toast('Wireframe: the assistant would answer here')}});
   $('#promptForm').addEventListener('submit',function(e){e.preventDefault();var v=input.value.trim();if(!v)return;var r=route(v);if(r==='later'){toast('Pipeline sweep and goal panel: stage 2 (after 4 January)')}else if(r){showView(r,v)}else{toast('Wireframe: the assistant would answer here')}});
   $$('#promptForm2,.tform').forEach(function(f){f.addEventListener('submit',function(e){e.preventDefault();var i=$('input',f);if(i.value.trim()){toast('Wireframe: the assistant would answer in this thread');i.value=''}})});
 
@@ -1218,7 +1318,7 @@ h1,h2,h3{margin:0;text-wrap:balance}
     if(done.length){var d=document.createElement('li');d.className='divider';d.textContent='Handled today';list.appendChild(d)}
     done.forEach(function(i){list.appendChild(i)});
     $('#briefCount').textContent=done.length+' of '+items.length+' handled';
-    var dateEl=$('.hero .date');dateEl.textContent='Monday, 5 January · 3 meetings today · '+open.length+(open.length===1?' item needs':' items need')+' you';
+    var dateEl=$('.bhead .date');dateEl.textContent='Briefing ready · 3 meetings today · '+open.length+(open.length===1?' item needs':' items need')+' you';
   }
   list.addEventListener('click',function(e){
     var cb=e.target.closest('.cb'); if(!cb) return;

@@ -52,6 +52,7 @@ The stage-1 home: what can be live on day one on an existing portal agent that a
 | **Chips (5)** | Prep my next meeting · Company brief · Capture Agent · Deal Review · BDR Agent. No Pipeline, no Update Salesforce. |
 | **Counters** | Meetings today, emails to answer, closing this month, gone cold. |
 | **Today's meetings** | From Outlook, matched to Salesforce, "Prepare me" on each (client → Company brief, prospect → Prep). |
+| **Look** | Skinned to the client's existing portal agent: navy/yellow palette, serif headings, briefing header with Notify / Refresh / Close, pill tabs, stat tiles, Join · Prepare me on meetings, the Ask box with source pills at the bottom. |
 | **Sidebar** | Mirrors the portal agent's existing shell: Today / Ask toggle, New question, chat search, Today's work (ready outputs), Chats (starred / today / 7 days), quick links. |
 | **Today's brief** | Action items only, one source each, one write-back: Follow-up due (Task) · Reply (Outlook thread matched to a deal) · Call back (Lead) · Overdue (Task); check-off completes the Task. Meetings are not to-dos — they live in their own list. |
 | **Needs attention** | Removed in stage 1: at-risk and renewals need portal flags / policy data (stage 2); overdue moved into Today's brief. |
@@ -98,6 +99,7 @@ README.md
 
 ## Versions
 
+- **v0.13** (2026-11-03) — stage 1 skinned to the portal agent's look (palette, type, briefing header, pills, Ask box)
 - **v0.12** (2026-11-03) — stage 1: portal-style sidebar (Today / Ask), brief trimmed to four action kinds, Needs attention removed
 - **v0.11** (2026-11-03) — stage-1 home rebuilt: 5 chips, counters, today's meetings, no pipeline
 - **v0.10** (2026-11-02) — stage-1 home: `jan.html`

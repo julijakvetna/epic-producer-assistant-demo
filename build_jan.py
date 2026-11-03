@@ -4,6 +4,7 @@
 # screen, no sources slide. Built on what Ask Artemis already does (Today/Ask, Outlook, Salesforce quick actions, Dictate).
 import re
 BRAND = 'PA'
+ASSISTANT = 'Ask Atlas'
 h = open('index.html', encoding='utf-8').read()
 
 def cut(s, start, end):
@@ -251,6 +252,186 @@ h = rep(h, "var dateEl=$('.hero .date');dateEl.textContent='Monday, October 26 �
         "var dateEl=$('.hero .date');dateEl.textContent='Monday, 5 January · 3 meetings today · '")
 
 # the Pipeline flow key is referenced only from the removed screen; harmless.
+# ---------- Portal skin: colours, type, header, briefing header, pills, prompt box ----------
+LOGO = ('<svg class="alogo" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="20" fill="#14307e"/>'
+        '<ellipse cx="20" cy="20" rx="13" ry="6" fill="none" stroke="#fff" stroke-width="1.6" transform="rotate(-28 20 20)"/>'
+        '<ellipse cx="20" cy="20" rx="13" ry="6" fill="none" stroke="#9fb4e8" stroke-width="1.2" transform="rotate(34 20 20)"/>'
+        '<circle cx="20" cy="20" r="4.2" fill="#fff"/><circle cx="30" cy="12" r="1.8" fill="#f5c518"/></svg>')
+
+SKIN_CSS = '''
+/* ===== portal skin ===== */
+@import url("https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Nunito+Sans:wght@400;600;700&display=swap");
+:root{--bg:#f3f6fb;--panel:#ffffff;--panel-2:#eaf0f9;--line:#dbe3f0;--fg:#0f1f4d;--muted:#4e5d80;--faint:#8592b3;
+  --navy:#14307e;--navy-ink:#fff;--gold:#f5c518;--gold-ink:#2a2000;--info:#1f4fd1;--info-bg:#e4ebfb;--ok:#1d7a52;--ok-bg:#e1f3ea;--warn:#a8640f;--warn-bg:#fdf1dc;--crit:#b23a2b;--crit-bg:#fbe6e2;
+  --sans:"Nunito Sans",system-ui,-apple-system,"Segoe UI",sans-serif;--serif:"Lora",Georgia,"Times New Roman",serif;--shadow:0 1px 2px rgba(15,31,77,.05),0 8px 24px -16px rgba(15,31,77,.18)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0d1430;--panel:#141c3d;--panel-2:#1c254c;--line:#2a3560;--fg:#eef1fb;--muted:#aab4d6;--faint:#7280a8;--navy:#3b5bd6}}
+:root[data-theme="dark"]{--bg:#0d1430;--panel:#141c3d;--panel-2:#1c254c;--line:#2a3560;--fg:#eef1fb;--muted:#aab4d6;--faint:#7280a8;--navy:#3b5bd6}
+body{font-size:14.5px}
+h1,h2,.serif,.tile .v,.goal .big .v,.msg-ai .lead b,.brief-card h2,.kpis .v{font-family:var(--serif)}
+.hero h1{font-size:34px;font-weight:700;letter-spacing:0}
+.ph h2{font-size:19px;font-weight:600}
+.tile .v{font-size:34px;font-weight:600;color:var(--navy)}
+.tile .v.cold{color:#b24a1b}
+.tile{border-radius:14px;padding:18px 20px}
+.tile .l{font-size:14px;color:var(--fg);order:2;margin-top:2px}
+.tile .l .src{display:none}
+.tile .d{order:3}
+.tile .v{order:1}
+.panel,.prompt,.brief-card{border-radius:16px}
+.content{gap:18px;max-width:1180px}
+/* sidebar */
+.brand{padding:18px 16px 12px;gap:10px}
+.brand .mark{display:none}
+.alogo{width:34px;height:34px;flex:none}
+.brand .name{font-size:17px;font-weight:700}
+.brand .dot{display:none}
+.brand .collapse{margin-left:auto;width:18px;height:18px;color:var(--muted)}
+.seg{margin:4px 12px 10px;background:#e8eefb;border-radius:10px;padding:0;gap:0}
+.seg a{padding:10px 0;font-size:14px;border-radius:10px}
+.seg a.on{background:var(--navy)}
+.newq{font-size:15px}
+.ssearch{border-radius:10px;padding:9px 12px}
+.side .sect{font-size:13px;letter-spacing:0;text-transform:none;color:var(--fg);font-weight:700}
+.side .sect.sub{color:var(--faint);font-weight:500;font-size:12px}
+.nav.recents a{font-size:13.5px;color:var(--fg)}
+.work a{font-size:13.5px}
+.quick a{font-size:14px}
+.sidefoot .av{background:#e8eefb;color:var(--navy)}
+/* top bar */
+.top{padding:12px 28px}
+.top .title{font-size:17px;font-weight:700}
+.top .search{display:none}
+.top .user{display:none}
+.icon-btn .pip{top:2px;right:2px;width:16px;height:16px;border-radius:8px;background:var(--navy);color:#fff;font:700 9px/12px var(--sans);text-align:center;border-width:2px}
+.srcbtn{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border:1px solid var(--line);border-radius:10px;font-size:14px;font-weight:600;color:var(--fg);background:var(--panel)}
+.srcbtn svg{width:15px;height:15px}
+/* briefing header */
+.bhead{display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap;padding-bottom:14px;border-bottom:3px solid var(--gold)}
+.bhead .eyebrow{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--navy);font-weight:700}
+.bhead h1{margin-top:6px}
+.bhead .sub{color:var(--muted);font-size:14px;margin-top:4px}
+.bhead .actions{margin-left:auto;display:flex;gap:10px;align-items:center}
+.abtn{padding:10px 16px;border-radius:10px;border:1px solid var(--line);background:var(--panel);font-size:14px;font-weight:600;color:var(--fg)}
+.abtn.soft{background:#dfe7f8;color:var(--navy);border-color:#dfe7f8}
+/* pills */
+.chips{justify-content:flex-start;width:100%;gap:10px;margin:0}
+.chip{padding:10px 18px;border-radius:999px;font-size:14px;font-weight:600;border:1px solid var(--line);background:var(--panel);color:var(--fg)}
+.chip.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.chip .n{background:var(--gold);color:var(--gold-ink);font-size:12px;font-weight:700;padding:1px 7px;border-radius:9px}
+.chip svg{display:none}
+/* meetings / brief cards */
+.mtg li{padding:14px 20px;font-size:15px}
+.mtg .t{font-family:var(--sans);font-weight:600;color:var(--fg);font-size:14px}
+.mtg .tg{background:#dfe7f8;color:var(--navy);font-weight:600;padding:3px 10px}
+.mtg .tg.cl{background:#dfe7f8;color:var(--navy)}
+.mtg .go,.mtg .join{color:var(--info);font-weight:700;font-size:14px}
+.ph .right .src-link{font-weight:700}
+.pillmini{font-size:12.5px;font-weight:600;padding:4px 10px;border-radius:999px;background:#dfe7f8;color:var(--navy)}
+.pillmini.ghost{background:transparent;color:#9aaad8}
+.brief .kind{font-family:var(--sans)}
+.brief .txt{font-size:15px}
+.brief .act{color:var(--info);font-weight:700}
+/* goal strip */
+.jan-goal{border-style:solid;background:var(--panel)}
+/* prompt box at the bottom */
+.askbox{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px 16px 12px;box-shadow:var(--shadow)}
+.askbox .prompt{width:100%;border:0;box-shadow:none;padding:0 0 10px;border-radius:0}
+.askbox .prompt input{font-size:16px}
+.askbox .foot{display:flex;align-items:center;gap:8px}
+.askbox .foot .pillmini{background:#e8eefb}
+.askbox .foot .send2{margin-left:auto;padding:9px 20px;border-radius:10px;background:#dfe7f8;color:var(--navy);font-weight:700;font-size:14px}
+.askbox .foot .send2.live{background:var(--navy);color:#fff}
+.asknote{text-align:center;color:var(--muted);font-size:13px;margin-top:-6px}
+.hint{display:none}
+.hero{display:contents}
+.dock .prompt{border-radius:14px}
+'''
+h = rep(h, '</style>\n</head>', SKIN_CSS + '</style>\n</head>')
+
+# ---- sidebar brand
+h = rep(h, '<div class="brand"><span class="mark">' + BRAND + '</span><span class="name">Producer Assistant</span><span class="dot" title="Connected"></span></div>',
+        '<div class="brand">' + LOGO + '<span class="name">' + ASSISTANT + '</span><svg class="collapse" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16"/></svg></div>')
+
+# ---- top bar
+a = h.index('<header class="top">'); b = h.index('</header>') + len('</header>')
+h = h[:a] + ('<header class="top">\n'
+    '      <span class="title">' + ASSISTANT + '</span>\n'
+    '      <span class="gap"></span>\n'
+    '      <button class="icon-btn" aria-label="Notifications"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 00-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0"/></svg><span class="pip">1</span></button>\n'
+    '      <button class="icon-btn" id="themeBtn" aria-label="Toggle theme"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button>\n'
+    '      <button class="srcbtn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M15 4v16"/></svg>Sources</button>\n'
+    '    </header>') + h[b:]
+# make the gap flexible
+h = rep(h, '.top .title{font-size:17px;font-weight:700}', '.top .title{font-size:17px;font-weight:700} .top .gap{flex:1}')
+
+# ---- briefing header replaces hero h1/date; prompt moves to the bottom
+a = h.index('<!-- Hero prompt -->'); b = h.index('<!-- Capability chips -->')
+hero_block = h[a:b]
+form_a = hero_block.index('<form class="prompt"'); form_b = hero_block.index('</form>') + len('</form>')
+form_html = hero_block[form_a:form_b]
+bhead = ('<!-- Briefing header -->\n'
+    '        <section class="bhead" aria-label="Daily briefing">\n'
+    '          <div><div class="eyebrow">Daily briefing · Monday, January 5</div><h1>Good morning, Dana</h1><div class="sub date">Briefing ready · 3 meetings today · 4 items need you</div></div>\n'
+    '          <div class="actions"><button class="abtn" type="button">Notify me when it’s done</button><button class="abtn soft" type="button">↻ Refresh</button><button class="abtn" type="button">Close</button></div>\n'
+    '        </section>\n'
+    '        <section class="hero">\n' + form_html.replace('<form class="prompt" id="promptForm">', '<form class="prompt" id="promptForm" hidden>') + '\n        </section>\n\n        ')
+h = h[:a] + bhead + h[b:]
+# the JS updates '.hero .date' — now the .sub.date in the header
+h = rep(h, "var dateEl=$('.hero .date');dateEl.textContent='Monday, 5 January · 3 meetings today · '+open.length+(open.length===1?' item needs':' items need')+' you';",
+        "var dateEl=$('.bhead .date');dateEl.textContent='Briefing ready · 3 meetings today · '+open.length+(open.length===1?' item needs':' items need')+' you';")
+
+# ---- chips become pills, with a "Today" pill in front and a count on Prep
+h = rep(h, '<section class="chips" aria-label="Things you can ask" style="margin:-6px auto 0">',
+        '<section class="chips" aria-label="Things you can ask">\n          <button class="chip on" data-view="home">Today</button>')
+h = rep(h, '</svg>Prep my next meeting</button>', '</svg>Prep my next meeting<span class="n">3</span></button>')
+h = rep(h, "    var v=c.getAttribute('data-view')||route(p);\n    if(v==='later')", "    var v=c.getAttribute('data-view')||route(p);\n    if(v==='home'){e.preventDefault();showHome();setSeg(false);return}\n    if(v==='later')")
+
+# ---- tiles: wording and the orange "gone cold"
+h = rep(h, '<div class="tile"><div class="l">Gone cold<span class="src">Salesforce</span></div><div class="v num">2 <small>$226K</small></div>',
+        '<div class="tile"><div class="l">Deals gone cold<span class="src">Salesforce</span></div><div class="v num cold">2 <small>$226K</small></div>')
+h = rep(h, '<div class="l">Closing this month<span class="src">Salesforce</span></div>', '<div class="l">Deals closing this month<span class="src">Salesforce</span></div>')
+
+# ---- meetings card header pills + Join links
+h = rep(h, '<div class="ph"><h2>Today’s meetings</h2><span class="sub">From Outlook · matched to Salesforce</span><span class="right"><a class="src-link" href="#prep">Prep my next meeting →</a></span></div>',
+        '<div class="ph"><h2>Today’s meetings</h2><span class="sub">From Outlook · matched to Salesforce</span><span class="right"><span class="pillmini">Graph</span> <span class="pillmini ghost">Update</span></span></div>')
+h = h.replace('<a class="go" href="#company-brief" data-prompt="Open the company brief for Harbor Point Health">Prepare me →</a>',
+              '<span><a class="join" href="#" onclick="return false">Join</a>&nbsp;&nbsp;<a class="go" href="#company-brief" data-prompt="Open the company brief for Harbor Point Health">Prepare me</a></span>')
+h = h.replace('<a class="go" href="#prep">Prepare me →</a>', '<span><a class="join" href="#" onclick="return false">Join</a>&nbsp;&nbsp;<a class="go" href="#prep">Prepare me</a></span>')
+h = h.replace('<a class="go" href="#" onclick="return false">Prepare me →</a>', '<span><a class="join" href="#" onclick="return false">Join</a>&nbsp;&nbsp;<a class="go" href="#" onclick="return false">Prepare me</a></span>')
+h = rep(h, '.mtg li{display:grid;grid-template-columns:76px 1fr auto auto;', '.mtg li{display:grid;grid-template-columns:90px 1fr auto auto;')
+
+# ---- brief card header pills
+h = rep(h, '<div class="ph"><h2>Today’s brief</h2><span class="sub">What needs you, in order · one source per item, one write-back</span><span class="right" id="briefCount"></span></div>',
+        '<div class="ph"><h2>Today’s brief</h2><span class="sub">What needs you, in order</span><span class="right"><span class="pillmini">Salesforce</span> <span class="pillmini">Outlook</span> <span class="pillmini ghost" id="briefCount"></span></span></div>')
+
+# ---- Ask box at the bottom (before Connected)
+askbox = ('<!-- Ask -->\n'
+    '        <section class="askbox" aria-label="Ask">\n'
+    '          <form class="prompt" id="askForm">\n'
+    '            <input id="askInput" type="text" placeholder="Ask about an account, meeting, or renewal — or dictate what just happened" autocomplete="off">\n'
+    '            <button type="button" class="mic" aria-label="Dictate" title="Dictate"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0014 0M12 17v4M8 21h8"/></svg></button>\n'
+    '          </form>\n'
+    '          <div class="foot"><span class="pillmini">Salesforce</span><span class="pillmini">Outlook</span><span class="pillmini">Briefs</span><button type="submit" form="askForm" class="send2">Send</button></div>\n'
+    '        </section>\n'
+    '        <p class="asknote">Check sources before sharing with a client.</p>\n\n        ')
+h = rep(h, '<!-- Connected sources -->', askbox + '<!-- Connected sources -->')
+# wire the ask form to the same router as the hidden hero form
+h = rep(h, "  $('#promptForm').addEventListener('submit',function(e){e.preventDefault();var v=input.value.trim();",
+        "  $('#askForm').addEventListener('submit',function(e){e.preventDefault();var v=$('#askInput').value.trim();if(!v)return;var r=route(v);if(r==='later'){toast('Pipeline sweep and goal panel: stage 2 (after 4 January)')}else if(r){showView(r,v)}else{toast('Wireframe: the assistant would answer here')}});\n"
+        "  $('#promptForm').addEventListener('submit',function(e){e.preventDefault();var v=input.value.trim();")
+# "Ask" in the sidebar focuses the bottom box
+h = rep(h, "if(h==='#ask'){e.preventDefault();showHome();setSeg(true);input.focus();input.scrollIntoView({behavior:'smooth',block:'center'});return}",
+        "if(h==='#ask'){e.preventDefault();showHome();setSeg(true);var ai=$('#askInput');ai.focus();ai.scrollIntoView({behavior:'smooth',block:'center'});return}")
+# chips: when a chip fills the (hidden) prompt instead of routing, put the text in the ask box
+h = rep(h, "    input.value=p;input.focus(); toast('Wireframe: only Team pipeline review and Prep my 1:1 are filled in');", "    input.value=p;input.focus();") if "only Team pipeline review" in h else h
+h = rep(h, "    input.value=p;input.focus();\n  })});", "    var ai=$('#askInput'); ai.value=p; ai.focus();\n  })});")
+
+
+h = h.replace("$('.top .title').textContent='Producer Home';", "$('.top .title').textContent='Daily briefing';")
+# move the goal strip below the pills
+_a = h.index('<!-- Goal: what Salesforce'); _b = h.index('<!-- Briefing header'); _strip = h[_a:_b]; h = h[:_a] + h[_b:]
+_c = h.index('<!-- Counters:'); h = h[:_c] + _strip + h[_c:]
+
 for bad in ('id="v-pipeline"', 'id="sourcesView"', 'data-tab="stalled"', 'data-tab="risk"', 'Needs attention</h2>', 'Update Salesforce</button>'):
     assert bad not in h, bad
 assert h.count('class="chip" data-prompt') >= 5
