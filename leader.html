@@ -572,6 +572,14 @@ h1,h2,h3{margin:0;text-wrap:balance}
 .roster li .amt{font-family:var(--mono);font-variant-numeric:tabular-nums;color:var(--muted);font-size:12.5px}
 .roster li .pbar{grid-column:1/-1;margin-top:3px}
 @media (max-width:760px){.kpis,.two-up{grid-template-columns:1fr 1fr}.two-up>div+div{border-left:0;border-top:1px solid var(--line)}.ltable{font-size:12px}}
+
+/* version switcher */
+.ver{margin:10px 12px 6px;padding:8px 10px;border:1px solid var(--line);border-radius:9px;background:var(--panel-2)}
+.ver .t{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);font-weight:600;margin-bottom:6px}
+.ver a{display:flex;justify-content:space-between;gap:8px;padding:4px 6px;border-radius:6px;font-size:12.5px;color:var(--fg);text-decoration:none}
+.ver a:hover{background:var(--panel)}
+.ver a.on{background:var(--navy);color:#fff}
+.ver a small{color:inherit;opacity:.7;font-size:11px}
 </style>
 </head>
 <body>
@@ -600,6 +608,7 @@ h1,h2,h3{margin:0;text-wrap:balance}
       <a href="#r5">Who hasn’t opened a new opp in 30 days?</a>
     </nav>
     <div class="spacer"></div>
+    <div class="ver"><div class="t">Wireframes</div><a href="index.html">North Star<small>full vision</small></a><a href="jan.html">January<small>stage 1</small></a><a href="leader.html" class="on">Sales Leader<small>second lens</small></a></div><!--/ver-->
     <div class="foot">Signed in as Marcus Hale · sees the Southeast team through the Salesforce role hierarchy</div>
   </aside>
 

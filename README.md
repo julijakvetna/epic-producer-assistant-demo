@@ -2,6 +2,8 @@
 
 Clickable mid-fidelity wireframe of the home screen for an insurance producer's AI workbench: one assistant in front of the CRM, the agency management system, email and the brokerage's existing AI workflows. A concept demo; all names, clients and figures are fictional.
 
+Three wireframes share one shell and switch from the sidebar ("Wireframes" block): **North Star** (`index.html`), **January** (`jan.html`), **Sales Leader** (`leader.html`). <!-- Wireframes switcher -->
+
 **Live demo:** https://julijakvetna.github.io/epic-producer-assistant-demo/
 **Meeting prep (direct link):** https://julijakvetna.github.io/epic-producer-assistant-demo/#prep
 

@@ -540,6 +540,14 @@ h1,h2,h3{margin:0;text-wrap:balance}
 .voice{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:var(--muted);background:var(--panel-2);border-radius:10px;padding:3px 9px}
 .voice svg{width:12px;height:12px;color:var(--navy)}
 @media (max-width:760px){.mtg li{grid-template-columns:60px 1fr;row-gap:4px}.mtg .tg,.mtg .go{grid-column:2}}
+
+/* version switcher */
+.ver{margin:10px 12px 6px;padding:8px 10px;border:1px solid var(--line);border-radius:9px;background:var(--panel-2)}
+.ver .t{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);font-weight:600;margin-bottom:6px}
+.ver a{display:flex;justify-content:space-between;gap:8px;padding:4px 6px;border-radius:6px;font-size:12.5px;color:var(--fg);text-decoration:none}
+.ver a:hover{background:var(--panel)}
+.ver a.on{background:var(--navy);color:#fff}
+.ver a small{color:inherit;opacity:.7;font-size:11px}
 </style>
 </head>
 <body>
@@ -568,6 +576,7 @@ h1,h2,h3{margin:0;text-wrap:balance}
       <a href="#r5">Compare Beazley vs Coalition cyber quotes</a>
     </nav>
     <div class="spacer"></div>
+    <div class="ver"><div class="t">Wireframes</div><a href="index.html">North Star<small>full vision</small></a><a href="jan.html" class="on">January<small>stage 1</small></a><a href="leader.html">Sales Leader<small>second lens</small></a></div><!--/ver-->
     <div class="foot">Signed in through the broker portal · every read and write runs as Dana in Salesforce</div>
   </aside>
 

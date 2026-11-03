@@ -521,6 +521,14 @@ h1,h2,h3{margin:0;text-wrap:balance}
   .item{grid-template-columns:22px 1fr}
   .item .act{grid-column:2;justify-self:start;padding-left:0}
 }
+
+/* version switcher */
+.ver{margin:10px 12px 6px;padding:8px 10px;border:1px solid var(--line);border-radius:9px;background:var(--panel-2)}
+.ver .t{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);font-weight:600;margin-bottom:6px}
+.ver a{display:flex;justify-content:space-between;gap:8px;padding:4px 6px;border-radius:6px;font-size:12.5px;color:var(--fg);text-decoration:none}
+.ver a:hover{background:var(--panel)}
+.ver a.on{background:var(--navy);color:#fff}
+.ver a small{color:inherit;opacity:.7;font-size:11px}
 </style>
 </head>
 <body>
@@ -549,6 +557,7 @@ h1,h2,h3{margin:0;text-wrap:balance}
       <a href="#r5">Compare Beazley vs Coalition cyber quotes</a>
     </nav>
     <div class="spacer"></div>
+    <div class="ver"><div class="t">Wireframes</div><a href="index.html" class="on">North Star<small>full vision</small></a><a href="jan.html">January<small>stage 1</small></a><a href="leader.html">Sales Leader<small>second lens</small></a></div><!--/ver-->
     <div class="foot">Signed in as Dana Whitfield · Salesforce permissions apply</div>
   </aside>
 
