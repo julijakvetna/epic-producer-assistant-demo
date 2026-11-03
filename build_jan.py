@@ -66,7 +66,7 @@ h = cut(h, '<button class="chip" data-prompt="Give me a company brief on: "><svg
         '</section>')
 # the cut above removed from the 2nd "Company brief" chip (the original) to </section>; now the chips section ends after BDR. Verify counts later.
 
-# ---------- Prepared-for-you + pipeline tiles → Artemis-style counters + today's meetings ----------
+# ---------- Prepared-for-you + pipeline tiles → portal-style counters + today's meetings ----------
 a = h.index('<!-- Prepared for you'); b = h.index('<!-- Brief + attention -->')
 tiles = '''<!-- Counters: what the portal agent already shows today, now with our flags behind them -->
         <section class="tiles" aria-label="Today">
